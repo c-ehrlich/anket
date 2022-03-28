@@ -71,9 +71,10 @@ model VerificationToken {
 model Product {
   id        String   @id @default(cuid())
   name      String
-  creatorId String
   likedById String[]
+  
   creator   User     @relation(name: "CreatedProducts", fields: [creatorId], references: [id], onDelete: Cascade)
+  creatorId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
