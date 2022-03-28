@@ -5,7 +5,7 @@ import { createProduct, getProductsByUser } from './product.service';
 
 export async function createProductHandler(
   req: NextApiRequest,
-  res: NextApiResponse<{ message: string; product?: CreateProductResponse }>
+  res: NextApiResponse<{ message: string, product?: CreateProductResponse }>
 ) {
   const session = await getSession({ req });
   const creatorId = session!.user!.id;
