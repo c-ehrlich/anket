@@ -41,14 +41,17 @@ model Session {
 }
 
 model User {
-  id              String    @id @default(cuid())
-  name            String?
-  email           String?   @unique
-  emailVerified   DateTime?
-  image           String?
-  accounts        Account[]
-  sessions        Session[]
-  createdProducts Product[] @relation(name: "CreatedProducts")
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+
+  createdProducts      Product[]             @relation(name: "CreatedProducts")
+  surveys              Survey[]
+  surveyParticipations SurveyParticipation[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -74,4 +77,104 @@ model Product {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Survey {
+  id          String  @id @default(cuid())
+  name        String
+  description String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  author         User                  @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId       String
+  participations SurveyParticipation[]
+  questions      Question[]
+
+  // TODO add indexes
+}
+
+model Question {
+  id           String       @id @default(cuid())
+  question     String
+  details      String?
+  isRequired   Boolean      @default(true)
+  questionType QuestionType
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  multipleChoiceOptions MultipleChoiceOption[]
+
+  survey   Survey @relation(fields: [surveyId], references: [id], onDelete: Cascade)
+  surveyId String
+
+  questionResponese QuestionResponse[]
+
+  // TODO add indexes
+}
+
+enum QuestionType {
+  multipleChoiceSingle
+  multipleChoiceMultiple
+  yesNoBoolean
+  zeroToTen
+  textResponse
+}
+
+model MultipleChoiceOption {
+  id   String @id @default(cuid())
+  name String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId String
+
+  questionResponses QuestionResponse[]
+}
+
+model QuestionResponse {
+  id String @id @default(cuid())
+
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId String
+
+  surveyParticipation   SurveyParticipation @relation(fields: [surveyParticipationId], references: [id], onDelete: Cascade)
+  surveyParticipationId String
+
+  isAnonymous Boolean @default(false)
+
+  answerBoolean          Boolean?
+  answerNumeric          Int?
+  answerText             String?
+  multipleChoiceOption   MultipleChoiceOption? @relation(fields: [multipleChoiceOptionId], references: [id], onDelete: SetNull)
+  multipleChoiceOptionId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@unique([surveyParticipationId, questionId])
+}
+
+model SurveyParticipation {
+  id String @id @default(cuid())
+
+  survey   Survey @relation(fields: [surveyId], references: [id], onDelete: Cascade)
+  surveyId String
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+
+  questionResponses QuestionResponse[]
+
+  isComplete  Boolean
+  isAnonymous Boolean
+
+  createdAt DateTime
+  updatedAt DateTime
+
+  @@unique([userId, surveyId])
 }
