@@ -1,12 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
+import { RequestHandler } from 'next-connect';
 
-// TODO figure out what `next` should be typed as
-export default async function requireSession(
-  req: NextApiRequest,
-  res: NextApiResponse,
-  next: any
-) {
+const requireSession: RequestHandler<NextApiRequest, NextApiResponse> = async (
+  req,
+  res,
+  next
+) => {
   const session = await getSession({ req });
 
   if (!session || !session.user) {
@@ -14,4 +14,6 @@ export default async function requireSession(
   }
 
   next();
-}
+};
+
+export default requireSession;

@@ -1,24 +1,27 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
-import prisma from '../utils/prisma';
+import { CreateProductResponse } from './product.schema';
 import { createProduct, getProductsByUser } from './product.service';
 
 export async function createProductHandler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse<{ message: string; product?: CreateProductResponse }>
 ) {
-  // we've already determined that this is possible in middleware
-  // TODO: attach the session to req or res.locals so we have it
   const session = await getSession({ req });
   const creatorId = session!.user!.id;
 
   if (session && session.user) {
     const { name } = req.body;
-    const product = await createProduct({ name, creatorId });
-    console.log('about to return', product);
+    const product: CreateProductResponse = await createProduct({
+      name,
+      creatorId,
+    });
+    if (product) {
+      return res.status(201).json({ message: 'Product created', product });
+    }
   }
 
-  return res.json({ error: 'failed to create product' });
+  return res.status(400).json({ message: 'Failed to create product' });
 }
 
 export async function readUsersOwnProductsHandler(
