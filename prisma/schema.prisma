@@ -21,6 +21,9 @@ model Account {
   id_token          String? @db.Text
   session_state     String?
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
@@ -32,6 +35,9 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model User {
@@ -43,7 +49,9 @@ model User {
   accounts        Account[]
   sessions        Session[]
   createdProducts Product[] @relation(name: "CreatedProducts")
-  // likedProducts   Product[] @relation(name: "LikedProducts")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
 
 model VerificationToken {
@@ -51,71 +59,19 @@ model VerificationToken {
   token      String   @unique
   expires    DateTime
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
   @@unique([identifier, token])
 }
 
 model Product {
-  id        String @id @default(cuid())
+  id        String   @id @default(cuid())
   name      String
   creatorId String
   likedById String[]
-  creator   User   @relation(name: "CreatedProducts", fields: [creatorId], references: [id], onDelete: Cascade)
-  // likedBy   User[] @relation(name: "LikedProducts", fields: [likedById], references: [id])
+  creator   User     @relation(name: "CreatedProducts", fields: [creatorId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 }
-
-// model Account {
-//   id                 String    @id @default(cuid())
-//   compoundId         String    @unique @map(name: "compound_id")
-//   user               User      @relation(fields: [userId], references: [id])
-//   userId             String    @map(name: "user_id")
-//   provider         String    @map(name: "provider")
-//   providerAccountId  String    @map(name: "provider_account_id")
-//   refreshToken       String?   @map(name: "refresh_token")
-//   accessToken        String?   @map(name: "access_token")
-//   accessTokenExpires DateTime? @map(name: "access_token_expires")
-//   createdAt          DateTime  @default(now()) @map(name: "created_at")
-//   updatedAt          DateTime  @default(now()) @map(name: "updated_at")
-
-//   @@index([providerAccountId], name: "providerAccountId")
-//   @@index([provider], name: "provider")
-//   @@index([userId], name: "userId")
-//   @@map(name: "accounts")
-// }
-
-// model Session {
-//   id           String   @id @default(cuid())
-//   user         User     @relation(fields: [userId], references: [id])
-//   userId       String   @map(name: "user_id")
-//   expires      DateTime
-//   sessionToken String   @unique @map(name: "session_token")
-//   accessToken  String   @unique @map(name: "access_token")
-//   createdAt    DateTime @default(now()) @map(name: "created_at")
-//   updatedAt    DateTime @default(now()) @map(name: "updated_at")
-
-//   @@map(name: "sessions")
-// }
-
-// model User {
-//   id            String    @id @default(cuid())
-//   name          String?
-//   email         String?   @unique
-//   emailVerified DateTime? @map(name: "email_verified")
-//   image         String?
-//   createdAt     DateTime  @default(now()) @map(name: "created_at")
-//   updatedAt     DateTime  @default(now()) @map(name: "updated_at")
-//   sessions      Session[]
-//   accounts      Account[]
-
-//   @@map(name: "users")
-// }
-
-// model VerificationRequest {
-//   id         Int      @id @default(autoincrement())
-//   identifier String
-//   token      String   @unique
-//   expires    DateTime
-//   createdAt  DateTime @default(now()) @map(name: "created_at")
-//   updatedAt  DateTime @default(now()) @map(name: "updated_at")
-
-//   @@map(name: "verification_requests")
-// }
