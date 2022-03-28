@@ -17,8 +17,6 @@ const validateResource =
       });
       next();
     } catch (e: any) {
-      console.log(req.body);
-      console.log(req.query);
       // if our schema can not be parsed
       return res.status(400).send(e.errors); // TODO is this errors or error?
     }
