@@ -12,12 +12,6 @@ export async function createNewSurvey(data: CreateSurveyInput) {
   }
 }
 
-// can take a position to insert it at, or just inserts it at the end
-// use slice
-// export async function addQuestionToSurvey(data: CreateQuestionInput)
-
-// export async function moveQuestionToPosition(questionId: string, position: number)
-
 export async function getAllSurveysWithQuestionsAndMultipleChoiceOptions() {
   const surveys = await prisma.survey.findMany({
     include: { questions: { include: { multipleChoiceOptions: true } } },
