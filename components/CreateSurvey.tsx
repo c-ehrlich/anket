@@ -1,4 +1,5 @@
 import {
+  ActionIcon,
   Box,
   Button,
   Checkbox,
@@ -8,6 +9,7 @@ import {
   NativeSelect,
   Paper,
   Stack,
+  Title,
 } from '@mantine/core';
 import { QuestionType, Survey } from '@prisma/client';
 import React, { useState } from 'react';
@@ -17,6 +19,8 @@ import {
 } from '../api/survey/survey.schema';
 import { AnimatePresence, motion } from 'framer-motion';
 import { v4 as uuidv4 } from 'uuid';
+import { CaretUp, CaretDown, Trash } from 'tabler-icons-react';
+import CreateSurveyMultipleChoiceOptions from './CreateSurveyMultipleChoiceOptions';
 
 const tempSurvey: CreateSurveyWithEverythingInput = {
   name: 'test',
@@ -104,6 +108,17 @@ const CreateSurvey = () => {
     });
   };
 
+  const setQuestionType = (index: number, questionType: QuestionType) => {
+    setSurvey({
+      ...survey,
+      questions: ([] as CreateQuestionInput[]).concat(
+        survey.questions.slice(0, index),
+        { ...survey.questions[index], questionType },
+        survey.questions.slice(index + 1)
+      ),
+    });
+  }
+
   const removeQuestionAtPosition = (index: number) => {
     setSurvey({
       ...survey,
@@ -139,60 +154,74 @@ const CreateSurvey = () => {
   };
 
   return (
-    <div>
-      <div>Creating survey</div>
+    <Stack>
+      <Title order={2}>Creating survey</Title>
       <Input placeholder='Survey title' />
       <Input placeholder='Survey description' />
-      <div>Question Count: {survey.questions.length}</div>
       <Stack>
         <AnimatePresence>
           {survey.questions.map(
             (question: CreateQuestionInput & { id?: string }, index) => (
               <motion.div key={question.id} layout>
                 <Paper shadow='md' radius='md' p='md'>
-                  <Group>
-                    <Box sx={{ width: '100%'}}>
-                      <Input
-                        value={question.question}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                          setQuestionTitle(index, e.target.value)
-                        }
-                      />
-                      <Input
-                        value={question.details}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                          setQuestionDetails(index, e.target.value)
-                        }
-                      />
-                      <Checkbox
-                        label='Required'
-                        checked={question.isRequired}
-                        onChange={() =>
-                          setQuestionIsRequired(index, !question.isRequired)
-                        }
-                      />
-                      <NativeSelect
-                        label='Question Type'
-                        data={Object.values(QuestionType)}
-                        required
-                      />
-                    </Box>
-                    <Stack>
-                      <Button onClick={() => removeQuestionAtPosition(index)}>
-                        Remove
-                      </Button>
-                      <Button
-                        disabled={index === 0}
-                        onClick={() => moveQuestionUp(index)}
+                  <Group align='flex-start'>
+                    <Stack sx={{ flexGrow: 1 }}>
+                      <Title order={3}>Question {index + 1}</Title>
+                      <Stack sx={{ width: '100%' }}>
+                        <Input
+                          value={question.question}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            setQuestionTitle(index, e.target.value)
+                          }
+                        />
+                        <Input
+                          value={question.details}
+                          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            setQuestionDetails(index, e.target.value)
+                          }
+                        />
+                        <Checkbox
+                          label='Required'
+                          checked={question.isRequired}
+                          onChange={() =>
+                            setQuestionIsRequired(index, !question.isRequired)
+                          }
+                        />
+                        <NativeSelect
+                          label='Question Type'
+                          data={Object.values(QuestionType)}
+                          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setQuestionType(index, e.target.value)}
+                        />
+                      </Stack>
+                      {question.questionType === 'multipleChoiceMultiple' ||
+                        (question.questionType === 'multipleChoiceSingle' && (
+                          <CreateSurveyMultipleChoiceOptions options={question.multipleChoiceOptions!} />
+                        ))}
+                    </Stack>
+
+                    <Stack justify='space-between'>
+                      <Stack>
+                        <ActionIcon
+                          variant='default'
+                          disabled={index === 0}
+                          onClick={() => moveQuestionUp(index)}
+                        >
+                          <CaretUp />
+                        </ActionIcon>
+                        <ActionIcon
+                          variant='default'
+                          disabled={index >= survey.questions.length - 1}
+                          onClick={() => moveQuestionDown(index)}
+                        >
+                          <CaretDown />
+                        </ActionIcon>
+                      </Stack>
+                      <ActionIcon
+                        variant='default'
+                        onClick={() => removeQuestionAtPosition(index)}
                       >
-                        Up
-                      </Button>
-                      <Button
-                        disabled={index >= survey.questions.length - 1}
-                        onClick={() => moveQuestionDown(index)}
-                      >
-                        Down
-                      </Button>
+                        <Trash />
+                      </ActionIcon>
                     </Stack>
                   </Group>
                 </Paper>
@@ -202,7 +231,7 @@ const CreateSurvey = () => {
         </AnimatePresence>
         <Button onClick={addQuestion}>Add Question</Button>
       </Stack>
-    </div>
+    </Stack>
   );
 };
 
