@@ -9,10 +9,10 @@ import {
   Header,
   MediaQuery,
   Navbar,
-  Text,
   useMantineTheme,
 } from '@mantine/core';
 import { useState } from 'react';
+import AppNavbar from '../components/AppNavbar';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const theme = useMantineTheme();
@@ -40,7 +40,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
             width={{ sm: 200, lg: 300 }}
           >
             <Navbar.Section grow mt='xs'>
-              <Text>Application navbar</Text>
+              <AppNavbar />
             </Navbar.Section>
             <Navbar.Section>
               <Login />
