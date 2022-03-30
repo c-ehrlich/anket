@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Image from 'next/image';
+import CreateSurvey from '../components/CreateSurvey';
 import MakeRequest from '../components/MakeRequest';
 import styles from '../styles/Home.module.css';
 
@@ -13,6 +14,7 @@ const Home: NextPage = () => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <MakeRequest />
+      <CreateSurvey />
     </div>
   );
 };
