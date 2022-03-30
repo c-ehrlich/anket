@@ -38,6 +38,7 @@ const surveyCoreWithoutAuthorID = {
 };
 
 const questionInputSchema = z.object({
+  id: z.string({}).optional(),
   question: z.string({
     required_error: 'Question is required',
     invalid_type_error: 'Question must be a string',
