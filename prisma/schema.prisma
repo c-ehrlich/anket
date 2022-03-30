@@ -72,8 +72,8 @@ model Product {
   id        String   @id @default(cuid())
   name      String
   likedById String[]
-  
-  creator   User     @relation(name: "CreatedProducts", fields: [creatorId], references: [id], onDelete: Cascade)
+
+  creator   User   @relation(name: "CreatedProducts", fields: [creatorId], references: [id], onDelete: Cascade)
   creatorId String
 
   createdAt DateTime @default(now())
@@ -111,7 +111,7 @@ model Question {
   survey   Survey @relation(fields: [surveyId], references: [id], onDelete: Cascade)
   surveyId String
 
-  questionResponese QuestionResponse[]
+  questionResponeses QuestionResponse[]
 
   // TODO add indexes
 }
