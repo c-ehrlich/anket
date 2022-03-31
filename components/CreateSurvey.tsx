@@ -1,9 +1,7 @@
 import {
   ActionIcon,
-  Box,
   Button,
   Checkbox,
-  Container,
   Group,
   Input,
   NativeSelect,
@@ -12,7 +10,7 @@ import {
   Title,
 } from '@mantine/core';
 import { QuestionType, Survey } from '@prisma/client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   CreateQuestionInput,
   CreateSurveyWithEverythingInput,
@@ -68,6 +66,8 @@ const CreateSurvey = () => {
   const [survey, setSurvey] =
     useState<CreateSurveyWithEverythingInput>(tempSurvey);
 
+  useEffect(() => console.log(survey));
+
   const addQuestion = () => {
     setSurvey({
       ...survey,
@@ -117,7 +117,7 @@ const CreateSurvey = () => {
         survey.questions.slice(index + 1)
       ),
     });
-  }
+  };
 
   const removeQuestionAtPosition = (index: number) => {
     setSurvey({
@@ -149,6 +149,62 @@ const CreateSurvey = () => {
         survey.questions[index + 1],
         survey.questions[index],
         survey.questions.slice(index + 2)
+      ),
+    });
+  };
+
+  const addAnswerOptionToQuestion = (index: number) => {
+    setSurvey({
+      ...survey,
+      questions: ([] as CreateQuestionInput[]).concat(
+        survey.questions.slice(0, index),
+        {
+          ...survey.questions[index],
+          multipleChoiceOptions: [
+            ...survey.questions[index].multipleChoiceOptions!,
+            { name: '' },
+          ],
+        },
+        survey.questions.slice(index + 1)
+      ),
+    });
+  };
+
+  const removeAnswerOptionFromQuestion = (questionIndex: number, answerIndex: number) => {
+    setSurvey({
+      ...survey,
+      questions: ([] as CreateQuestionInput[]).concat(
+        survey.questions.slice(0, questionIndex),
+        {
+          ...survey.questions[questionIndex],
+          multipleChoiceOptions: ([] as any).concat(
+            survey.questions[questionIndex].multipleChoiceOptions!.slice(0, answerIndex),
+            survey.questions[questionIndex].multipleChoiceOptions!.slice(answerIndex + 1),
+          ),
+        },
+        survey.questions.slice(questionIndex + 1)
+      ),
+    });
+  }
+
+  const setAnswerOptionText = (
+    questionIndex: number,
+    answerIndex: number,
+    text: string
+  ) => {
+    setSurvey({
+      ...survey,
+      questions: ([] as CreateQuestionInput[]).concat(
+        survey.questions.slice(0, questionIndex),
+        {
+          ...survey.questions[questionIndex],
+          multipleChoiceOptions: ([] as any).concat(
+            survey.questions[questionIndex].multipleChoiceOptions!.slice(0, answerIndex),
+            { name: text },
+            survey.questions[questionIndex].multipleChoiceOptions!.slice(answerIndex + 1),
+          ),
+        },
+        survey.questions.slice(questionIndex + 1)
       ),
     });
   };
@@ -190,13 +246,21 @@ const CreateSurvey = () => {
                         <NativeSelect
                           label='Question Type'
                           data={Object.values(QuestionType)}
-                          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setQuestionType(index, e.target.value)}
+                          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                            setQuestionType(index, e.target.value)
+                          }
                         />
                       </Stack>
-                      {question.questionType === 'multipleChoiceMultiple' ||
-                        (question.questionType === 'multipleChoiceSingle' && (
-                          <CreateSurveyMultipleChoiceOptions options={question.multipleChoiceOptions!} />
-                        ))}
+                      {(question.questionType === 'multipleChoiceMultiple' ||
+                        question.questionType === 'multipleChoiceSingle') && (
+                        <CreateSurveyMultipleChoiceOptions
+                          questionIndex={index}
+                          options={question.multipleChoiceOptions!}
+                          addOption={() => addAnswerOptionToQuestion(index)}
+                          removeAnswerOptionFromQuestion={removeAnswerOptionFromQuestion}
+                          setAnswerOptionText={setAnswerOptionText}
+                        />
+                      )}
                     </Stack>
 
                     <Stack justify='space-between'>
