@@ -58,7 +58,7 @@ const Content = () => {
                 <ChevronLeft />
               </UnstyledButton>
               <UnstyledButton
-                onClick={() => signOut()}
+                onClick={logoutAndResetState}
                 sx={{
                   flexGrow: 1,
                   display: 'block',
