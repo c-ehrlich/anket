@@ -1,14 +1,16 @@
-import { Container } from '@mantine/core'
-import React, { ReactNode } from 'react'
+import { Container } from '@mantine/core';
+import React, { ReactNode } from 'react';
 
 type Props = {
-  children: ReactNode
-}
+  children: ReactNode;
+};
 
 const ContentMaxWidth = (props: Props) => {
   return (
-    <Container size='md'>{props.children}</Container>
-  )
-}
+    <Container px={0}>
+      <Container size='md'>{props.children}</Container>
+    </Container>
+  );
+};
 
-export default ContentMaxWidth
+export default ContentMaxWidth;
