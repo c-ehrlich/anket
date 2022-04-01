@@ -14,6 +14,7 @@ import {
 import { useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import AppNavbar from '../components/AppNavbar';
+import ContentMaxWidth from '../components/ContentMaxWidth';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const theme = useMantineTheme();
@@ -74,7 +75,9 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
             </Header>
           }
         >
-          <Component {...pageProps} />
+          <ContentMaxWidth>
+            <Component {...pageProps} />
+          </ContentMaxWidth>
         </AppShell>
       </SessionProvider>
     </QueryClientProvider>
