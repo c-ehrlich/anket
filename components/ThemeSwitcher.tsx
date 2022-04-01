@@ -1,15 +1,13 @@
 import {
   ActionIcon,
-  Group,
   useMantineColorScheme,
 } from '@mantine/core';
 import { Sun, MoonStars } from 'tabler-icons-react';
 
-const AppHeader = () => {
+const ThemeSwitcher = () => {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
   return (
-    <Group position='apart'>
       <ActionIcon
         variant='default'
         onClick={() => toggleColorScheme()}
@@ -17,8 +15,7 @@ const AppHeader = () => {
       >
         {colorScheme === 'dark' ? <Sun size={24} /> : <MoonStars size={24} />}
       </ActionIcon>
-    </Group>
   );
 };
 
-export default AppHeader;
+export default ThemeSwitcher;

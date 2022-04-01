@@ -2,7 +2,7 @@ import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { SessionProvider } from 'next-auth/react';
 import Login from '../components/Login';
-import AppHeader from '../components/AppHeader';
+import ThemeSwitcher from '../components/ThemeSwitcher';
 import {
   AppShell,
   Burger,
@@ -75,8 +75,8 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
                         mr='xl'
                       />
                     </MediaQuery>
-                    <Title order={1}>Anket</Title>
-                    <AppHeader />
+                    <Title order={1} sx={{ color: colorScheme === 'dark' ? 'white' : 'green'}}>{colorScheme}</Title>
+                    <ThemeSwitcher />
                   </Group>
                 </Header>
               }
