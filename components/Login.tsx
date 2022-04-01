@@ -2,6 +2,7 @@ import {
   Avatar,
   Box,
   Group,
+  MediaQuery,
   Text,
   UnstyledButton,
   useMantineTheme,
@@ -116,13 +117,16 @@ const Content = () => {
                 },
               }}
             >
-              <Group>
+              <Group position='apart'>
                 <Avatar src={session.user.image} radius='xl' />
+                <MediaQuery smallerThan='lg' styles={{ display: 'none' }}>
+
                 <Box sx={{ flex: 1 }}>
                   <Text size='sm' lineClamp={2} weight={500}>
                     {session.user.name}
                   </Text>
                 </Box>
+                </MediaQuery>
 
                 {theme.dir === 'ltr' ? (
                   <ChevronRight size={18} />
