@@ -10,6 +10,7 @@ import {
   ColorSchemeProvider,
   Group,
   Header,
+  Image,
   MantineProvider,
   MediaQuery,
   Navbar,
@@ -66,7 +67,10 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
               }
               header={
                 <Header height={70} p='md'>
-                  <Group align='center' sx={{ justifyContent: 'space-between' }}>
+                  <Group
+                    align='center'
+                    sx={{ justifyContent: 'space-between' }}
+                  >
                     <MediaQuery largerThan='sm' styles={{ display: 'none' }}>
                       <Burger
                         opened={opened}
@@ -75,14 +79,17 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
                         mr='xl'
                       />
                     </MediaQuery>
-                    <Title order={1} sx={{ color: colorScheme === 'dark' ? 'white' : 'green'}}>{colorScheme}</Title>
+                    <Image
+                      src={colorScheme === 'dark' ? '/logo/logo-v01.png' : '/logo/logo-v01-black.png'}
+                      height='32px'
+                      alt='Anket Logo'
+                    />
                     <ThemeSwitcher />
                   </Group>
                 </Header>
               }
             >
               <ContentMaxWidth>
-                {JSON.stringify(colorScheme)}
                 <Component {...pageProps} />
               </ContentMaxWidth>
             </AppShell>
