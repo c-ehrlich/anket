@@ -12,6 +12,19 @@ export async function createNewSurvey(data: CreateSurveyInput) {
   }
 }
 
+export async function getAllSurveyPreviews() {
+  const surveys = await prisma.survey.findMany({
+    select: {
+      author: { select: { id: true, name: true, image: true } },
+      id: true,
+      name: true,
+      description: true,
+    },
+  });
+
+  return surveys;
+}
+
 export async function getAllSurveysWithQuestionsAndMultipleChoiceOptions() {
   const surveys = await prisma.survey.findMany({
     include: { questions: { include: { multipleChoiceOptions: true } } },

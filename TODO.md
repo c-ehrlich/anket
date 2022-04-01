@@ -32,6 +32,7 @@
 - [ ] small screen: sidebar should close if we navigate to a new page
 
 ## Backend
+- [ ] Routes should pass 'message' OR just the objects they fetch without a message, so it's easier to type
 - [ ] Routes
   - [ ] Get one survey
   - [ ] Get all surveys (final app should probably not have this)
