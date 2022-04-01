@@ -14,8 +14,6 @@ import {
   MantineProvider,
   MediaQuery,
   Navbar,
-  Title,
-  useMantineTheme,
 } from '@mantine/core';
 import { useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -23,7 +21,6 @@ import AppNavbar from '../components/AppNavbar';
 import ContentMaxWidth from '../components/ContentMaxWidth';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
-  const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
   const queryClient = new QueryClient();
   const [colorScheme, setColorScheme] = useState<ColorScheme>('light');
@@ -37,16 +34,20 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
           colorScheme={colorScheme}
           toggleColorScheme={toggleColorScheme}
         >
-          <MantineProvider theme={{ colorScheme }}>
+          <MantineProvider
+            withGlobalStyles
+            withNormalizeCSS
+            theme={{ colorScheme }}
+          >
             <AppShell
-              styles={{
-                main: {
-                  background:
-                    theme.colorScheme === 'dark'
-                      ? theme.colors.dark[8]
-                      : theme.colors.gray[0],
-                },
-              }}
+              // styles={{
+              //   main: {
+              //     background:
+              //       colorScheme === 'dark'
+              //         ? theme.colors.dark[8]
+              //         : theme.colors.gray[0],
+              //   },
+              // }}
               navbarOffsetBreakpoint='sm'
               asideOffsetBreakpoint='sm'
               fixed
@@ -80,7 +81,11 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
                       />
                     </MediaQuery>
                     <Image
-                      src={colorScheme === 'dark' ? '/logo/logo-v01.png' : '/logo/logo-v01-black.png'}
+                      src={
+                        colorScheme === 'dark'
+                          ? '/logo/logo-v01.png'
+                          : '/logo/logo-v01-black.png'
+                      }
                       height='32px'
                       alt='Anket Logo'
                     />
