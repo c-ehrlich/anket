@@ -15,6 +15,21 @@ const data: NavBarLinkProps[] = [
     url: '/testRequests',
     icon: <Backpack size={16} />,
   },
+  {
+    label: 'Create Survey',
+    url: '/survey/create',
+    icon: <Backpack size={16} />
+  },
+  {
+    label: 'All Surveys',
+    url: '/survey/all',
+    icon: <Backpack size={16} />,
+  },
+  {
+    label: 'My Surveys',
+    url: '/survey/mine',
+    icon: <Backpack size={16} />,
+  }
 ];
 
 const AppNavbarLink = (props: NavBarLinkProps) => {
