@@ -83,7 +83,7 @@ model Product {
 model Survey {
   id          String  @id @default(cuid())
   name        String
-  description String?
+  description String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -99,7 +99,7 @@ model Survey {
 model Question {
   id           String       @id @default(cuid())
   question     String
-  details      String?
+  details      String
   isRequired   Boolean      @default(true)
   questionType QuestionType
 
@@ -111,7 +111,7 @@ model Question {
   survey   Survey @relation(fields: [surveyId], references: [id], onDelete: Cascade)
   surveyId String
 
-  questionResponeses QuestionResponse[]
+  questionResponses QuestionResponse[]
 
   // TODO add indexes
 }
