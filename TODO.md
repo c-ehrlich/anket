@@ -1,7 +1,10 @@
 # Anket Todo
 ## BUGS
-- [x] Figure out why login is broken
-  - [x] Was just something about some package
+- [ ] /surveys/mine: we don't have the user token right away, so a hard refresh sends an empty token to the api
+
+## Chore
+- [ ] Update to React 18
+- [ ] Update to React Query 4
 
 ## Schema
 - [ ] add image field to survey model (string, validate for url somehow?)
@@ -13,10 +16,9 @@
   - [ ] Survey header image
 
 ## new survey
-- [ ] Should we also manage this with react-query even though it's not talking to the server yet? just await an empty survey?
+- [ ] implement react-query (give it a random cuid and wait...)
 
 ## frontend
-- [x] Create nice logged in user indicator / logout indicator
 - [ ] Logout: keep div height constant
 
 - [ ] add ID to question answers in frontend (use uuidv4 or something)
@@ -39,3 +41,14 @@
   - [ ] Get all own surveys (probably just title, description, image, or something like that - number of responses?)
     - [ ] how can these two be different urls? /surveys/mine?
   - [ ] Editing a survey ... maybe first learn a bit more about react query before attempting this
+
+# Done
+## MVP v1
+### Bugs
+- [x] Figure out why login is broken
+  - [x] Was just something about some package
+### UI
+- [x] Implement dark theme
+- [x] Make dark theme work everywhere
+- [x] Create initial logo
+- [x] Create nice logged in user indicator / logout indicator
