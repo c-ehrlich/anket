@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { questionReturnSchema } from '../question/question.schema';
 
 // createDefaultSurvey input
-const createDefaultSurveySchema = z.object({
+export const createDefaultSurveySchema = z.object({
   body: z.object({
     authorId: z
       .string({
