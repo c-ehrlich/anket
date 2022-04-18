@@ -19,7 +19,7 @@ export async function createDefaultQuestion({
     });
     return question;
   } catch (e) {
-    log.error(e);
+    console.error(e);
   }
 }
 
@@ -64,7 +64,7 @@ export async function updateQuestion({
 
     return updatedQuestion;
   } catch (e) {
-    log.error(e);
+    console.error(e);
   }
 }
 
@@ -76,6 +76,6 @@ export async function deleteQuestion({ id }: { id: string }) {
 
     return deletedQuestion
   } catch (e) {
-    log.error(e);
+    console.error(e);
   }
 }

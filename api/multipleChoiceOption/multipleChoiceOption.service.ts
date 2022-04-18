@@ -13,7 +13,7 @@ export async function createDefaultMultipleChoiceOption({
 
     return multipleChoiceOption;
   } catch (e) {
-    log.error(e);
+    console.error(e);
   }
 }
 
@@ -36,7 +36,7 @@ export async function updateMultipleChoiceOptionName({
 
     return multipleChoiceOption;
   } catch (e) {
-    log.error(e);
+    console.error(e);
   }
 }
 
@@ -46,7 +46,7 @@ export async function deleteMultipleChoiceOption({ id }: { id: string }) {
 
     return deletedOption;
   } catch (e) {
-    log.error(e);
+    console.error(e);
   }
 }
 
@@ -62,6 +62,6 @@ export async function deleteMultipleChoiceOptionsForQuestion({
 
     return deletedOptions;
   } catch (e) {
-    log.error(e);
+    console.error(e);
   }
 }
