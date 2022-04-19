@@ -13,16 +13,24 @@ export async function createDefaultSurvey(data: CreateDefaultSurveyInput) {
    * that instead of creating a new one...
    */
   try {
-    const existingSurvey = await prisma.survey.findFirst({
-      where: {
-        name: '',
-        description: '',
-        authorId: data.authorId,
-        questions: {
-          none: {},
+    const existingSurvey: CreateDefaultSurveyResponse | null =
+      await prisma.survey.findFirst({
+        where: {
+          name: '',
+          description: '',
+          authorId: data.authorId,
+          questions: {
+            none: {},
+          },
         },
-      },
-    });
+        include: {
+          questions: {
+            include: {
+              multipleChoiceOptions: true,
+            },
+          },
+        },
+      });
 
     if (existingSurvey) return existingSurvey;
   } catch (e: any) {
