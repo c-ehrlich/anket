@@ -3,9 +3,22 @@ import {
   CreateDefaultSurveyResponse,
 } from './survey.schema';
 import prisma from '../utils/prisma';
-import log from '../utils/logger';
+import { Survey } from '@prisma/client';
 
 export async function createDefaultSurvey(data: CreateDefaultSurveyInput) {
+  // if there is a survey that has not been changed (createdAt === modifiedAt, no questions) use that
+  // const existingSurvey = await prisma.survey.findFirst({
+  //   where: {
+  //     authorId: data.authorId,
+  //     questions: {
+  //       none: {}
+  //     }
+  //   }
+  // })
+
+  // if (existingSurvey) return existingSurvey;
+
+  // otherwise, make a new one
   try {
     const survey: CreateDefaultSurveyResponse = await prisma.survey.create({
       data: {
@@ -21,7 +34,6 @@ export async function createDefaultSurvey(data: CreateDefaultSurveyInput) {
         },
       },
     });
-    console.log(survey);
     return survey;
   } catch (e) {
     console.error(e);
@@ -80,6 +92,24 @@ export async function getSurveyWithQuestionsAndMultipleChoiceOptions(
   });
 
   return survey;
+}
+
+export async function updateSurvey({
+  id,
+  data,
+}: {
+  id: string;
+  data: Partial<Survey>;
+}) {
+  try {
+    const updatedSurvey = await prisma.survey.update({
+      where: { id },
+      data,
+    });
+    return updatedSurvey;
+  } catch (e: any) {
+    console.log(e);
+  }
 }
 
 export async function deleteSurvey() {
