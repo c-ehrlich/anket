@@ -7,19 +7,29 @@ import { Survey } from '@prisma/client';
 import logger from '../utils/logger';
 
 export async function createDefaultSurvey(data: CreateDefaultSurveyInput) {
-  // if there is a survey that has not been changed (createdAt === modifiedAt, no questions) use that
-  // const existingSurvey = await prisma.survey.findFirst({
-  //   where: {
-  //     authorId: data.authorId,
-  //     questions: {
-  //       none: {}
-  //     }
-  //   }
-  // })
+  /**
+   * We don't want to inadventently create a bunch of surveys. So if there is
+   * an existing survey that has not been edited at all from the default, return
+   * that instead of creating a new one...
+   */
+  try {
+    const existingSurvey = await prisma.survey.findFirst({
+      where: {
+        name: '',
+        description: '',
+        authorId: data.authorId,
+        questions: {
+          none: {},
+        },
+      },
+    });
 
-  // if (existingSurvey) return existingSurvey;
+    if (existingSurvey) return existingSurvey;
+  } catch (e: any) {
+    logger.error(e);
+  }
 
-  // otherwise, make a new one
+  // ...If not, create one
   try {
     const survey: CreateDefaultSurveyResponse = await prisma.survey.create({
       data: {
