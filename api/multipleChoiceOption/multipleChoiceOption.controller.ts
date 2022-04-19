@@ -4,7 +4,7 @@ import logger from '../utils/logger';
 import { MultipleChoiceOptionResponse } from './multipleChoiceOption.schema';
 import { createDefaultMultipleChoiceOption } from './multipleChoiceOption.service';
 
-export async function createDefaultMultipleChoiceOptionHandler(
+export async function addDefaultMultipleChoiceOptionToQuestion(
   req: NextApiRequest,
   res: NextApiResponse<MultipleChoiceOptionResponse | { message: string }>
 ) {
