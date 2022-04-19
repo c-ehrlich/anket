@@ -4,6 +4,7 @@ import {
 } from './survey.schema';
 import prisma from '../utils/prisma';
 import { Survey } from '@prisma/client';
+import logger from '../utils/logger';
 
 export async function createDefaultSurvey(data: CreateDefaultSurveyInput) {
   // if there is a survey that has not been changed (createdAt === modifiedAt, no questions) use that
@@ -36,7 +37,7 @@ export async function createDefaultSurvey(data: CreateDefaultSurveyInput) {
     });
     return survey;
   } catch (e) {
-    console.error(e);
+    logger.error(e);
   }
 }
 
@@ -86,12 +87,15 @@ export async function getAllSurveysWithQuestionsAndMultipleChoiceOptions() {
 export async function getSurveyWithQuestionsAndMultipleChoiceOptions(
   id: string
 ) {
-  const survey = await prisma.survey.findUnique({
-    where: { id },
-    include: { questions: { include: { multipleChoiceOptions: true } } },
-  });
-
-  return survey;
+  try {
+    const survey = await prisma.survey.findUnique({
+      where: { id },
+      include: { questions: { include: { multipleChoiceOptions: true } } },
+    });
+    return survey;
+  } catch (e: any) {
+    logger.error(e);
+  }
 }
 
 export async function updateSurvey({
@@ -108,7 +112,7 @@ export async function updateSurvey({
     });
     return updatedSurvey;
   } catch (e: any) {
-    console.log(e);
+    logger.error(e);
   }
 }
 

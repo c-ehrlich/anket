@@ -23,12 +23,3 @@ const validateResource =
   };
 
 export default validateResource;
-
-// const authMiddleware: RequestHandler<NextApiRequest, NextApiResponse> = async (
-//   req,
-//   res,
-//   next
-// ) => {
-//   console.log('In the middleware');
-//   next();
-// };

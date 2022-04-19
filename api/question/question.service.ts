@@ -1,5 +1,6 @@
-import { Question, QuestionType } from '@prisma/client';
+import { QuestionType } from '@prisma/client';
 import _logger from 'next-auth/lib/logger';
+import logger from '../utils/logger';
 import log from '../utils/logger';
 import prisma from '../utils/prisma';
 
@@ -19,7 +20,7 @@ export async function createDefaultQuestion({
     });
     return question;
   } catch (e) {
-    console.error(e);
+    logger.error(e);
   }
 }
 
@@ -64,7 +65,7 @@ export async function updateQuestion({
 
     return updatedQuestion;
   } catch (e) {
-    console.error(e);
+    logger.error(e);
   }
 }
 
@@ -76,6 +77,6 @@ export async function deleteQuestion({ id }: { id: string }) {
 
     return deletedQuestion
   } catch (e) {
-    console.error(e);
+    logger.error(e);
   }
 }

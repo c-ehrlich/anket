@@ -1,6 +1,7 @@
 import { Survey } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
+import logger from '../utils/logger';
 import {
   CreateDefaultSurveyInput,
   CreateDefaultSurveyResponse,
@@ -20,16 +21,14 @@ export async function createNewSurveyHandler(
   const authorId = session!.user!.id;
 
   if (!authorId) {
-    console.error('no session');
+    logger.error('no session');
     return res.status(400).json({ message: 'No session' });
   }
 
   const data: CreateDefaultSurveyInput = { authorId };
 
   if (session && authorId === data.authorId) {
-    console.log('...about to make survey');
     const survey = await createDefaultSurvey(data);
-    console.log(survey);
 
     if (survey) {
       return res.status(201).json(survey);
@@ -43,7 +42,6 @@ export async function getAllSurveysHandler(
   res: NextApiResponse<{ message: string } | Partial<Survey>[]>
 ) {
   const userId = req.query;
-  console.log(userId);
   const surveys = await getAllSurveyPreviews();
 
   return res.status(200).json(surveys);
@@ -54,7 +52,6 @@ export async function getUserSurveysHandler(
   res: NextApiResponse<{ message: string } | Partial<Survey>[]>
 ) {
   const userId = Array.isArray(req.query) ? req.query[0] : req.query;
-  console.log('id: ', userId);
 
   const surveys = await getUserSurveyPreviews(userId);
   return res.status(200).json(surveys);
@@ -72,6 +69,6 @@ export async function updateSurveyBasicInfoHandler(
   const survey = await updateSurvey({ id, data });
   if (!survey)
     return res.status(400).json({ message: 'failed to update survey' });
-    
+
   return res.status(200).json(survey);
 }
