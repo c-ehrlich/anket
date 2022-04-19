@@ -59,8 +59,12 @@ export async function createDefaultSurvey(data: CreateDefaultSurveyInput) {
   }
 }
 
-export async function getAllSurveyPreviews() {
+export async function getAllPublicSurveyPreviews() {
   const surveys = await prisma.survey.findMany({
+    where: {
+      isCompleted: true,
+      isPublic: true,
+    },
     select: {
       author: { select: { id: true, name: true, image: true } },
       id: true,

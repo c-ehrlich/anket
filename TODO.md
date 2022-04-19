@@ -9,7 +9,6 @@
 - [ ] Create routes for all the main survey creation and modification CRUD
   - [ ] Changing a question type ... should it delete the multiple choice options or not?
 - [ ] Keep the survey hidden ('complete' column in schema/survey?) until the user marks it as done?
-- [ ] Allow surveys to be secret (only available to people with the link, always hide in 'all') ... db column
 - [ ] Give surveys optional header images
   - [ ] Figure out how image upload works
   - [ ] Where can we store them? What about in deployment? S3?
@@ -44,6 +43,7 @@
   - [x] Make /survey/create just a dummy page that creates a survey and redirects to /survey/edit/id, that way create and edit are basically the same!
 - [x] Add an edit button to each survey in My Surveys
 - [x] Let user delete in progress survey
+- [x] Allow surveys to be secret (only available to people with the link, always hide in 'all') ... db column
 ### Take Survey
 ### Misc Backend Stuff
 - [x] clone the logger from tom does tech youtube clone, and re-convert every console.log/console.error to that logger

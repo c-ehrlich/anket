@@ -9,7 +9,7 @@ import {
 import {
   createDefaultSurvey,
   deleteSurvey,
-  getAllSurveyPreviews,
+  getAllPublicSurveyPreviews,
   getSingleSurvey,
   getUserSurveyPreviews,
   updateSurvey,
@@ -53,11 +53,11 @@ export async function getSingleSurveyHandler(
   return res.status(200).json(survey);
 }
 
-export async function getAllSurveysHandler(
+export async function getAllPublicSurveysHandler(
   req: NextApiRequest,
   res: NextApiResponse<{ message: string } | Partial<Survey>[]>
 ) {
-  const surveys = await getAllSurveyPreviews();
+  const surveys = await getAllPublicSurveyPreviews();
 
   return res.status(200).json(surveys);
 }
