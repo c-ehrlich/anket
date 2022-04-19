@@ -5,6 +5,7 @@ import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
 export const getSurvey = async (id: string) => {
   const survey: CreateDefaultSurveyResponse = await axios
     .get(`/api/survey/${id}`)
+    .then(res => res.data);
   return survey;
 }
 
