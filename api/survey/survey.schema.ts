@@ -22,6 +22,8 @@ const createDefaultSurveyResponseSchema = z.object({
   id: z.string({}).cuid(),
   name: z.string({}),
   description: z.string({}),
+  isCompleted: z.boolean({}),
+  isPublic: z.boolean({}),
   questions: z.array(questionResponseSchema),
 });
 
