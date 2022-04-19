@@ -10,7 +10,7 @@ export const getSurvey = async (id: string) => {
 
 export default function useSurvey(id: string) {
   return useQuery<CreateDefaultSurveyResponse>(
-    ['create-survey', id],
+    ['survey', id],
     () => getSurvey(id),
     {
       staleTime: 1000 * 60 * 5, // 5 minutes
