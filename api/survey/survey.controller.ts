@@ -41,7 +41,6 @@ export async function getAllSurveysHandler(
   req: NextApiRequest,
   res: NextApiResponse<{ message: string } | Partial<Survey>[]>
 ) {
-  const userId = req.query;
   const surveys = await getAllSurveyPreviews();
 
   return res.status(200).json(surveys);
