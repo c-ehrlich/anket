@@ -9,6 +9,7 @@ import {
 import {
   createDefaultSurvey,
   getAllSurveyPreviews,
+  getSingleSurvey,
   getUserSurveyPreviews,
   updateSurvey,
 } from './survey.service';
@@ -35,6 +36,20 @@ export async function createNewSurveyHandler(
     }
   }
   return res.status(400).json({ message: 'Failed to create survey' });
+}
+
+export async function getSingleSurveyHandler(
+  req: NextApiRequest,
+  res: NextApiResponse<{ message: string} | CreateDefaultSurveyInput>
+) {
+  const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
+  if (!id) return res.status(400).json({ message: 'failed to get ID from query'})
+
+  const survey = await getSingleSurvey(id);
+
+  if (!survey) return res.status(400).json({ message: "failed to find survey" })
+
+  return res.status(200).json(survey);
 }
 
 export async function getAllSurveysHandler(

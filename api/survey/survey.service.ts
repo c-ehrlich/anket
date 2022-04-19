@@ -102,7 +102,7 @@ export async function getAllSurveysWithQuestionsAndMultipleChoiceOptions() {
   return surveys;
 }
 
-export async function getSurveyWithQuestionsAndMultipleChoiceOptions(
+export async function getSingleSurvey(
   id: string
 ) {
   try {

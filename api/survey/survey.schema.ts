@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { questionReturnSchema } from '../question/question.schema';
+import { questionResponseSchema } from '../question/question.schema';
 
 // createDefaultSurvey input
 export const createDefaultSurveySchema = z.object({
@@ -22,7 +22,7 @@ const createDefaultSurveyResponseSchema = z.object({
   id: z.string({}).cuid(),
   name: z.string({}),
   description: z.string({}),
-  questions: z.array(questionReturnSchema),
+  questions: z.array(questionResponseSchema),
 });
 
 export type CreateDefaultSurveyResponse = z.infer<

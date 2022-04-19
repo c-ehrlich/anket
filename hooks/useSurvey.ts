@@ -3,10 +3,6 @@ import axios from 'axios';
 import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
 
 export const getSurvey = async (id: string) => {
-  if (id === '') {
-    console.log('no id')
-    return;
-  }
   const survey: CreateDefaultSurveyResponse = await axios
     .get(`/api/survey/${id}`)
   return survey;
@@ -17,7 +13,7 @@ export default function useSurvey(id: string) {
     ['create-survey', id],
     () => getSurvey(id),
     {
-      staleTime: 1000 * 60 * 60 * 24, // 1 day
+      staleTime: 1000 * 60 * 5, // 5 minutes
     }
   );
 }
