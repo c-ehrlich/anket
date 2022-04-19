@@ -1,6 +1,9 @@
 # Anket Todo
 ## BUGS
-- [ ] /surveys/mine: we don't have the user token right away, so a hard refresh sends an empty token to the api
+- [ ] /surveys/mine: we don't have the user token right away, so a hard refresh sends an empty token to the api // FIXED??
+
+## Logging
+- [x] clone the logger from tom does tech youtube clone, and re-convert every console.log/console.error to that logger
 
 ## Chore
 - [ ] Update to React 18
@@ -14,9 +17,6 @@
 - [ ] Test editing a survey (can we )
 - [ ] figure out how to let users upload static files - where to save then?
   - [ ] Survey header image
-
-## new survey
-- [ ] implement react-query (give it a random cuid and wait...)
 
 ## frontend
 - [ ] Logout: keep div height constant
@@ -52,3 +52,8 @@
 - [x] Make dark theme work everywhere
 - [x] Create initial logo
 - [x] Create nice logged in user indicator / logout indicator
+### Create Survey
+- [ ] Create routes for all the main survey creation and modification CRUD
+- [x] Use React Query to manage survey in frontend
+  - [x] Make /survey/create just a dummy page that creates a survey and redirects to /survey/edit/id, that way create and edit are basically the same!
+- [ ] Add an edit button to each survey in My Surveys
