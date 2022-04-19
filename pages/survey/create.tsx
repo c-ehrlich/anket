@@ -1,5 +1,5 @@
 import React from 'react'
-import CreateSurveyRQ from '../../components/CreateSurveyRQ'
+import CreateSurvey from '../../components/CreateSurvey'
 
 /**
  * This is just a dummy page that awaits the creation of a survey (or 
@@ -9,7 +9,7 @@ import CreateSurveyRQ from '../../components/CreateSurveyRQ'
 
 const create = () => {
   return (
-    <CreateSurveyRQ />
+    <CreateSurvey />
   )
 }
 
