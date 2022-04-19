@@ -94,14 +94,6 @@ export async function getUserSurveyPreviews(authorId: string) {
   return surveys;
 }
 
-export async function getAllSurveysWithQuestionsAndMultipleChoiceOptions() {
-  const surveys = await prisma.survey.findMany({
-    include: { questions: { include: { multipleChoiceOptions: true } } },
-  });
-
-  return surveys;
-}
-
 export async function getSingleSurvey(id: string) {
   try {
     const survey = await prisma.survey.findUnique({
