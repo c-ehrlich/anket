@@ -2,7 +2,7 @@ import { QuestionType } from '@prisma/client';
 import { z } from 'zod';
 import { multipleChoiceOptionReturnSchema } from '../multipleChoiceOption/multipleChoiceOption.schema';
 
-export const questionReturnSchema = z.object({
+export const questionResponseSchema = z.object({
   id: z.string({}).cuid(),
   question: z.string({}),
   details: z.string({}),
@@ -10,3 +10,6 @@ export const questionReturnSchema = z.object({
   questionType: z.nativeEnum(QuestionType),
   multipleChoiceOptions: z.array(multipleChoiceOptionReturnSchema),
 });
+
+export type QuestionResponse = z.infer<typeof questionResponseSchema>
+
