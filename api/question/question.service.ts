@@ -1,8 +1,8 @@
-import { QuestionType } from '@prisma/client';
+import { Question, QuestionType } from '@prisma/client';
 import _logger from 'next-auth/lib/logger';
 import logger from '../utils/logger';
-import log from '../utils/logger';
 import prisma from '../utils/prisma';
+import { QuestionResponse } from './question.schema';
 
 export async function createDefaultQuestion({
   surveyId,
@@ -10,13 +10,16 @@ export async function createDefaultQuestion({
   surveyId: string;
 }) {
   try {
-    const question = prisma.question.create({
+    const question: QuestionResponse = await prisma.question.create({
       data: {
         surveyId,
         question: '',
         details: '',
         questionType: 'multipleChoiceMultiple',
       },
+      include: {
+        multipleChoiceOptions: true
+      }
     });
     return question;
   } catch (e) {
