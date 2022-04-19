@@ -32,7 +32,7 @@ const data: NavBarLinkProps[] = [
   }
 ];
 
-const AppNavbarLink = (props: NavBarLinkProps) => {
+export const AppNavbarLink = (props: NavBarLinkProps) => {
   return (
     <Link href={props.url} passHref>
       <UnstyledButton

@@ -3,16 +3,25 @@ import {
   Box,
   Group,
   MediaQuery,
+  Stack,
   Text,
+  ThemeIcon,
   UnstyledButton,
   useMantineTheme,
 } from '@mantine/core';
 import { useSession, signIn, signOut } from 'next-auth/react';
-import { useState } from 'react';
-import { ChevronRight, ChevronLeft, Logout } from 'tabler-icons-react';
+import { ReactNode, useState } from 'react';
+import {
+  ChevronRight,
+  ChevronLeft,
+  Logout,
+  Settings,
+} from 'tabler-icons-react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useRouter } from 'next/router';
 
 const Content = () => {
+  const router = useRouter();
   const { data: session } = useSession();
   const theme = useMantineTheme();
   const [onLogoutPage, setOnLogoutPage] = useState<boolean>(false);
@@ -34,59 +43,23 @@ const Content = () => {
             exit={{ x: -40, opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <Group>
-              <UnstyledButton
-                onClick={() => setOnLogoutPage(false)}
-                sx={{
-                  height: '100%',
-                  display: 'block',
-                  padding: theme.spacing.xs,
-                  borderRadius: theme.radius.sm,
-                  color:
-                    theme.colorScheme === 'dark'
-                      ? theme.colors.dark[0]
-                      : theme.black,
-
-                  '&:hover': {
-                    backgroundColor:
-                      theme.colorScheme === 'dark'
-                        ? theme.colors.dark[6]
-                        : theme.colors.gray[0],
-                  },
-                }}
-              >
-                <ChevronLeft />
-              </UnstyledButton>
-              <UnstyledButton
+            <Stack>
+              <LoginLink
+                icon={<Logout />}
+                label='Logout'
                 onClick={logoutAndResetState}
-                sx={{
-                  flexGrow: 1,
-                  display: 'block',
-                  padding: theme.spacing.xs,
-                  borderRadius: theme.radius.sm,
-                  color:
-                    theme.colorScheme === 'dark'
-                      ? theme.colors.dark[0]
-                      : theme.black,
-
-                  '&:hover': {
-                    backgroundColor:
-                      theme.colorScheme === 'dark'
-                        ? theme.colors.dark[6]
-                        : theme.colors.gray[0],
-                  },
-                }}
-              >
-                <Group>
-                  <Box sx={{ flexGrow: 1 }}>
-                    <Text align='right' size='sm' lineClamp={2} weight={500}>
-                      Logout
-                    </Text>
-                  </Box>
-                  <Logout size={24} />
-                </Group>
-              </UnstyledButton>
-            </Group>
+              />
+              <LoginLink
+                icon={<Settings />}
+                label='Settings'
+                onClick={() => router.push('/user/settings')}
+              />
+              <LoginLink
+                icon={<ChevronLeft />}
+                label='Back'
+                onClick={() => setOnLogoutPage(false)}
+              />
+            </Stack>
           </Box>
         ) : (
           <Box
@@ -120,12 +93,11 @@ const Content = () => {
               <Group position='apart'>
                 <Avatar src={session.user.image} radius='xl' />
                 <MediaQuery smallerThan='lg' styles={{ display: 'none' }}>
-
-                <Box sx={{ flex: 1 }}>
-                  <Text size='sm' lineClamp={2} weight={500}>
-                    {session.user.name}
-                  </Text>
-                </Box>
+                  <Box sx={{ flex: 1 }}>
+                    <Text size='sm' lineClamp={2} weight={500}>
+                      {session.user.name}
+                    </Text>
+                  </Box>
                 </MediaQuery>
 
                 {theme.dir === 'ltr' ? (
@@ -200,7 +172,40 @@ const Login = () => {
 
 export default Login;
 
-{
-  /* Signed in as {JSON.stringify(session)} <br />
-        <button onClick={() => signOut()}>Sign out</button> */
+interface LoginLinkProps {
+  onClick: () => void;
+  color?: string;
+  label: string;
+  icon: ReactNode;
 }
+
+const LoginLink = (props: LoginLinkProps) => {
+  return (
+    <UnstyledButton
+      onClick={props.onClick}
+      sx={(theme) => ({
+        display: 'block',
+        width: '100%',
+        padding: theme.spacing.xs,
+        borderRadius: theme.radius.sm,
+        color:
+          theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
+
+        '&:hover': {
+          backgroundColor:
+            theme.colorScheme === 'dark'
+              ? theme.colors.dark[6]
+              : theme.colors.gray[0],
+        },
+      })}
+    >
+      <Group>
+        <ThemeIcon color={props.color} variant='light'>
+          {props.icon}
+        </ThemeIcon>
+
+        <Text size='sm'>{props.label}</Text>
+      </Group>
+    </UnstyledButton>
+  );
+};
