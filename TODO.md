@@ -1,7 +1,6 @@
 # Anket Todo (current)
 ## MVP v1
 ### Bugs
-- [ ] /surveys/mine: API request fails 
 ### UI
 - [ ] Logout: keep div height constant
 - [ ] small screen: sidebar should close if we navigate to a new page
@@ -28,6 +27,7 @@
 ### Bugs
 - [x] Figure out why login is broken
   - [x] Was just something about some package
+- [x] /surveys/mine: API request fails 
 ## Chore
 - [x] Update to React 18
 - [x] Update to React Query 4

@@ -65,7 +65,7 @@ export async function getUserSurveysHandler(
   req: NextApiRequest,
   res: NextApiResponse<{ message: string } | Partial<Survey>[]>
 ) {
-  const userId = Array.isArray(req.query) ? req.query[0] : req.query;
+  const userId = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
 
   const surveys = await getUserSurveyPreviews(userId);
   return res.status(200).json(surveys);
