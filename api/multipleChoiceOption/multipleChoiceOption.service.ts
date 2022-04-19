@@ -1,4 +1,4 @@
-import log from '../utils/logger';
+import logger from '../utils/logger';
 import prisma from '../utils/prisma';
 
 export async function createDefaultMultipleChoiceOption({
@@ -13,7 +13,7 @@ export async function createDefaultMultipleChoiceOption({
 
     return multipleChoiceOption;
   } catch (e) {
-    console.error(e);
+    logger.error(e);
   }
 }
 
@@ -36,7 +36,7 @@ export async function updateMultipleChoiceOptionName({
 
     return multipleChoiceOption;
   } catch (e) {
-    console.error(e);
+    logger.error(e);
   }
 }
 
@@ -46,7 +46,7 @@ export async function deleteMultipleChoiceOption({ id }: { id: string }) {
 
     return deletedOption;
   } catch (e) {
-    console.error(e);
+    logger.error(e);
   }
 }
 
@@ -62,6 +62,6 @@ export async function deleteMultipleChoiceOptionsForQuestion({
 
     return deletedOptions;
   } catch (e) {
-    console.error(e);
+    logger.error(e);
   }
 }
