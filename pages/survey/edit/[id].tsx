@@ -1,7 +1,6 @@
 import { useRouter } from 'next/router'
 import React from 'react'
-import EditSurvey from '../../../components/EditSurvey';
-import useSurvey from '../../../hooks/useSurvey';
+import EditSurveyLoader from '../../../components/EditSurveyLoader';
 
 const EditSurveyPage = () => {
   const router = useRouter();
@@ -14,7 +13,7 @@ const EditSurveyPage = () => {
 
   return (
     <div>
-      <EditSurvey surveyId={surveyId} />
+      <EditSurveyLoader surveyId={surveyId} />
     </div>
   )
 }
