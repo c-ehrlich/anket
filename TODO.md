@@ -7,6 +7,7 @@
 ### Create/Edit Survey
 - [ ] Get it working basically
 - [ ] Create routes for all the main survey creation and modification CRUD
+  - [ ] Changing a question type ... should it delete the multiple choice options or not?
 - [ ] Keep the survey hidden ('complete' column in schema/survey?) until the user marks it as done?
 - [ ] Allow surveys to be secret (only available to people with the link, always hide in 'all') ... db column
 - [ ] Give surveys optional header images
@@ -21,6 +22,8 @@
 - [ ] For text, maybe IF it has 3 or more responses, find the 3 most popular words, and list those along with sample responses that use them
   - [ ] Exclude common words?
   - [ ] Or just open a modal that contains all the responses?
+### Maybe
+- [ ] Creating a survey also creates the first question, creating a question also creates the first answer option
 
 # Anket Done
 ## MVP v1
@@ -40,6 +43,7 @@
 - [x] Use React Query to manage survey in frontend
   - [x] Make /survey/create just a dummy page that creates a survey and redirects to /survey/edit/id, that way create and edit are basically the same!
 - [x] Add an edit button to each survey in My Surveys
+- [x] Let user delete in progress survey
 ### Take Survey
 ### Misc Backend Stuff
 - [x] clone the logger from tom does tech youtube clone, and re-convert every console.log/console.error to that logger

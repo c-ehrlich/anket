@@ -8,6 +8,7 @@ import {
 } from './survey.schema';
 import {
   createDefaultSurvey,
+  deleteSurvey,
   getAllSurveyPreviews,
   getSingleSurvey,
   getUserSurveyPreviews,
@@ -85,4 +86,17 @@ export async function updateSurveyBasicInfoHandler(
     return res.status(400).json({ message: 'failed to update survey' });
 
   return res.status(200).json(survey);
+}
+
+export async function deleteSurveyHandler(
+  req: NextApiRequest,
+  res: NextApiResponse<{ message: String } | Survey>
+) {
+  const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
+  if (!id) return res.status(400).json({ message: 'failed to get ID from query'})
+
+  const deletedSurvey = await deleteSurvey({ id });
+  if (!deletedSurvey) return res.status(400).json({ message: 'failed to delete survey' })
+
+  return res.status(200).json(deletedSurvey);
 }

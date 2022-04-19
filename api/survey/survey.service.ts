@@ -102,9 +102,7 @@ export async function getAllSurveysWithQuestionsAndMultipleChoiceOptions() {
   return surveys;
 }
 
-export async function getSingleSurvey(
-  id: string
-) {
+export async function getSingleSurvey(id: string) {
   try {
     const survey = await prisma.survey.findUnique({
       where: { id },
@@ -134,6 +132,13 @@ export async function updateSurvey({
   }
 }
 
-export async function deleteSurvey() {
-  return;
+export async function deleteSurvey({ id }: { id: string }) {
+  try {
+    const deletedSurvey = await prisma.survey.delete({
+      where: { id },
+    });
+    return deletedSurvey;
+  } catch (e) {
+    logger.error(e);
+  }
 }
