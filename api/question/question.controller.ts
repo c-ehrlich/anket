@@ -6,6 +6,7 @@ import {
   createDefaultQuestion,
   deleteQuestion,
   editQuestion,
+  reorderQuestion,
 } from './question.service';
 
 export async function addDefaultQuestionToSurvey(
@@ -46,7 +47,7 @@ export async function editQuestionHandler(
   res: NextApiResponse<QuestionResponse | { message: string }>
 ) {
   logger.info('in editQuestionHandler');
-  
+
   // make sure we have a questionid
   const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
   if (!id)
@@ -59,9 +60,6 @@ export async function editQuestionHandler(
       'question' | 'details' | 'isRequired' | 'questionType'
     >
   > = req.body;
-
-  logger.info('id', id);
-  logger.info('data', data);
 
   // TODO make sure the user is allowed to modify that question/survey
 
@@ -97,4 +95,30 @@ export async function deleteQuestionHandler(
   if (!deletedQuestion)
     return res.status(400).json({ message: 'failed to delete question' });
   return res.status(200).json(deletedQuestion);
+}
+
+export async function reorderQuestionHandler(
+  req: NextApiRequest,
+  res: NextApiResponse<QuestionResponse[] | { message: string }>
+) {
+  // make sure we have a questionid
+  const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
+  if (!id)
+    return res.status(400).json({ message: 'failed to get ID from query' });
+
+  // TODO make sure the user is allowed to modify that question/survey
+
+  // get the new order from req
+  const { order } = req.body;
+  if (!order)
+    res.status(400).send({ message: 'failed to get order from body' });
+
+  // call handler
+  const reorderedQuestions: QuestionResponse[] | undefined =
+    await reorderQuestion({ id, order });
+
+  // check if we have the object and return it or an error
+  if (!reorderedQuestions)
+    return res.status(400).json({ message: 'failed to reorder question' });
+  return res.status(200).json(reorderedQuestions);
 }

@@ -1,10 +1,15 @@
 # Anket Todo (current)
 ## MVP v1
 ### Bugs
+### DB
+- [ ] implement -1/+1 reordering on questions also? (because less db intensive)
+- [ ] implement order on answeroptions
+- [ ] implement reordering on answeroptions
 ### UI
 - [ ] small screen: sidebar in/out should be animated
 - [ ] Change question styling... the drop shadow is barely visible on top/left. maybe a border?
 - [ ] question name and description have no placeholder
+- [ ] Get question framer motion working
 ### Create/Edit Survey
 - [ ] Get it working basically
 - [ ] Create routes for all the main survey creation and modification CRUD
@@ -23,6 +28,8 @@
   - [ ] Exclude common words?
   - [ ] Or just open a modal that contains all the responses?
 ### Queries
+- [ ] Do optimistic updates on one text input axios request
+- [ ] Do optimistic updates on all text input axios requests
 - [ ] Debounce one text input axios request
 - [ ] Debounce all text input axios requests
 ### Maybe
@@ -35,6 +42,8 @@
 - [x] Figure out why login is broken
   - [x] Was just something about some package
 - [x] /surveys/mine: API request fails 
+## DB
+- [x] Implement order on questions
 ## Chore
 - [x] Update to React 18
 - [x] Update to React Query 4
@@ -52,6 +61,7 @@
 - [x] Allow surveys to be secret (only available to people with the link, always hide in 'all') ... db column
 - [x] Create Question
 - [x] Delete Question
+- [x] implement arbitrary reordering on questions
 
 ### Take Survey
 ### Misc Backend Stuff

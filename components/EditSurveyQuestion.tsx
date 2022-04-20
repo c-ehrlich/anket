@@ -69,6 +69,91 @@ const EditSurveyQuestion = (props: Props) => {
     }
   );
 
+  const reorderQuestionMutation = useMutation(
+    ['survey', survey.data!.id],
+    (newOrder: number) => {
+      return axios.patch(
+        `/api/question/reorder/${survey.data?.questions[props.index].id}`,
+        {
+          order: newOrder,
+        }
+      );
+    },
+    {
+      onError: (e: any) => window.alert(e),
+      onMutate: (newOrder) => {
+        queryClient.cancelQueries(['survey', props.surveyId]);
+        const oldSurvey: CreateDefaultSurveyResponse | undefined =
+          queryClient.getQueryData(['survey', props.surveyId]);
+        if (oldSurvey) {
+          const oldOrder = oldSurvey.questions[props.index].order;
+          if (newOrder > oldOrder) {
+            // -1 to order of items with order: gt oldorder, lte neworder
+            const otherMovedItems = oldSurvey.questions
+              .filter(
+                (question) =>
+                  question.order > oldOrder && question.order <= newOrder
+              )
+              .map((question) => {
+                return { ...question, order: question.order - 1 };
+              });
+            // change order of the item we're actually moving
+            const movedQuestion = {
+              ...oldSurvey.questions[props.index],
+              order: newOrder,
+            };
+            // rebuild survey object with new questions
+            queryClient.setQueryData(['survey', oldSurvey.id], {
+              ...oldSurvey,
+              questions: ([] as QuestionResponse[]).concat(
+                // the lower stuff
+                oldSurvey.questions.slice(0, oldOrder),
+                // the stuff we moved
+                ...otherMovedItems,
+                movedQuestion,
+                // everything after the stuff we moved
+                oldSurvey.questions.slice(newOrder)
+              ),
+            });
+          }
+          if (newOrder < oldOrder) {
+            // +1 to order of items with order: lt oldorder, gte newOrder
+            const otherMovedItems = oldSurvey.questions
+              .filter(
+                (question) =>
+                  question.order < oldOrder && question.order >= newOrder
+              )
+              .map((question) => {
+                return { ...question, order: question.order + 1 };
+              });
+            // change order of the item we're actually moving
+            const movedQuestion = {
+              ...oldSurvey.questions[props.index],
+              order: newOrder,
+            };
+            // rebuild survey object with new questions
+            queryClient.setQueryData(['survey', oldSurvey.id], {
+              ...oldSurvey,
+              questions: ([] as QuestionResponse[]).concat(
+                // the lower stuff
+                oldSurvey.questions.slice(0, newOrder),
+                // the stuff we moved
+                movedQuestion,
+                ...otherMovedItems,
+                // everything after the stuff we moved
+                oldSurvey.questions.slice(oldOrder)
+              ),
+            });
+          }
+          // if they're the same, we don't need to do anything
+        }
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries(['survey', props.surveyId]);
+      },
+    }
+  );
+
   return (
     <>
       {survey.isLoading ? (
@@ -123,14 +208,14 @@ const EditSurveyQuestion = (props: Props) => {
                 <ActionIcon
                   variant='default'
                   disabled={props.index === 0}
-                  onClick={() => {}}
+                  onClick={() => {reorderQuestionMutation.mutate(props.index - 1)}}
                 >
                   <CaretUp />
                 </ActionIcon>
                 <ActionIcon
                   variant='default'
                   disabled={props.index >= survey.data.questions.length - 1}
-                  onClick={() => {}}
+                  onClick={() => {reorderQuestionMutation.mutate(props.index + 1)}}
                 >
                   <CaretDown />
                 </ActionIcon>
@@ -138,6 +223,7 @@ const EditSurveyQuestion = (props: Props) => {
               <ActionIcon
                 variant='default'
                 onClick={() => {
+                  // TODO make user confirm in a modal first
                   deleteQuestionMutation.mutate();
                 }}
               >
