@@ -27,7 +27,6 @@ const Content = () => {
   const [onLogoutPage, setOnLogoutPage] = useState<boolean>(false);
 
   const logoutAndResetState = async () => {
-    console.log('in logoutandresetstate')
     await router.push('/');
     signOut();
   };

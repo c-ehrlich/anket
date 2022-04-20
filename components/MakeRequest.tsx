@@ -24,7 +24,6 @@ const MakeRequest = () => {
       credentials: 'same-origin',
     });
     const json = await data.json();
-    console.log(json);
     setProduct(JSON.stringify(json));
   };
 
@@ -39,7 +38,6 @@ const MakeRequest = () => {
       credentials: 'same-origin',
     });
     const json = await data.json();
-    console.log(json);
     setSurvey(JSON.stringify(json));
   }
 

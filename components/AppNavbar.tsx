@@ -41,7 +41,6 @@ interface AppNavbarLinkProps {
 export const AppNavbarLink = (props: AppNavbarLinkProps) => {
   const router = useRouter();
   const onLinkClick = () => {
-    console.log('click');
     props.closeNavbar();
     router.push(props.link.url);
   };
