@@ -16,7 +16,7 @@ const AllSurveys = () => {
 
   return (
     <Stack>
-      <Title order={2}>All Surveys</Title>
+      <Title order={2}>My Surveys</Title>
       <Text>tktk add sorting/filtering here?</Text>
       {surveys && surveys.map(survey => <SurveyHero survey={survey} key={survey.id} />)}
     </Stack>

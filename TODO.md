@@ -2,8 +2,8 @@
 ## MVP v1
 ### Bugs
 ### UI
-- [ ] Logout: keep div height constant
 - [ ] small screen: sidebar should close if we navigate to a new page
+- [ ] small screen: sidebar in/out should be animated
 ### Create/Edit Survey
 - [ ] Get it working basically
 - [ ] Create routes for all the main survey creation and modification CRUD
