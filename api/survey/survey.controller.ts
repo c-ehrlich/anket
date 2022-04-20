@@ -81,6 +81,8 @@ export async function updateSurveyBasicInfoHandler(
   
   const data = req.body;
 
+  logger.info(data);
+
   const survey = await updateSurvey({ id, data });
   if (!survey)
     return res.status(400).json({ message: 'failed to update survey' });

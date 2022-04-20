@@ -20,6 +20,9 @@
 - [ ] For text, maybe IF it has 3 or more responses, find the 3 most popular words, and list those along with sample responses that use them
   - [ ] Exclude common words?
   - [ ] Or just open a modal that contains all the responses?
+### Queries
+- [ ] Debounce one text input axios request
+- [ ] Debounce all text input axios requests
 ### Maybe
 - [ ] Creating a survey also creates the first question, creating a question also creates the first answer option
 
