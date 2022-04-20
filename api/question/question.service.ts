@@ -1,4 +1,4 @@
-import { Question, QuestionType } from '@prisma/client';
+import { QuestionType } from '@prisma/client';
 import _logger from 'next-auth/lib/logger';
 import logger from '../utils/logger';
 import prisma from '../utils/prisma';
@@ -76,6 +76,9 @@ export async function deleteQuestion({ id }: { id: string }) {
   try {
     const deletedQuestion = prisma.question.delete({
       where: { id },
+      include: {
+        multipleChoiceOptions: true
+      }
     });
 
     return deletedQuestion

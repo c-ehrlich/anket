@@ -3,6 +3,8 @@
 ### Bugs
 ### UI
 - [ ] small screen: sidebar in/out should be animated
+- [ ] Change question styling... the drop shadow is barely visible on top/left. maybe a border?
+- [ ] question name and description have no placeholder
 ### Create/Edit Survey
 - [ ] Get it working basically
 - [ ] Create routes for all the main survey creation and modification CRUD
@@ -49,6 +51,8 @@
 - [x] Let user delete in progress survey
 - [x] Allow surveys to be secret (only available to people with the link, always hide in 'all') ... db column
 - [x] Create Question
+- [x] Delete Question
+
 ### Take Survey
 ### Misc Backend Stuff
-- [x] clone the logger from tom does tech youtube clone, and re-convert every console.log/console.error to that logger
+- [x] clone the logger from tom does tech youtube clone, and re-convert every consoleDOTlog/error to that logger

@@ -102,8 +102,6 @@ const EditSurvey = (props: Props) => {
     }
   );
 
-  if (!survey.isFetched) return <div>not yet fetched</div>;
-
   return (
     <>
       <DeleteSurveyModal
@@ -116,6 +114,8 @@ const EditSurvey = (props: Props) => {
         'Loading...'
       ) : survey.isError ? (
         'Error...'
+      ) : !survey.isFetched ? (
+        'Not yet fetched...'
       ) : (
         <Stack>
           <Title order={2}>Creating survey</Title>
