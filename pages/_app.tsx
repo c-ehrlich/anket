@@ -17,6 +17,7 @@ import {
 } from '@mantine/core';
 import { useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools'
 import AppNavbar from '../components/AppNavbar';
 import ContentMaxWidth from '../components/ContentMaxWidth';
 import Head from 'next/head';
@@ -99,6 +100,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
           </MantineProvider>
         </ColorSchemeProvider>
       </SessionProvider>
+      <ReactQueryDevtools />
     </QueryClientProvider>
   );
 }
