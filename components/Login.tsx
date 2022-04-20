@@ -26,9 +26,10 @@ const Content = () => {
   const theme = useMantineTheme();
   const [onLogoutPage, setOnLogoutPage] = useState<boolean>(false);
 
-  const logoutAndResetState = () => {
+  const logoutAndResetState = async () => {
+    console.log('in logoutandresetstate')
+    await router.push('/');
     signOut();
-    setOnLogoutPage(false);
   };
 
   if (session && session.user) {

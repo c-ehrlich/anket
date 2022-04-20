@@ -46,14 +46,6 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
             theme={{ colorScheme }}
           >
             <AppShell
-              // styles={{
-              //   main: {
-              //     background:
-              //       colorScheme === 'dark'
-              //         ? theme.colors.dark[8]
-              //         : theme.colors.gray[0],
-              //   },
-              // }}
               navbarOffsetBreakpoint='sm'
               asideOffsetBreakpoint='sm'
               fixed
@@ -65,7 +57,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
                   width={{ sm: 200, lg: 300 }}
                 >
                   <Navbar.Section grow mt='xs'>
-                    <AppNavbar />
+                    <AppNavbar closeNavbar={() => setOpened(false)} />
                   </Navbar.Section>
                   <Navbar.Section>
                     <Login />

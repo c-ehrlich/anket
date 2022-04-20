@@ -2,7 +2,6 @@
 ## MVP v1
 ### Bugs
 ### UI
-- [ ] small screen: sidebar should close if we navigate to a new page
 - [ ] small screen: sidebar in/out should be animated
 ### Create/Edit Survey
 - [ ] Get it working basically
@@ -38,6 +37,7 @@
 - [x] Make dark theme work everywhere
 - [x] Create initial logo
 - [x] Create nice logged in user indicator / logout indicator
+- [x] small screen: sidebar should close if we navigate to a new page
 ### Create/Edit Survey
 - [x] Use React Query to manage survey in frontend
   - [x] Make /survey/create just a dummy page that creates a survey and redirects to /survey/edit/id, that way create and edit are basically the same!
