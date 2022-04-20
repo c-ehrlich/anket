@@ -25,6 +25,10 @@ const EditSurvey = (props: Props) => {
   const survey = useSurvey(props.surveyId);
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
 
+  if (survey.data?.questions) {
+    console.log(survey.data?.questions.map(question => question.id));
+  }
+
   const editSurveyMutation = useMutation(
     ['survey', props.surveyId],
     // TODO: create a more precise schema for this
@@ -40,15 +44,12 @@ const EditSurvey = (props: Props) => {
         const oldSurvey: CreateDefaultSurveyResponse | undefined =
           queryClient.getQueryData(['survey', props.surveyId]);
         if (oldSurvey)
-          queryClient.setQueryData(
-            ['survey', props.surveyId],
-            () => {
-              return {
-                ...oldSurvey,
-                ...values,
-              };
-            }
-          );
+          queryClient.setQueryData(['survey', props.surveyId], () => {
+            return {
+              ...oldSurvey,
+              ...values,
+            };
+          });
       },
       onSettled: () =>
         queryClient.invalidateQueries(['survey', props.surveyId]),
@@ -91,7 +92,7 @@ const EditSurvey = (props: Props) => {
           queryClient.setQueryData(['survey', props.surveyId], () => {
             return {
               ...oldSurvey,
-              questions: [ ...oldSurvey.questions, newQuestion ],
+              questions: [...oldSurvey.questions, newQuestion],
             };
           });
         }

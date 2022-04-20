@@ -18,8 +18,8 @@ export async function createDefaultQuestion({
         questionType: 'multipleChoiceMultiple',
       },
       include: {
-        multipleChoiceOptions: true
-      }
+        multipleChoiceOptions: true,
+      },
     });
     return question;
   } catch (e) {
@@ -27,36 +27,35 @@ export async function createDefaultQuestion({
   }
 }
 
-export async function updateQuestion({
+export async function editQuestion({
   id,
-  question,
-  details,
-  isRequired,
-  questionType,
+  data,
 }: {
   id: string;
-  question?: string;
-  details?: string;
-  isRequired?: boolean;
-  questionType?: QuestionType;
+  data: Partial<
+    Pick<
+      QuestionResponse,
+      'question' | 'details' | 'isRequired' | 'questionType'
+    >
+  >;
 }) {
   // update stuff
   try {
-    const updatedQuestion = prisma.question.update({
-      where: { id },
-      data: {
-        question,
-        details,
-        isRequired,
-        questionType,
-      },
-    });
+    const updatedQuestion: QuestionResponse | undefined =
+      await prisma.question.update({
+        where: { id },
+        data: { ...data },
+        include: {
+          multipleChoiceOptions: true,
+        },
+      });
 
-    // delete
+    // delete other multiple choice options
+    // TODO is this really necessary?
     if (
       !(
-        questionType === 'multipleChoiceMultiple' ||
-        questionType === 'multipleChoiceSingle'
+        updatedQuestion.questionType === 'multipleChoiceMultiple' ||
+        updatedQuestion.questionType === 'multipleChoiceSingle'
       )
     ) {
       prisma.multipleChoiceOption.deleteMany({
@@ -77,11 +76,11 @@ export async function deleteQuestion({ id }: { id: string }) {
     const deletedQuestion = prisma.question.delete({
       where: { id },
       include: {
-        multipleChoiceOptions: true
-      }
+        multipleChoiceOptions: true,
+      },
     });
 
-    return deletedQuestion
+    return deletedQuestion;
   } catch (e) {
     logger.error(e);
   }

@@ -23,6 +23,23 @@ const EditSurveyQuestion = (props: Props) => {
   const queryClient = useQueryClient();
   const survey = useSurvey(props.surveyId);
 
+  const editQuestionMutation = useMutation(
+    ['survey', props.surveyId],
+    (data: Partial<QuestionResponse>) => {
+      return axios.patch(
+        `/api/question/${survey.data?.questions[props.index].id}`,
+        data
+      );
+    },
+    {
+      onError: (e: any) => window.alert(e),
+      onMutate: () => {},
+      onSettled: () => {
+        queryClient.invalidateQueries(['survey', props.surveyId]);
+      },
+    }
+  );
+
   const deleteQuestionMutation = useMutation(
     ['survey', props.surveyId],
     () => {
@@ -71,16 +88,28 @@ const EditSurveyQuestion = (props: Props) => {
                 <Checkbox
                   label='Required'
                   checked={survey.data.questions[props.index].isRequired}
-                  onChange={() => {}}
+                  onChange={(e: React.FormEvent<HTMLInputElement>) => {
+                    editQuestionMutation.mutate({
+                      isRequired: e.currentTarget.checked,
+                    });
+                  }}
                 />
               </Group>
               <Input
                 value={survey.data.questions[props.index].question}
-                onChange={(e: React.FormEvent<HTMLInputElement>) => {}}
+                onChange={(e: React.FormEvent<HTMLInputElement>) => {
+                  editQuestionMutation.mutate({
+                    question: e.currentTarget.value,
+                  });
+                }}
               />
               <Input
                 value={survey.data.questions[props.index].details}
-                onChange={(e: React.FormEvent<HTMLInputElement>) => {}}
+                onChange={(e: React.FormEvent<HTMLInputElement>) => {
+                  editQuestionMutation.mutate({
+                    details: e.currentTarget.value,
+                  });
+                }}
               />
 
               <NativeSelect
