@@ -6,6 +6,7 @@ const createDefaultMultipleChoiceOptionSchema = z.object({
 
 export const multipleChoiceOptionResponseSchema = z.object({
   id: z.string({}).cuid(),
+  order: z.number({}),
   name: z.string({}),
 })
 

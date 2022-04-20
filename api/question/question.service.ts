@@ -9,6 +9,20 @@ export async function createDefaultQuestion({
 }: {
   surveyId: string;
 }) {
+  // find order
+  const currentHighestOrder = await prisma.question.aggregate({
+    _max: {
+      order: true,
+    },
+    where: {
+      surveyId,
+    },
+  });
+
+  const order = typeof currentHighestOrder._max.order === 'number'
+    ? currentHighestOrder._max.order + 1
+    : 0;
+
   try {
     const question: QuestionResponse = await prisma.question.create({
       data: {
@@ -16,6 +30,7 @@ export async function createDefaultQuestion({
         question: '',
         details: '',
         questionType: 'multipleChoiceMultiple',
+        order,
       },
       include: {
         multipleChoiceOptions: true,
@@ -58,7 +73,7 @@ export async function editQuestion({
         updatedQuestion.questionType === 'multipleChoiceSingle'
       )
     ) {
-      prisma.multipleChoiceOption.deleteMany({
+      await prisma.multipleChoiceOption.deleteMany({
         where: {
           questionId: id,
         },
@@ -73,10 +88,23 @@ export async function editQuestion({
 
 export async function deleteQuestion({ id }: { id: string }) {
   try {
-    const deletedQuestion = prisma.question.delete({
+    const deletedQuestion: QuestionResponse = await prisma.question.delete({
       where: { id },
       include: {
         multipleChoiceOptions: true,
+      },
+    });
+
+    // change order of all questions after this one
+    await prisma.question.updateMany({
+      where: {
+        surveyId: deletedQuestion.surveyId,
+        order: {
+          gt: deletedQuestion.order,
+        },
+      },
+      data: {
+        order: { increment: -1 },
       },
     });
 

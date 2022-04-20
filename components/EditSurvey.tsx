@@ -25,10 +25,6 @@ const EditSurvey = (props: Props) => {
   const survey = useSurvey(props.surveyId);
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
 
-  if (survey.data?.questions) {
-    console.log(survey.data?.questions.map(question => question.id));
-  }
-
   const editSurveyMutation = useMutation(
     ['survey', props.surveyId],
     // TODO: create a more precise schema for this
@@ -85,6 +81,8 @@ const EditSurvey = (props: Props) => {
             id: '0',
             question: '',
             details: '',
+            surveyId: survey.data!.id,
+            order: 999999,
             isRequired: true,
             questionType: 'multipleChoiceSingle',
             multipleChoiceOptions: [],
@@ -147,11 +145,17 @@ const EditSurvey = (props: Props) => {
           <Stack>
             <Title order={3}>Questions</Title>
             <AnimatePresence>
-              {survey.data.questions.map((question, index) => (
-                <motion.div key={question.id}>
-                  <EditSurveyQuestion surveyId={survey.data.id} index={index} />
-                </motion.div>
-              ))}
+              {survey.data.questions
+                .sort((a, b) => a.order - b.order)
+                .map((question, index) => (
+                  <motion.div key={question.id}>
+                    {console.log(question.id, question.order)}
+                    <EditSurveyQuestion
+                      surveyId={survey.data.id}
+                      index={index}
+                    />
+                  </motion.div>
+                ))}
             </AnimatePresence>
           </Stack>
 
