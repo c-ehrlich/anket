@@ -105,6 +105,7 @@ model Question {
   details      String
   isRequired   Boolean      @default(true)
   questionType QuestionType
+  order        Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -128,8 +129,9 @@ enum QuestionType {
 }
 
 model MultipleChoiceOption {
-  id   String @id @default(cuid())
-  name String
+  id    String @id @default(cuid())
+  name  String
+  order Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
