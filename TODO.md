@@ -25,6 +25,7 @@
 - [ ] Debounce all text input axios requests
 ### Maybe
 - [ ] Creating a survey also creates the first question, creating a question also creates the first answer option
+- [ ] Type React Query errors (is it just the type of { message: string? }) probably not...look at one and figure it out
 
 # Anket Done
 ## MVP v1
@@ -47,6 +48,7 @@
 - [x] Add an edit button to each survey in My Surveys
 - [x] Let user delete in progress survey
 - [x] Allow surveys to be secret (only available to people with the link, always hide in 'all') ... db column
+- [x] Create Question
 ### Take Survey
 ### Misc Backend Stuff
 - [x] clone the logger from tom does tech youtube clone, and re-convert every console.log/console.error to that logger

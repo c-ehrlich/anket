@@ -1,9 +1,14 @@
 import { Button, Checkbox, Group, Input, Stack, Title } from '@mantine/core';
+import { Question } from '@prisma/client';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
+import {
+  QuestionResponse,
+  questionResponseSchema,
+} from '../api/question/question.schema';
 import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
 import useSurvey from '../hooks/useSurvey';
 import deleteSurveyRequest from '../requests/deleteSurveyRequest';
@@ -24,7 +29,6 @@ const EditSurvey = (props: Props) => {
     ['survey', props.surveyId],
     // TODO: create a more precise schema for this
     (data: Partial<CreateDefaultSurveyResponse>) => {
-      console.log(data);
       return axios
         .patch(`/api/survey/${props.surveyId}`, { ...data })
         .then((res) => res.data);
@@ -33,13 +37,12 @@ const EditSurvey = (props: Props) => {
       onError: (e: any) => window.alert(e),
       onMutate: (values: Partial<CreateDefaultSurveyResponse>) => {
         queryClient.cancelQueries(['survey', props.surveyId]);
-        const oldSurveyQuery: CreateDefaultSurveyResponse | undefined =
+        const oldSurvey: CreateDefaultSurveyResponse | undefined =
           queryClient.getQueryData(['survey', props.surveyId]);
-        if (oldSurveyQuery)
+        if (oldSurvey)
           queryClient.setQueryData(
             ['survey', props.surveyId],
-            // FIXME type this
-            (oldSurvey: any) => {
+            () => {
               return {
                 ...oldSurvey,
                 ...values,
@@ -59,6 +62,42 @@ const EditSurvey = (props: Props) => {
       onSuccess: () => {
         setDeleteModalOpen(false);
         router.push('/');
+      },
+    }
+  );
+
+  const createQuestionMutation = useMutation(
+    ['survey', props.surveyId],
+    () => {
+      return axios.post('/api/question', {
+        surveyId: props.surveyId,
+      });
+    },
+    {
+      onError: (e: any) => window.alert(e),
+      onMutate: () => {
+        queryClient.cancelQueries(['survey', props.surveyId]);
+        const oldSurvey: CreateDefaultSurveyResponse | undefined =
+          queryClient.getQueryData(['survey', props.surveyId]);
+        if (oldSurvey) {
+          const newQuestion: QuestionResponse = {
+            id: '0',
+            question: '',
+            details: '',
+            isRequired: true,
+            questionType: 'multipleChoiceSingle',
+            multipleChoiceOptions: [],
+          };
+          queryClient.setQueryData(['survey', props.surveyId], () => {
+            return {
+              ...oldSurvey,
+              questions: [ ...oldSurvey.questions, newQuestion ],
+            };
+          });
+        }
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries(['survey', props.surveyId]);
       },
     }
   );
@@ -115,7 +154,13 @@ const EditSurvey = (props: Props) => {
             </AnimatePresence>
           </Stack>
 
-          <Button onClick={() => {}}>Add Question</Button>
+          <Button
+            onClick={() => {
+              createQuestionMutation.mutate();
+            }}
+          >
+            Add Question
+          </Button>
           <Group grow>
             <Button
               variant='outline'
