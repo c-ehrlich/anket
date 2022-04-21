@@ -12,7 +12,6 @@
 ### Create/Edit Survey
 - [ ] Get it working basically
 - [ ] Create routes for all the main survey creation and modification CRUD
-  - [ ] Changing a question type ... should it delete the multiple choice options or not?
 - [ ] Keep the survey hidden ('complete' column in schema/survey?) until the user marks it as done?
 - [ ] Give surveys optional header images
   - [ ] Figure out how image upload works
@@ -64,6 +63,10 @@
 - [x] Create Question
 - [x] Delete Question
 - [x] implement arbitrary reordering on questions
+- [x] Get answer options into the UI
+- [x] Create answer options
+- [ ] Create answer option CRUD (backend)
+- [ ] Create answer option CRUD (frontend)
 
 ### Take Survey
 ### Misc Backend Stuff

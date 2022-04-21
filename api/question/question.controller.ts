@@ -32,22 +32,10 @@ export async function addDefaultQuestionToSurvey(
   return res.status(201).json(question);
 }
 
-export async function moveQuestionToPosition(
-  questionId: string,
-  position: number
-) {
-  // make sure we have a question id, a position, a user
-  // make sure the user is allowed to modify that survey
-  // call a service that reorders the questions
-  // return the question (invalidate survey in frontend)
-}
-
 export async function editQuestionHandler(
   req: NextApiRequest,
   res: NextApiResponse<QuestionResponse | { message: string }>
 ) {
-  logger.info('in editQuestionHandler');
-
   // make sure we have a questionid
   const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
   if (!id)
@@ -66,7 +54,7 @@ export async function editQuestionHandler(
   // call a service that edits the question
   const editedQuestion: QuestionResponse | undefined = await editQuestion({
     id,
-    data: req.body,
+    data,
   });
 
   // return the edited question (invalidate survey in frontend)
