@@ -12,11 +12,6 @@ const data: NavBarLinkProps[] = [
     icon: <AddressBook size={16} />,
   },
   {
-    label: 'Test Requests',
-    url: '/testRequests',
-    icon: <Backpack size={16} />,
-  },
-  {
     label: 'Create Survey',
     url: '/survey/create',
     icon: <Backpack size={16} />,
