@@ -1,10 +1,14 @@
 import {
   ActionIcon,
+  Button,
   Checkbox,
   Group,
   Input,
   NativeSelect,
   Paper,
+  Radio,
+  RadioGroup,
+  SegmentedControl,
   Stack,
   Title,
 } from '@mantine/core';
@@ -16,6 +20,7 @@ import { CaretDown, CaretUp, Trash } from 'tabler-icons-react';
 import { QuestionResponse } from '../api/question/question.schema';
 import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
 import useSurvey from '../hooks/useSurvey';
+import EditSurveyAnswerOption from './EditSurveyAnswerOption';
 
 type Props = { index: number; surveyId: string };
 
@@ -202,22 +207,84 @@ const EditSurveyQuestion = (props: Props) => {
               <NativeSelect
                 label='Question Type'
                 data={Object.values(QuestionType)}
-                onChange={() => {}}
+                value={survey.data.questions[props.index].questionType}
+                onChange={(e: React.FormEvent<HTMLSelectElement>) => {
+                  editQuestionMutation.mutate({
+                    questionType: e.currentTarget.value as QuestionType,
+                  });
+                }}
               />
+              {survey.data.questions[props.index].questionType ===
+                'multipleChoiceMultiple' ||
+              survey.data.questions[props.index].questionType ===
+                'multipleChoiceSingle' ? (
+                <>
+                  <Title order={4}>Answer Options</Title>
+                  {survey.data.questions[props.index].multipleChoiceOptions.map(
+                    (mcOption) => (
+                      // TODO put a motion div around this!
+                      <EditSurveyAnswerOption
+                        key={mcOption.id}
+                        index={mcOption.order}
+                        questionId={survey.data.questions[props.index].id}
+                      />
+                    )
+                  )}
+                  <Button>Add Answer Option</Button>
+                </>
+              ) : survey.data.questions[props.index].questionType ===
+                'textResponse' ? (
+                <Input
+                  disabled
+                  placeholder='Respondents will be able to type whatever they want'
+                />
+              ) : survey.data.questions[props.index].questionType ===
+                'zeroToTen' ? (
+                <SegmentedControl
+                  disabled
+                  fullWidth
+                  defaultValue='-1'
+                  data={[
+                    '0',
+                    '1',
+                    '2',
+                    '3',
+                    '4',
+                    '5',
+                    '6',
+                    '7',
+                    '8',
+                    '9',
+                    '10',
+                  ]}
+                />
+              ) : survey.data.questions[props.index].questionType ===
+                'yesNoBoolean' ? (
+                <RadioGroup
+                  orientation='vertical'
+                >
+                  <Radio value='yes' label='Yes' disabled />
+                  <Radio value='no' label='No' disabled />
+                </RadioGroup>
+              ) : null}
             </Stack>
             <Stack justify='space-between'>
               <Stack>
                 <ActionIcon
                   variant='default'
                   disabled={props.index === 0}
-                  onClick={() => {reorderQuestionMutation.mutate(props.index - 1)}}
+                  onClick={() => {
+                    reorderQuestionMutation.mutate(props.index - 1);
+                  }}
                 >
                   <CaretUp />
                 </ActionIcon>
                 <ActionIcon
                   variant='default'
                   disabled={props.index >= survey.data.questions.length - 1}
-                  onClick={() => {reorderQuestionMutation.mutate(props.index + 1)}}
+                  onClick={() => {
+                    reorderQuestionMutation.mutate(props.index + 1);
+                  }}
                 >
                   <CaretDown />
                 </ActionIcon>
