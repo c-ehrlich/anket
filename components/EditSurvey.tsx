@@ -146,7 +146,6 @@ const EditSurvey = (props: Props) => {
             <Title order={3}>Questions</Title>
             <AnimatePresence>
               {survey.data.questions
-                .sort((a, b) => a.order - b.order)
                 .map((question, index) => (
                   <motion.div key={question.id}>
                     <EditSurveyQuestion
