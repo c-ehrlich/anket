@@ -1,17 +1,18 @@
 # Anket Todo (current)
 ## MVP v1
 ### Bugs
+- [ ] Login framer motion stuff is broken for some reason
 - [ ] answer option delete briefly does the wrong thing
   - It's at least in part because it tries to render the nonexistent thing for a fraction of a second
   - maybe I need to keep the questions in state instead or something?
   - something related to the optimistic update and how it interacts with my DOM
+  - It's trying to render [0, 1, 2] but we only have [0, 1, 3] => so the problem is that the outer bit updates slower than the inner bit
 ### DB
 - [ ] implement order on answeroptions
 - [ ] implement reordering on answeroptions
 ### UI
 - [ ] small screen: sidebar in/out should be animated
 - [ ] Change question styling... the drop shadow is barely visible on top/left. maybe a border?
-- [ ] question name and description have no placeholder
 - [ ] Get question framer motion working
 - [ ] make all the disabled stuff in the anket creator not have special mouse cursors
 - [ ] Choose nicer fonts
@@ -58,6 +59,7 @@
 - [x] Create initial logo
 - [x] Create nice logged in user indicator / logout indicator
 - [x] small screen: sidebar should close if we navigate to a new page
+- [x] Sidebar icons and themeing
 ### Create/Edit Survey
 - [x] Use React Query to manage survey in frontend
   - [x] Make /survey/create just a dummy page that creates a survey and redirects to /survey/edit/id, that way create and edit are basically the same!

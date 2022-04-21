@@ -1,30 +1,32 @@
 import { Group, Text, ThemeIcon, UnstyledButton } from '@mantine/core';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { ReactNode } from 'react';
-import { AddressBook, Backpack, Icon } from 'tabler-icons-react';
+import { FilePlus, Home, ListCheck, UserCheck } from 'tabler-icons-react';
 
 const data: NavBarLinkProps[] = [
   {
     label: 'Home',
     color: 'green',
     url: '/',
-    icon: <AddressBook size={16} />,
+    icon: <Home size={16} />,
   },
   {
     label: 'Create Survey',
+    color: 'green',
     url: '/survey/create',
-    icon: <Backpack size={16} />,
+    icon: <FilePlus size={16} />,
   },
   {
     label: 'All Surveys',
+    color: 'green',
     url: '/survey/all',
-    icon: <Backpack size={16} />,
+    icon: <ListCheck size={16} />,
   },
   {
     label: 'My Surveys',
+    color: 'green',
     url: '/survey/mine',
-    icon: <Backpack size={16} />,
+    icon: <UserCheck size={16} />,
   },
 ];
 
