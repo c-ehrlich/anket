@@ -1,4 +1,3 @@
-import { QuestionType } from '@prisma/client';
 import _logger from 'next-auth/lib/logger';
 import logger from '../utils/logger';
 import prisma from '../utils/prisma';
@@ -105,7 +104,7 @@ export async function deleteQuestion({ id }: { id: string }) {
         },
       },
       data: {
-        order: { increment: -1 },
+        order: { decrement: 1 },
       },
     });
 
@@ -168,7 +167,7 @@ export async function reorderQuestion({
           },
         },
         data: {
-          order: { increment: -1 },
+          order: { decrement: 1 },
         },
       });
       if (!shiftedOtherQuestions)
