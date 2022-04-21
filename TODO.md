@@ -1,6 +1,7 @@
 # Anket Todo (current)
 ## MVP v1
 ### Bugs
+- [ ] Theme is not saved across sessions
 - [ ] Login framer motion stuff is broken for some reason
 - [ ] answer option delete briefly does the wrong thing
   - It's at least in part because it tries to render the nonexistent thing for a fraction of a second
@@ -11,6 +12,7 @@
 - [ ] implement order on answeroptions
 - [ ] implement reordering on answeroptions
 ### UI
+- [ ] Make the main theme color green...look up how to theme Mantine
 - [ ] small screen: sidebar in/out should be animated
 - [ ] Change question styling... the drop shadow is barely visible on top/left. maybe a border?
 - [ ] Get question framer motion working
@@ -47,6 +49,7 @@
 - [x] Figure out why login is broken
   - [x] Was just something about some package
 - [x] /surveys/mine: API request fails 
+- [x] Optimistic update on reorder questions produces incorrect data
 ## DB
 - [x] Implement order on questions
 - [x] send questions and answeroptions ordered on DB level

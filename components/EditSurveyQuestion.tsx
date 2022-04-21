@@ -138,7 +138,7 @@ const EditSurveyQuestion = (props: Props) => {
                 ...otherMovedItems,
                 movedQuestion,
                 // everything after the stuff we moved
-                oldSurvey.questions.slice(newOrder)
+                oldSurvey.questions.slice(newOrder + 1)
               ),
             });
           }
@@ -167,7 +167,7 @@ const EditSurveyQuestion = (props: Props) => {
                 movedQuestion,
                 ...otherMovedItems,
                 // everything after the stuff we moved
-                oldSurvey.questions.slice(oldOrder)
+                oldSurvey.questions.slice(oldOrder + 1)
               ),
             });
           }
