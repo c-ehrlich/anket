@@ -2,7 +2,6 @@
 ## MVP v1
 ### Bugs
 ### DB
-- [ ] implement -1/+1 reordering on questions also? (because less db intensive)
 - [ ] implement order on answeroptions
 - [ ] implement reordering on answeroptions
 ### UI
@@ -44,6 +43,7 @@
 - [x] /surveys/mine: API request fails 
 ## DB
 - [x] Implement order on questions
+- [x] send questions and answeroptions ordered on DB level
 ## Chore
 - [x] Update to React 18
 - [x] Update to React Query 4

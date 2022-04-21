@@ -26,7 +26,14 @@ export async function createDefaultSurvey(data: CreateDefaultSurveyInput) {
         include: {
           questions: {
             include: {
-              multipleChoiceOptions: true,
+              multipleChoiceOptions: {
+                orderBy: {
+                  order: 'asc',
+                },
+              },
+            },
+            orderBy: {
+              order: 'asc',
             },
           },
         },
@@ -48,7 +55,14 @@ export async function createDefaultSurvey(data: CreateDefaultSurveyInput) {
       include: {
         questions: {
           include: {
-            multipleChoiceOptions: true,
+            multipleChoiceOptions: {
+              orderBy: {
+                order: 'asc',
+              },
+            },
+          },
+          orderBy: {
+            order: 'asc',
           },
         },
       },
@@ -102,7 +116,20 @@ export async function getSingleSurvey(id: string) {
   try {
     const survey = await prisma.survey.findUnique({
       where: { id },
-      include: { questions: { include: { multipleChoiceOptions: true } } },
+      include: {
+        questions: {
+          include: {
+            multipleChoiceOptions: {
+              orderBy: {
+                order: 'asc',
+              },
+            },
+          },
+          orderBy: {
+            order: 'asc',
+          },
+        },
+      },
     });
     return survey;
   } catch (e: any) {
@@ -121,6 +148,20 @@ export async function updateSurvey({
     const updatedSurvey = await prisma.survey.update({
       where: { id },
       data,
+      include: {
+        questions: {
+          include: {
+            multipleChoiceOptions: {
+              orderBy: {
+                order: 'asc',
+              },
+            },
+          },
+          orderBy: {
+            order: 'asc',
+          },
+        },
+      },
     });
     return updatedSurvey;
   } catch (e: any) {
