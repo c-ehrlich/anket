@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
-import handler from '../../pages/api/hello';
 import logger from '../utils/logger';
 import { MultipleChoiceOptionResponse } from './multipleChoiceOption.schema';
 import {
@@ -72,8 +71,12 @@ export async function editMultipleChoiceOptionHandler(
   if (!id)
     return res.status(400).json({ message: 'failed to get ID from query' });
 
+  logger.info(`id: ${id}`);
+
   // get the data from the request
   const data: Partial<Pick<MultipleChoiceOptionResponse, 'name'>> = req.body;
+
+  logger.info(`data: ${JSON.stringify({...data})}`);
 
   // TODO make sure the user is allowed to modify that mcoption
 
@@ -83,6 +86,8 @@ export async function editMultipleChoiceOptionHandler(
       id,
       data,
     });
+
+  logger.info('edited mco:', editedMultipleChoiceOption);
 
   // return the edited mcoption (invalidate survey in frontend)
   if (!editedMultipleChoiceOption) {

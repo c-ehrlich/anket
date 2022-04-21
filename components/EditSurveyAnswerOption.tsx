@@ -25,14 +25,40 @@ const EditSurveyAnswerOption = (props: Props) => {
   const editMultipleChoiceOptionMutation = useMutation(
     ['survey', props.surveyId],
     (data: Partial<Pick<MultipleChoiceOptionResponse, 'name'>>) => {
-      return axios.patch(`/api/multiplechoiceoption/${option!.id}`, {
-        data,
-      });
+      console.log('---data---');
+      console.log(data);
+      return axios.patch(`/api/multiplechoiceoption/${option!.id}`, data);
     },
     {
       onError: (e: any) => window.alert(e),
-      onMutate: () => {
+      onMutate: (data) => {
         // TODO write me!!
+        queryClient.cancelQueries(['survey', props.surveyId]);
+        const oldSurvey: CreateDefaultSurveyResponse | undefined =
+          queryClient.getQueryData(['survey', props.surveyId]);
+        if (oldSurvey) {
+          queryClient.setQueryData(['survey', props.surveyId], {
+            ...oldSurvey,
+            questions: ([] as QuestionResponse[]).concat(
+              oldSurvey.questions.slice(0, props.questionIndex),
+              {
+                ...oldSurvey.questions[props.questionIndex],
+                multipleChoiceOptions: (
+                  [] as MultipleChoiceOptionResponse[]
+                ).concat(
+                  oldSurvey.questions[
+                    props.questionIndex
+                  ].multipleChoiceOptions.slice(0, props.index),
+                  {...oldSurvey.questions[props.questionIndex].multipleChoiceOptions[props.index], ...data},
+                  oldSurvey.questions[
+                    props.questionIndex
+                  ].multipleChoiceOptions.slice(props.index + 1)
+                ),
+              },
+              oldSurvey.questions.slice(props.questionIndex + 1)
+            ),
+          });
+        }
       },
       onSettled: () =>
         queryClient.invalidateQueries(['survey', props.surveyId]),
@@ -54,7 +80,7 @@ const EditSurveyAnswerOption = (props: Props) => {
           queryClient.setQueryData(['survey', props.surveyId], {
             ...oldSurvey,
             questions: ([] as QuestionResponse[]).concat(
-              oldSurvey.questions.slice(0),
+              oldSurvey.questions.slice(0, props.questionIndex),
               {
                 ...oldSurvey.questions[props.questionIndex],
                 multipleChoiceOptions: (

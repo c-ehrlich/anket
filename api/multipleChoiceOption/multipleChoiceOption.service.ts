@@ -40,7 +40,7 @@ export async function editMultipleChoiceOption({
   data: Partial<Pick<MultipleChoiceOptionResponse, 'name'>>;
 }) {
   try {
-    const multipleChoiceOption = prisma.multipleChoiceOption.update({
+    const multipleChoiceOption = await prisma.multipleChoiceOption.update({
       where: { id },
       data,
     });
