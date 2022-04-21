@@ -146,12 +146,11 @@ export async function reorderQuestion({
 
     if (order > question.order) {
       // make sure the new order isn't higher than the current max order
-      // TODO we can probably just get this from the `questions` query
       const currentMaxOrder = questions.reduce((a, b) =>
         a.order > b.order ? a : b
       ).order;
 
-      if (order > currentMaxOrder || order < 0)
+      if (order > currentMaxOrder)
         // TODO maybe instead just reorder to whatever the max order is?
         throw new Error(
           'You are trying to reorder further than the highest order'
@@ -174,11 +173,12 @@ export async function reorderQuestion({
         throw new Error('failed to reorder other questions');
     } else {
       // make sure the new order isn't below 0
+      // TODO: maybe just change order to 0 instead?
       if (order < 0)
         throw new Error('can not reorder a question to less than 0');
 
       // add 1 to all orders lower than this one
-      const shiftedQuestions = await prisma.question.updateMany({
+      const shiftedOtherQuestions = await prisma.question.updateMany({
         where: {
           surveyId: question.surveyId,
           order: {
@@ -190,7 +190,7 @@ export async function reorderQuestion({
           order: { increment: 1 },
         },
       });
-      if (!shiftedQuestions)
+      if (!shiftedOtherQuestions)
         throw new Error('failed to reorder other questions');
     }
 
@@ -220,5 +220,4 @@ export async function reorderQuestion({
   } catch (e: any) {
     logger.error(e);
   }
-  return [];
 }
