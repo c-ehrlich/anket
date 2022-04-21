@@ -6,9 +6,23 @@ export async function createDefaultMultipleChoiceOption({
 }: {
   questionId: string;
 }) {
+  const currentHighestOrder = await prisma.multipleChoiceOption.aggregate({
+    _max: {
+      order: true,
+    },
+    where: {
+      questionId,
+    },
+  });
+
+  const order =
+    typeof currentHighestOrder._max.order === 'number'
+      ? currentHighestOrder._max.order + 1
+      : 0;
+
   try {
     const multipleChoiceOption = prisma.multipleChoiceOption.create({
-      data: { name: '', questionId },
+      data: { name: '', questionId, order },
     });
 
     return multipleChoiceOption;
