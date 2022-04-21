@@ -1,8 +1,14 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
+import handler from '../../pages/api/hello';
 import logger from '../utils/logger';
 import { MultipleChoiceOptionResponse } from './multipleChoiceOption.schema';
-import { createDefaultMultipleChoiceOption } from './multipleChoiceOption.service';
+import {
+  createDefaultMultipleChoiceOption,
+  deleteMultipleChoiceOption,
+  editMultipleChoiceOption,
+  reorderMultipleChoiceOption,
+} from './multipleChoiceOption.service';
 
 export async function addDefaultMultipleChoiceOptionToQuestion(
   req: NextApiRequest,
@@ -38,19 +44,82 @@ export async function deleteMultipleChoiceOptionHandler(
   req: NextApiRequest,
   res: NextApiResponse<MultipleChoiceOptionResponse | { message: string }>
 ) {
-  return res.status(400).json({ message: 'todo' });
+  // make sure we have an id
+  const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
+  if (!id)
+    return res.status(400).json({ message: 'failed to get ID from query' });
+
+  // TODO make sure the user is allowed to modify that option
+
+  // call a service that deletes the option
+  const deletedOption: MultipleChoiceOptionResponse | undefined =
+    await deleteMultipleChoiceOption({ id });
+
+  // return the deleted option (invalidate survey in frontend)
+  if (!deletedOption)
+    return res
+      .status(400)
+      .json({ message: 'failed to delete multiple choice option' });
+  return res.status(200).json(deletedOption);
 }
 
 export async function editMultipleChoiceOptionHandler(
   req: NextApiRequest,
   res: NextApiResponse<MultipleChoiceOptionResponse | { message: string }>
 ) {
-  return res.status(400).json({ message: 'todo' });
+  // make sure we have a questionid
+  const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
+  if (!id)
+    return res.status(400).json({ message: 'failed to get ID from query' });
+
+  // get the data from the request
+  const data: Partial<Pick<MultipleChoiceOptionResponse, 'name'>> = req.body;
+
+  // TODO make sure the user is allowed to modify that mcoption
+
+  // call a service that edits the mcoption
+  const editedMultipleChoiceOption: MultipleChoiceOptionResponse | undefined =
+    await editMultipleChoiceOption({
+      id,
+      data,
+    });
+
+  // return the edited mcoption (invalidate survey in frontend)
+  if (!editedMultipleChoiceOption) {
+    return res
+      .status(400)
+      .json({ message: 'failed to edit multiple choice option' });
+  }
+  return res.status(200).json(editedMultipleChoiceOption);
 }
 
 export async function reorderMultipleChoiceOptionHandler(
   req: NextApiRequest,
   res: NextApiResponse<MultipleChoiceOptionResponse[] | { message: string }>
 ) {
-  return res.status(400).json({ message: 'todo' });
+  // make sure we have an id
+  const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
+  if (!id)
+    return res.status(400).json({ message: 'failed to get ID from query' });
+
+  // TODO make sure the user is allowed to modify that question
+
+  // get the new order from req
+  const { order } = req.body;
+  if (!order) {
+    res.status(400).send({ message: 'failed to get order from request body' });
+  }
+
+  // call handler
+  const reorderedMultipleChoiceOptions:
+    | MultipleChoiceOptionResponse[]
+    | undefined = await reorderMultipleChoiceOption({ id, order });
+
+  // check if we have the object and return it or an error
+  if (!reorderedMultipleChoiceOptions) {
+    return res
+      .status(400)
+      .json({ message: 'failed to reorder multiple choice option' });
+  }
+  return res.status(200).json(reorderedMultipleChoiceOptions);
 }

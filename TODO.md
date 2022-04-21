@@ -32,6 +32,8 @@
 - [ ] Debounce one text input axios request
 - [ ] Debounce all text input axios requests
 ### Maybe
+- [ ] Make type names shorter
+- [ ] DRY: make getting the ID in controllers a middleware? Then we can just assume that it's on the request
 - [ ] Creating a survey also creates the first question, creating a question also creates the first answer option
 - [ ] Type React Query errors (is it just the type of { message: string? }) probably not...look at one and figure it out
 
