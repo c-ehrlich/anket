@@ -159,6 +159,28 @@ const EditSurveyQuestion = (props: Props) => {
     }
   );
 
+  const createMultipleChoiceOptionMutation = useMutation(
+    ['survey', props.surveyId],
+    () => {
+      return axios.post('/api/multiplechoiceoption', {
+        questionId: survey.data?.questions[props.index].id,
+      });
+    },
+    {
+      onError: (e: any) => window.alert(e),
+      onMutate: () => {
+        // TODO: for the time being we're not doing optimistic updates here because
+        // we're using the id for the element key in the frontend
+        // and we don't have the id until we get a response from the server
+        // we can't just use a bogus id because it messes with framer-motion
+        // (or maybe we can? see if there is a way...)
+      },
+      onSettled: () => {
+        queryClient.invalidateQueries(['survey', props.surveyId]);
+      },
+    }
+  );
+
   return (
     <>
       {survey.isLoading ? (
@@ -226,11 +248,17 @@ const EditSurveyQuestion = (props: Props) => {
                       <EditSurveyAnswerOption
                         key={mcOption.id}
                         index={mcOption.order}
+                        questionIndex={props.index}
                         questionId={survey.data.questions[props.index].id}
+                        surveyId={props.surveyId}
                       />
                     )
                   )}
-                  <Button>Add Answer Option</Button>
+                  <Button
+                    onClick={() => createMultipleChoiceOptionMutation.mutate()}
+                  >
+                    Add Answer Option
+                  </Button>
                 </>
               ) : survey.data.questions[props.index].questionType ===
                 'textResponse' ? (
@@ -260,9 +288,7 @@ const EditSurveyQuestion = (props: Props) => {
                 />
               ) : survey.data.questions[props.index].questionType ===
                 'yesNoBoolean' ? (
-                <RadioGroup
-                  orientation='vertical'
-                >
+                <RadioGroup orientation='vertical'>
                   <Radio value='yes' label='Yes' disabled />
                   <Radio value='no' label='No' disabled />
                 </RadioGroup>

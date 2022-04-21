@@ -9,9 +9,9 @@
 - [ ] Change question styling... the drop shadow is barely visible on top/left. maybe a border?
 - [ ] question name and description have no placeholder
 - [ ] Get question framer motion working
+- [ ] Choose nicer fonts
 ### Create/Edit Survey
 - [ ] Get it working basically
-- [ ] Create routes for all the main survey creation and modification CRUD
 - [ ] Keep the survey hidden ('complete' column in schema/survey?) until the user marks it as done?
 - [ ] Give surveys optional header images
   - [ ] Figure out how image upload works
@@ -65,8 +65,10 @@
 - [x] implement arbitrary reordering on questions
 - [x] Get answer options into the UI
 - [x] Create answer options
-- [ ] Create answer option CRUD (backend)
-- [ ] Create answer option CRUD (frontend)
+- [x] Create answer option CRUD (backend)
+- [x] Create answer option CRUD (frontend)
+- [x] Delete answer option CRUD (backend)
+- [x] Delete answer option CRUD (frontened)
 
 ### Take Survey
 ### Misc Backend Stuff
