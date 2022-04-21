@@ -92,3 +92,95 @@ export async function deleteMultipleChoiceOptionsForQuestion({
     logger.error(e);
   }
 }
+
+export async function reorderMultipleChoiceOption({
+  id,
+  order,
+}: {
+  id: string;
+  order: number;
+}) {
+  try {
+    const option = await prisma.multipleChoiceOption.findUnique({
+      where: { id },
+    });
+    if (!option) throw new Error(`Could not find option ${id}`);
+
+    // if the orders are the same, we don't need to do anything
+    if (order === option.order) {
+      const unchangedOptions = await prisma.multipleChoiceOption.findMany({
+        where: { questionId: option.questionId },
+      });
+      return unchangedOptions;
+    }
+
+    // TODO reimplement this function without this extra db call, should be possible...
+    const options = await prisma.multipleChoiceOption.findMany({
+      where: { questionId: option.questionId },
+    });
+    if (!options) throw new Error('Could not find all the options');
+
+    if (order > option.order) {
+      // make sure the new order isn't higher than the current max order
+      const currentMaxOrder = options.reduce((a, b) =>
+        a.order > b.order ? a : b
+      ).order;
+
+      if (order > currentMaxOrder)
+        // TODO maybe instead just reorder to whatever the max order is?
+        throw new Error(
+          'You are trying to reorder further than the highest order'
+        );
+
+      const shiftedOtherOptions = await prisma.multipleChoiceOption.updateMany({
+        where: {
+          questionId: option.questionId,
+          order: {
+            gt: option.order,
+            lte: order,
+          },
+        },
+        data: {
+          order: { decrement: 1 },
+        },
+      });
+      if (!shiftedOtherOptions)
+        throw new Error('failed to reorder other options');
+    } else {
+      // make sure the new order isn't below 0
+      // TODO: maybe just change the order to 0 instead?
+      if (order < 0) throw new Error('can not reorder to less than 0');
+
+      // add 1 to all orders lower than this one
+      const shiftedOtherOptions = await prisma.multipleChoiceOption.updateMany({
+        where: {
+          questionId: option.questionId,
+          order: {
+            lt: option.order,
+            gte: order,
+          },
+        },
+        data: {
+          order: { increment: 1 },
+        },
+      });
+      if (!shiftedOtherOptions)
+        throw new Error('failed to reorder other options');
+    }
+
+    // set this one to the new order
+    const shiftedOption = await prisma.multipleChoiceOption.update({
+      where: { id: option.id },
+      data: { order },
+    });
+    if (!shiftedOption) throw new Error('failed to reorder the main option');
+
+    // return _all_ options for that question
+    const allOptions = await prisma.multipleChoiceOption.findMany({
+      where: { questionId: option.questionId },
+    });
+    return allOptions;
+  } catch (e: any) {
+    logger.error(e);
+  }
+}
