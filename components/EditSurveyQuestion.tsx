@@ -264,10 +264,10 @@ const EditSurveyQuestion = (props: Props) => {
                 <>
                   <Title order={4}>Answer Options</Title>
                   {survey.data.questions[props.index].multipleChoiceOptions.map(
-                    (mcOption) => (
+                    (mcOption, index) => (
                       <EditSurveyAnswerOption
                         key={mcOption.id}
-                        index={mcOption.order}
+                        index={index}
                         questionIndex={props.index}
                         questionId={survey.data.questions[props.index].id}
                         surveyId={props.surveyId}

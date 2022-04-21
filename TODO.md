@@ -1,16 +1,10 @@
 # Anket Todo (current)
 ## MVP v1
 ### Bugs
-- [ ] Theme is not saved across sessions
+- [ ] Theme is not saved on page reload (put it in localstorage?)
 - [ ] Login framer motion stuff is broken for some reason
-- [ ] answer option delete briefly does the wrong thing
-  - It's at least in part because it tries to render the nonexistent thing for a fraction of a second
-  - maybe I need to keep the questions in state instead or something?
-  - something related to the optimistic update and how it interacts with my DOM
-  - It's trying to render [0, 1, 2] but we only have [0, 1, 3] => so the problem is that the outer bit updates slower than the inner bit
+
 ### DB
-- [ ] implement order on answeroptions
-- [ ] implement reordering on answeroptions
 ### UI
 - [ ] Make the main theme color green...look up how to theme Mantine
 - [ ] small screen: sidebar in/out should be animated
@@ -18,15 +12,20 @@
 - [ ] Get question framer motion working
 - [ ] make all the disabled stuff in the anket creator not have special mouse cursors
 - [ ] Choose nicer fonts
+- [ ] Get a theme going... green as the main accent color?
 ### Create/Edit Survey
-- [ ] Get it working basically
+- [ ] Submitting / error checking... what do we want to make sure of before submitting a survey?
+  - [ ] No empty questions (last question can be empty, just trim it)
+  - [ ] No empty answer options (last answer option can be empty, just trim it)
+  - [ ] After trimming empty stuff at the end, nothing should have a title that is equal to the empty string
+  - [ ] See how the mantine forms stuff works...
 - [ ] Keep the survey hidden ('complete' column in schema/survey?) until the user marks it as done?
 - [ ] Give surveys optional header images
   - [ ] Figure out how image upload works
   - [ ] Where can we store them? What about in deployment? S3?
 ### Taking a survey
 - [ ] create an interaction, then redirect
-- [ ] figure out how to deal with the fact that we need to CREATE a bunch of stuff while the survey is being filled out
+- [ ] figure out how to deal with the fact that we need to CREATE a bunch of stuff while the survey is being filled out (mutations...)
 ### Survey Responses
 - [ ] Get count of responses
 - [ ] For multiple choice, see what percentage of people chose each
@@ -50,6 +49,7 @@
   - [x] Was just something about some package
 - [x] /surveys/mine: API request fails 
 - [x] Optimistic update on reorder questions produces incorrect data
+- [x] answer option delete briefly causes the app to render the wrong state
 ## DB
 - [x] Implement order on questions
 - [x] send questions and answeroptions ordered on DB level
@@ -82,6 +82,7 @@
 - [x] Edit answer option text CRUD (frontend)
 - [x] Move answer option CRUD (backend)
 - [x] Move answer option CRUD (frontend)
+- [x] Finish basic survey editing functionality
 
 ### Take Survey
 ### Misc Backend Stuff
