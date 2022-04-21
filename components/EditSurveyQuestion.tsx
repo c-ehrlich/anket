@@ -181,6 +181,7 @@ const EditSurveyQuestion = (props: Props) => {
                 />
               </Group>
               <Input
+                placeholder='Question'
                 value={survey.data.questions[props.index].question}
                 onChange={(e: React.FormEvent<HTMLInputElement>) => {
                   editQuestionMutation.mutate({
@@ -189,6 +190,7 @@ const EditSurveyQuestion = (props: Props) => {
                 }}
               />
               <Input
+                placeholder='Question details (optional)'
                 value={survey.data.questions[props.index].details}
                 onChange={(e: React.FormEvent<HTMLInputElement>) => {
                   editQuestionMutation.mutate({
