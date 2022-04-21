@@ -30,7 +30,14 @@ const EditSurveyQuestion = (props: Props) => {
 
   const editQuestionMutation = useMutation(
     ['survey', props.surveyId],
-    (data: Partial<QuestionResponse>) => {
+    (
+      data: Partial<
+        Pick<
+          QuestionResponse,
+          'question' | 'details' | 'isRequired' | 'questionType'
+        >
+      >
+    ) => {
       return axios.patch(
         `/api/question/${survey.data?.questions[props.index].id}`,
         data
@@ -38,7 +45,21 @@ const EditSurveyQuestion = (props: Props) => {
     },
     {
       onError: (e: any) => window.alert(e),
-      onMutate: () => {},
+      onMutate: (data) => {
+        queryClient.cancelQueries(['survey', props.surveyId]);
+        const oldSurvey: CreateDefaultSurveyResponse | undefined =
+          queryClient.getQueryData(['survey', props.surveyId]);
+        if (oldSurvey) {
+          queryClient.setQueryData(['survey', props.surveyId], {
+            ...oldSurvey,
+            questions: ([] as QuestionResponse[]).concat(
+              oldSurvey.questions.slice(0, props.index),
+              { ...oldSurvey.questions[props.index], ...data },
+              oldSurvey.questions.slice(props.index + 1)
+            ),
+          });
+        }
+      },
       onSettled: () => {
         queryClient.invalidateQueries(['survey', props.surveyId]);
       },
@@ -63,7 +84,7 @@ const EditSurveyQuestion = (props: Props) => {
             ...oldSurvey,
             questions: ([] as QuestionResponse[]).concat(
               oldSurvey.questions.slice(0, props.index),
-              oldSurvey.questions.slice(3)
+              oldSurvey.questions.slice(props.index + 1)
             ),
           });
         }
@@ -244,7 +265,6 @@ const EditSurveyQuestion = (props: Props) => {
                   <Title order={4}>Answer Options</Title>
                   {survey.data.questions[props.index].multipleChoiceOptions.map(
                     (mcOption) => (
-                      // TODO put a motion div around this!
                       <EditSurveyAnswerOption
                         key={mcOption.id}
                         index={mcOption.order}

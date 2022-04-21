@@ -98,7 +98,7 @@ export async function reorderQuestionHandler(
 
   // get the new order from req
   const { order } = req.body;
-  if (!order)
+  if (!order && order !== 0)
     res.status(400).send({ message: 'failed to get order from body' });
 
   // call handler

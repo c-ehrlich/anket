@@ -1,6 +1,10 @@
 # Anket Todo (current)
 ## MVP v1
 ### Bugs
+- [ ] answer option delete briefly does the wrong thing
+  - It's at least in part because it tries to render the nonexistent thing for a fraction of a second
+  - maybe I need to keep the questions in state instead or something?
+  - something related to the optimistic update and how it interacts with my DOM
 ### DB
 - [ ] implement order on answeroptions
 - [ ] implement reordering on answeroptions
@@ -9,6 +13,7 @@
 - [ ] Change question styling... the drop shadow is barely visible on top/left. maybe a border?
 - [ ] question name and description have no placeholder
 - [ ] Get question framer motion working
+- [ ] make all the disabled stuff in the anket creator not have special mouse cursors
 - [ ] Choose nicer fonts
 ### Create/Edit Survey
 - [ ] Get it working basically
@@ -26,8 +31,7 @@
   - [ ] Exclude common words?
   - [ ] Or just open a modal that contains all the responses?
 ### Queries
-- [ ] Do optimistic updates on one text input axios request
-- [ ] Do optimistic updates on all text input axios requests
+- [ ] I'll probably need to go back to state for every text box in order to be able to debounce, right? because otherwise we don't even get to the optimistic update...
 - [ ] Debounce one text input axios request
 - [ ] Debounce all text input axios requests
 ### Maybe
@@ -69,6 +73,10 @@
 - [x] Create answer option CRUD (frontend)
 - [x] Delete answer option CRUD (backend)
 - [x] Delete answer option CRUD (frontened)
+- [x] Edit answer option text CRUD (backend)
+- [x] Edit answer option text CRUD (frontend)
+- [x] Move answer option CRUD (backend)
+- [x] Move answer option CRUD (frontend)
 
 ### Take Survey
 ### Misc Backend Stuff

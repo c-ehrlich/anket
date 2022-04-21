@@ -149,7 +149,6 @@ const EditSurvey = (props: Props) => {
                 .sort((a, b) => a.order - b.order)
                 .map((question, index) => (
                   <motion.div key={question.id}>
-                    {console.log(question.id, question.order)}
                     <EditSurveyQuestion
                       surveyId={survey.data.id}
                       index={index}
