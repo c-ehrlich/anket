@@ -31,21 +31,19 @@ export async function createDefaultMultipleChoiceOption({
   }
 }
 
-export async function updateMultipleChoiceOptionName({
+export async function editMultipleChoiceOptionName({
   id,
-  name,
+  data,
 }: {
   id: string;
-  name: string;
+  data: {
+    name: string;
+  };
 }) {
   try {
     const multipleChoiceOption = prisma.multipleChoiceOption.update({
-      where: {
-        id,
-      },
-      data: {
-        name,
-      },
+      where: { id },
+      data,
     });
 
     return multipleChoiceOption;
@@ -56,7 +54,22 @@ export async function updateMultipleChoiceOptionName({
 
 export async function deleteMultipleChoiceOption({ id }: { id: string }) {
   try {
-    const deletedOption = prisma.multipleChoiceOption.delete({ where: { id } });
+    const deletedOption = await prisma.multipleChoiceOption.delete({
+      where: { id },
+    });
+
+    // change order of all multipleChoiceOptions after this one
+    await prisma.multipleChoiceOption.updateMany({
+      where: {
+        questionId: (await deletedOption).questionId,
+        order: {
+          gt: deletedOption.order,
+        },
+      },
+      data: {
+        order: { decrement: 1 },
+      },
+    });
 
     return deletedOption;
   } catch (e) {

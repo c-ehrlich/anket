@@ -17,6 +17,10 @@ export async function addDefaultMultipleChoiceOptionToQuestion(
   }
 
   const { questionId }: { questionId: string } = req.body;
+  if (!questionId) {
+    logger.error('no questionId');
+    return res.status(400).json({ message: 'No questionId' });
+  }
 
   const multipleChoiceOption = await createDefaultMultipleChoiceOption({
     questionId,
@@ -26,6 +30,27 @@ export async function addDefaultMultipleChoiceOptionToQuestion(
     return res
       .status(400)
       .json({ message: 'failed to create multiple choice option' });
-  
+
   return res.status(201).json(multipleChoiceOption);
+}
+
+export async function deleteMultipleChoiceOptionHandler(
+  req: NextApiRequest,
+  res: NextApiResponse<MultipleChoiceOptionResponse | { message: string }>
+) {
+  return res.status(400).json({ message: 'todo' });
+}
+
+export async function editMultipleChoiceOptionHandler(
+  req: NextApiRequest,
+  res: NextApiResponse<MultipleChoiceOptionResponse | { message: string }>
+) {
+  return res.status(400).json({ message: 'todo' });
+}
+
+export async function reorderMultipleChoiceOptionHandler(
+  req: NextApiRequest,
+  res: NextApiResponse<MultipleChoiceOptionResponse[] | { message: string }>
+) {
+  return res.status(400).json({ message: 'todo' });
 }
