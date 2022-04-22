@@ -14,6 +14,7 @@ import {
   Textarea,
   Title,
 } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import Link from 'next/link';
 import React from 'react';
 import { AlertCircle } from 'tabler-icons-react';
@@ -25,6 +26,7 @@ type Props = {
 
 const PreviewSurvey = (props: Props) => {
   const survey = useSurvey(props.surveyId);
+  const xs = useMediaQuery('(max-width: 576px)')
 
   return survey.isLoading ? (
     <div>Loading...</div>
@@ -91,6 +93,7 @@ const PreviewSurvey = (props: Props) => {
               <SegmentedControl
                 fullWidth
                 defaultValue='-1'
+                orientation={xs ? 'vertical' : 'horizontal'}
                 data={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']}
               />
             ) : (

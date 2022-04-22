@@ -10,14 +10,14 @@ import {
   RadioGroup,
   SegmentedControl,
   Stack,
+  Textarea,
   Title,
 } from '@mantine/core';
-import { QuestionType } from '@prisma/client';
+import { useMediaQuery } from '@mantine/hooks';
 import axios from 'axios';
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { CaretDown, CaretUp, Trash } from 'tabler-icons-react';
-import { object } from 'zod';
 import { QuestionResponse } from '../api/question/question.schema';
 import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
 import useSurvey from '../hooks/useSurvey';
@@ -29,6 +29,8 @@ type Props = { index: number; surveyId: string };
 const EditSurveyQuestion = (props: Props) => {
   const queryClient = useQueryClient();
   const survey = useSurvey(props.surveyId);
+
+  const xs = useMediaQuery('(max-width: 576px)');
 
   const editQuestionMutation = useMutation(
     ['survey', props.surveyId],
@@ -254,7 +256,11 @@ const EditSurveyQuestion = (props: Props) => {
                 data={Object.values(QuestionTypeString)}
                 // The 'value' and 'onChange' are like this due to limitations in Prisma's enums
                 // we're mapping the values to a separate object which contains the 'nice' string names
-                value={QuestionTypeString[survey.data.questions[props.index].questionType]}
+                value={
+                  QuestionTypeString[
+                    survey.data.questions[props.index].questionType
+                  ]
+                }
                 onChange={(e: React.FormEvent<HTMLSelectElement>) => {
                   editQuestionMutation.mutate({
                     questionType: (
@@ -262,8 +268,7 @@ const EditSurveyQuestion = (props: Props) => {
                         QuestionTypeString
                       ) as (keyof typeof QuestionTypeString)[]
                     ).find(
-                      (key) =>
-                        QuestionTypeString[key] === e.currentTarget.value
+                      (key) => QuestionTypeString[key] === e.currentTarget.value
                     ),
                   });
                 }}
@@ -293,7 +298,7 @@ const EditSurveyQuestion = (props: Props) => {
                 </>
               ) : survey.data.questions[props.index].questionType ===
                 'textResponse' ? (
-                <Input
+                <Textarea
                   disabled
                   placeholder='Respondents will be able to type whatever they want'
                 />
@@ -303,6 +308,7 @@ const EditSurveyQuestion = (props: Props) => {
                   disabled
                   fullWidth
                   defaultValue='-1'
+                  orientation={xs ? 'vertical' : 'horizontal'}
                   data={[
                     '0',
                     '1',
