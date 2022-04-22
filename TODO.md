@@ -5,7 +5,6 @@
 
 ### DB
 ### UI
-- [ ] Make the main theme color green...look up how to theme Mantine
 - [ ] small screen: sidebar in/out should be animated
 - [ ] Get question framer motion working
 - [ ] make all the disabled stuff in the anket creator not have special mouse cursors
@@ -64,6 +63,7 @@
 - [x] small screen: sidebar should close if we navigate to a new page
 - [x] Sidebar icons and themeing
 - [x] Add border to question cards
+- [x] make green color scheme
 ### Create/Edit Survey
 - [x] Use React Query to manage survey in frontend
   - [x] Make /survey/create just a dummy page that creates a survey and redirects to /survey/edit/id, that way create and edit are basically the same!
@@ -85,7 +85,7 @@
 - [x] Move answer option CRUD (frontend)
 - [x] Finish basic survey editing functionality
 - [x] Use string names for question types
-
+- [x] Create survey preview page (initial)
 ### Take Survey
 ### Misc Backend Stuff
 - [x] clone the logger from tom does tech youtube clone, and re-convert every consoleDOTlog/error to that logger

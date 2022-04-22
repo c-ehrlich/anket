@@ -8,6 +8,7 @@ import {
   Burger,
   ColorScheme,
   ColorSchemeProvider,
+  Global,
   Group,
   Header,
   Image,
@@ -26,7 +27,7 @@ import { useLocalStorage } from '@mantine/hooks';
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const [navbarIsOpen, setNavbarIsOpen] = useState(false);
   const queryClient = new QueryClient();
-  
+
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
     key: 'anket-color-scheme',
     defaultValue: 'light',
@@ -54,7 +55,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
           <MantineProvider
             withGlobalStyles
             withNormalizeCSS
-            theme={{ colorScheme }}
+            theme={{ colorScheme, primaryColor: 'green' }}
           >
             <AppShell
               navbarOffsetBreakpoint='sm'
