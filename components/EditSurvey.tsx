@@ -1,5 +1,4 @@
-import { Button, Checkbox, Group, Input, Stack, Title } from '@mantine/core';
-import { Question } from '@prisma/client';
+import { Button, Checkbox, Group, Stack, TextInput, Title } from '@mantine/core';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
@@ -7,7 +6,6 @@ import React, { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import {
   QuestionResponse,
-  questionResponseSchema,
 } from '../api/question/question.schema';
 import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
 import useSurvey from '../hooks/useSurvey';
@@ -117,17 +115,20 @@ const EditSurvey = (props: Props) => {
         'Not yet fetched...'
       ) : (
         <Stack style={{ marginBottom: '64px' }}>
-          <Title order={2}>Creating survey</Title>
-          <Input
-            placeholder='Survey name'
+          {/* <Title order={2}>Creating survey</Title> */}
+          <TextInput
+            label='Survey Name'
+            placeholder='The name for your survey'
+            required
             value={survey.data.name}
             onChange={(e: React.FormEvent<HTMLInputElement>) => {
               editSurveyMutation.mutate({ name: e.currentTarget.value });
             }}
           />
 
-          <Input
-            placeholder='Survey description'
+          <TextInput
+            label='Survey Description'
+            placeholder='(optional)'
             value={survey.data.description}
             onChange={(e: React.FormEvent<HTMLInputElement>) => {
               editSurveyMutation.mutate({ description: e.currentTarget.value });

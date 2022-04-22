@@ -1,4 +1,4 @@
-import { ActionIcon, Checkbox, Group, Input, Radio } from '@mantine/core';
+import { ActionIcon, Checkbox, Group, Radio, TextInput } from '@mantine/core';
 import React from 'react';
 import useSurvey from '../hooks/useSurvey';
 import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
@@ -240,7 +240,7 @@ const EditSurveyAnswerOption = (props: Props) => {
           ) : question!.questionType === 'multipleChoiceSingle' ? (
             <Radio disabled value='' />
           ) : null}
-          <Input
+          <TextInput
             style={{ flexGrow: 1 }}
             placeholder='Answer Text'
             value={option!.name}

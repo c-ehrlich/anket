@@ -3,7 +3,6 @@ import {
   Button,
   Checkbox,
   Group,
-  Input,
   NativeSelect,
   Paper,
   Radio,
@@ -11,6 +10,7 @@ import {
   SegmentedControl,
   Stack,
   Textarea,
+  TextInput,
   Title,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
@@ -232,8 +232,10 @@ const EditSurveyQuestion = (props: Props) => {
                   }}
                 />
               </Group>
-              <Input
-                placeholder='Question'
+              <TextInput
+                label='Question'
+                required
+                placeholder='Your question text'
                 value={survey.data.questions[props.index].question}
                 onChange={(e: React.FormEvent<HTMLInputElement>) => {
                   editQuestionMutation.mutate({
@@ -241,8 +243,9 @@ const EditSurveyQuestion = (props: Props) => {
                   });
                 }}
               />
-              <Input
-                placeholder='Question details (optional)'
+              <TextInput
+                label='Details'
+                placeholder='(optional)'
                 value={survey.data.questions[props.index].details}
                 onChange={(e: React.FormEvent<HTMLInputElement>) => {
                   editQuestionMutation.mutate({

@@ -2,6 +2,7 @@
 ## MVP v1
 ### Bugs
 - [ ] Login framer motion stuff is broken for some reason
+- [ ] Text inputs: cursor jumps to end on every input (because we're using server response, not state for tracking it?)
 
 ### DB
 ### UI
@@ -87,6 +88,7 @@
 - [x] Use string names for question types
 - [x] Create survey preview page (initial)
 - [x] Connect 'Create Survey' and 'Preview Survey' pages
+- [x] Change Inputs to TextInputs
 ### Take Survey
 ### Misc Backend Stuff
 - [x] clone the logger from tom does tech youtube clone, and re-convert every consoleDOTlog/error to that logger
