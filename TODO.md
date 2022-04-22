@@ -12,6 +12,7 @@
 - [ ] Choose nicer fonts
 - [ ] Get a theme going... green as the main accent color?
 - [ ] Question Type: should be 'real' words
+- [ ] Make side margins about 1/2 of what they currently are on XS screens
 ### Create/Edit Survey
 - [ ] Submitting / error checking... what do we want to make sure of before submitting a survey?
   - [ ] No empty questions (last question can be empty, just trim it)
@@ -89,6 +90,7 @@
 - [x] Create survey preview page (initial)
 - [x] Connect 'Create Survey' and 'Preview Survey' pages
 - [x] Change Inputs to TextInputs
+- [x] Create neat Public/Private badge
 ### Take Survey
 ### Misc Backend Stuff
 - [x] clone the logger from tom does tech youtube clone, and re-convert every consoleDOTlog/error to that logger

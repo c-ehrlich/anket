@@ -3,7 +3,6 @@ import {
   Badge,
   Button,
   Checkbox,
-  Chip,
   Group,
   Paper,
   Radio,
@@ -17,7 +16,7 @@ import {
 import { useMediaQuery } from '@mantine/hooks';
 import Link from 'next/link';
 import React from 'react';
-import { AlertCircle } from 'tabler-icons-react';
+import { AlertCircle, Eye, EyeOff } from 'tabler-icons-react';
 import useSurvey from '../hooks/useSurvey';
 
 type Props = {
@@ -26,7 +25,7 @@ type Props = {
 
 const PreviewSurvey = (props: Props) => {
   const survey = useSurvey(props.surveyId);
-  const xs = useMediaQuery('(max-width: 576px)')
+  const xs = useMediaQuery('(max-width: 576px)');
 
   return survey.isLoading ? (
     <div>Loading...</div>
@@ -43,11 +42,29 @@ const PreviewSurvey = (props: Props) => {
       </Alert>
       <Title order={2}>{survey.data.name}</Title>
       {survey.data.description !== '' && <Text>{survey.data.description}</Text>}
-      {survey.data.isPublic ? (
-        <Chip checked={true}>Public</Chip>
-      ) : (
-        <Chip checked={false}>Private</Chip>
-      )}
+      <div>
+        {survey.data.isPublic ? (
+          <Badge
+            size='lg'
+            variant='filled'
+            leftSection={
+              <Eye size={22} style={{ position: 'relative', top: '4px' }} />
+            }
+          >
+            Public
+          </Badge>
+        ) : (
+          <Badge
+            size='lg'
+            variant='outline'
+            leftSection={
+              <EyeOff size={22} style={{ position: 'relative', top: '4px' }} />
+            }
+          >
+            Private
+          </Badge>
+        )}
+      </div>
       {survey.data.questions.map((question, index) => (
         <Paper key={question.id} shadow='lg' radius='md' p='md' withBorder>
           <Stack>
