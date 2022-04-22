@@ -1,6 +1,7 @@
 import {
   ActionIcon,
   Avatar,
+  Badge,
   Card,
   Chip,
   Group,
@@ -13,7 +14,7 @@ import {
 import { useSession } from 'next-auth/react';
 import React from 'react';
 import { SurveyWithAuthor } from '../types/survey';
-import { Check, Edit } from 'tabler-icons-react';
+import { AlertTriangle, Check, Edit } from 'tabler-icons-react';
 import Link from 'next/link';
 
 type Props = {
@@ -24,9 +25,9 @@ const SurveyHero = (props: Props) => {
   const { data: session } = useSession();
   const theme = useMantineTheme();
 
-  if (!session) return null
+  if (!session) return null;
 
-  if (!session.user) return 'no user'
+  if (!session.user) return 'no user';
 
   console.log(session.user.id);
 
@@ -43,23 +44,39 @@ const SurveyHero = (props: Props) => {
                 {props.survey.name !== '' ? props.survey.name : '(no name)'}
               </div>
               {props.survey.author.id === session?.user?.id ? (
-                <>{props.survey.isCompleted ? <Chip
-                  color='green'
-                  variant='filled'
-                  checked
-                >
-                  Created
-                </Chip> : <Chip
-                color='green'
-                variant='filled'
-                checked={false}
-              >
-                In Progress
-              </Chip>}</>
+                <>
+                  {props.survey.isCompleted ? (
+                    <Badge
+                    size='lg'
+                    variant='outline'
+                    leftSection={
+                      <Check
+                        size={22}
+                        style={{ position: 'relative', top: '4px' }}
+                      />
+                    }
+                  >
+                    Created
+                  </Badge>
+                  ) : (
+                    <Badge
+                      size='lg'
+                      variant='outline'
+                      color='yellow'
+                      leftSection={
+                        <AlertTriangle
+                          size={22}
+                          style={{ position: 'relative', top: '4px' }}
+                        />
+                      }
+                    >
+                      Incomplete
+                    </Badge>
+                  )}
+                </>
               ) : (
                 <div>TODO check if user has taken this</div>
               )}
-
             </Group>
           </Title>
           {props.survey.author.id === session?.user?.id && (

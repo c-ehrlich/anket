@@ -91,6 +91,7 @@
 - [x] Connect 'Create Survey' and 'Preview Survey' pages
 - [x] Change Inputs to TextInputs
 - [x] Create neat Public/Private badge
+- [x] Create neat In Created / Incomplete badge
 ### Take Survey
 ### Misc Backend Stuff
 - [x] clone the logger from tom does tech youtube clone, and re-convert every consoleDOTlog/error to that logger

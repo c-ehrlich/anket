@@ -103,6 +103,8 @@ export async function getUserSurveyPreviews(authorId: string) {
       id: true,
       name: true,
       description: true,
+      isCompleted: true,
+      isPublic: true,
     },
     orderBy: {
       updatedAt: 'desc',
