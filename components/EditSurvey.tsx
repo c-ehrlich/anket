@@ -174,13 +174,6 @@ const EditSurvey = (props: Props) => {
             </Button>
             <Button>Complete</Button>
           </Group>
-
-          <div>
-            cancel button that deletes the whole survey after a modal
-            confirmation, and save button that invalidates the survey so we
-            fetch it again, and takes the user (somewhere?)
-          </div>
-          <div>{JSON.stringify(survey.data)}</div>
         </Stack>
       )}
     </>
