@@ -2,6 +2,7 @@ import {
   ActionIcon,
   Avatar,
   Card,
+  Chip,
   Group,
   Image,
   Stack,
@@ -12,7 +13,7 @@ import {
 import { useSession } from 'next-auth/react';
 import React from 'react';
 import { SurveyWithAuthor } from '../types/survey';
-import { Edit } from 'tabler-icons-react';
+import { Check, Edit } from 'tabler-icons-react';
 import Link from 'next/link';
 
 type Props = {
@@ -23,6 +24,12 @@ const SurveyHero = (props: Props) => {
   const { data: session } = useSession();
   const theme = useMantineTheme();
 
+  if (!session) return null
+
+  if (!session.user) return 'no user'
+
+  console.log(session.user.id);
+
   return (
     <Card shadow='sm' p='lg'>
       <Card.Section>
@@ -31,7 +38,29 @@ const SurveyHero = (props: Props) => {
       <Stack style={{ marginTop: theme.spacing.sm }}>
         <Group style={{ justifyContent: 'space-between' }}>
           <Title order={3}>
-            {props.survey.name !== '' ? props.survey.name : '(no name)'}
+            <Group>
+              <div>
+                {props.survey.name !== '' ? props.survey.name : '(no name)'}
+              </div>
+              {props.survey.author.id === session?.user?.id ? (
+                <>{props.survey.isCompleted ? <Chip
+                  color='green'
+                  variant='filled'
+                  checked
+                >
+                  Created
+                </Chip> : <Chip
+                color='green'
+                variant='filled'
+                checked={false}
+              >
+                In Progress
+              </Chip>}</>
+              ) : (
+                <div>TODO check if user has taken this</div>
+              )}
+
+            </Group>
           </Title>
           {props.survey.author.id === session?.user?.id && (
             <Link href={`/survey/edit/${props.survey.id}`} passHref>
