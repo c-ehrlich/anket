@@ -86,6 +86,7 @@
 - [x] Finish basic survey editing functionality
 - [x] Use string names for question types
 - [x] Create survey preview page (initial)
+- [x] Connect 'Create Survey' and 'Preview Survey' pages
 ### Take Survey
 ### Misc Backend Stuff
 - [x] clone the logger from tom does tech youtube clone, and re-convert every consoleDOTlog/error to that logger

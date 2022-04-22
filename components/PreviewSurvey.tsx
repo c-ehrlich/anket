@@ -33,11 +33,11 @@ const PreviewSurvey = (props: Props) => {
   ) : !survey.isFetched ? (
     <div>Not yet fetched...</div>
   ) : (
-    <Stack>
+    <Stack style={{ marginBottom: '64px' }}>
       <Alert icon={<AlertCircle size={16} />} title='Final Check!'>
         Please review your survey before publishing it. <br />
-        (Don&apos;t worry, you can always make changes to your survey even after it
-        has been published)
+        (Don&apos;t worry, you can always make changes to your survey even after
+        it has been published)
       </Alert>
       <Title order={2}>{survey.data.name}</Title>
       {survey.data.description !== '' && <Text>{survey.data.description}</Text>}

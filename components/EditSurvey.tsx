@@ -116,7 +116,7 @@ const EditSurvey = (props: Props) => {
       ) : !survey.isFetched ? (
         'Not yet fetched...'
       ) : (
-        <Stack>
+        <Stack style={{ marginBottom: '64px' }}>
           <Title order={2}>Creating survey</Title>
           <Input
             placeholder='Survey name'
@@ -145,15 +145,11 @@ const EditSurvey = (props: Props) => {
           <Stack>
             <Title order={3}>Questions</Title>
             <AnimatePresence>
-              {survey.data.questions
-                .map((question, index) => (
-                  <motion.div key={question.id}>
-                    <EditSurveyQuestion
-                      surveyId={survey.data.id}
-                      index={index}
-                    />
-                  </motion.div>
-                ))}
+              {survey.data.questions.map((question, index) => (
+                <motion.div key={question.id}>
+                  <EditSurveyQuestion surveyId={survey.data.id} index={index} />
+                </motion.div>
+              ))}
             </AnimatePresence>
           </Stack>
 
@@ -172,7 +168,11 @@ const EditSurvey = (props: Props) => {
             >
               Cancel
             </Button>
-            <Button>Complete</Button>
+            <Button
+              onClick={() => router.push(`/survey/preview/${survey.data.id}`)}
+            >
+              Preview
+            </Button>
           </Group>
         </Stack>
       )}
