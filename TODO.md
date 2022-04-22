@@ -11,7 +11,6 @@
 - [ ] make all the disabled stuff in the anket creator not have special mouse cursors
 - [ ] Choose nicer fonts
 - [ ] Get a theme going... green as the main accent color?
-- [ ] Question Type: should be 'real' words
 - [ ] Make side margins about 1/2 of what they currently are on XS screens
 ### Create/Edit Survey
 - [ ] Submitting / error checking... what do we want to make sure of before submitting a survey?
@@ -66,6 +65,8 @@
 - [x] Sidebar icons and themeing
 - [x] Add border to question cards
 - [x] make green color scheme
+- [x] Revise Create Question card design
+  - [*] Color scheme: https://smart-swatch.netlify.app/#green
 ### Create/Edit Survey
 - [x] Use React Query to manage survey in frontend
   - [x] Make /survey/create just a dummy page that creates a survey and redirects to /survey/edit/id, that way create and edit are basically the same!
