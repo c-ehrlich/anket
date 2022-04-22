@@ -17,9 +17,11 @@ import axios from 'axios';
 import React from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { CaretDown, CaretUp, Trash } from 'tabler-icons-react';
+import { object } from 'zod';
 import { QuestionResponse } from '../api/question/question.schema';
 import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
 import useSurvey from '../hooks/useSurvey';
+import { QuestionTypeString } from '../types/questionType';
 import EditSurveyAnswerOption from './EditSurveyAnswerOption';
 
 type Props = { index: number; surveyId: string };
@@ -249,11 +251,20 @@ const EditSurveyQuestion = (props: Props) => {
 
               <NativeSelect
                 label='Question Type'
-                data={Object.values(QuestionType)}
-                value={survey.data.questions[props.index].questionType}
+                data={Object.values(QuestionTypeString)}
+                // The 'value' and 'onChange' are like this due to limitations in Prisma's enums
+                // we're mapping the values to a separate object which contains the 'nice' string names
+                value={QuestionTypeString[survey.data.questions[props.index].questionType]}
                 onChange={(e: React.FormEvent<HTMLSelectElement>) => {
                   editQuestionMutation.mutate({
-                    questionType: e.currentTarget.value as QuestionType,
+                    questionType: (
+                      Object.keys(
+                        QuestionTypeString
+                      ) as (keyof typeof QuestionTypeString)[]
+                    ).find(
+                      (key) =>
+                        QuestionTypeString[key] === e.currentTarget.value
+                    ),
                   });
                 }}
               />

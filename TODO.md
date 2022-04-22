@@ -11,6 +11,7 @@
 - [ ] make all the disabled stuff in the anket creator not have special mouse cursors
 - [ ] Choose nicer fonts
 - [ ] Get a theme going... green as the main accent color?
+- [ ] Question Type: should be 'real' words
 ### Create/Edit Survey
 - [ ] Submitting / error checking... what do we want to make sure of before submitting a survey?
   - [ ] No empty questions (last question can be empty, just trim it)
@@ -83,6 +84,7 @@
 - [x] Move answer option CRUD (backend)
 - [x] Move answer option CRUD (frontend)
 - [x] Finish basic survey editing functionality
+- [x] Use string names for question types
 
 ### Take Survey
 ### Misc Backend Stuff
