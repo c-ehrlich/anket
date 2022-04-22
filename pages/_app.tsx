@@ -15,19 +15,29 @@ import {
   MediaQuery,
   Navbar,
 } from '@mantine/core';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools'
+import { ReactQueryDevtools } from 'react-query/devtools';
 import AppNavbar from '../components/AppNavbar';
 import ContentMaxWidth from '../components/ContentMaxWidth';
 import Head from 'next/head';
+import { useLocalStorage } from '@mantine/hooks';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
-  const [opened, setOpened] = useState(false);
+  const [navbarIsOpen, setNavbarIsOpen] = useState(false);
   const queryClient = new QueryClient();
-  const [colorScheme, setColorScheme] = useState<ColorScheme>('light');
+  
+  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
+    key: 'anket-color-scheme',
+    defaultValue: 'light',
+  });
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
+
+  // avoid hydration errors
+  const [hasMounted, setHasMounted] = useState<boolean>(false);
+  useEffect(() => setHasMounted(true), []);
+  if (!hasMounted) return null;
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -54,11 +64,11 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
                 <Navbar
                   p='md'
                   hiddenBreakpoint='sm'
-                  hidden={!opened}
+                  hidden={!navbarIsOpen}
                   width={{ sm: 200, lg: 300 }}
                 >
                   <Navbar.Section grow mt='xs'>
-                    <AppNavbar closeNavbar={() => setOpened(false)} />
+                    <AppNavbar closeNavbar={() => setNavbarIsOpen(false)} />
                   </Navbar.Section>
                   <Navbar.Section>
                     <Login />
@@ -73,8 +83,8 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
                   >
                     <MediaQuery largerThan='sm' styles={{ display: 'none' }}>
                       <Burger
-                        opened={opened}
-                        onClick={() => setOpened((o) => !o)}
+                        opened={navbarIsOpen}
+                        onClick={() => setNavbarIsOpen((o) => !o)}
                         size='sm'
                         mr='xl'
                       />

@@ -1,7 +1,6 @@
 # Anket Todo (current)
 ## MVP v1
 ### Bugs
-- [ ] Theme is not saved on page reload (put it in localstorage?)
 - [ ] Login framer motion stuff is broken for some reason
 
 ### DB
@@ -50,6 +49,7 @@
 - [x] /surveys/mine: API request fails 
 - [x] Optimistic update on reorder questions produces incorrect data
 - [x] answer option delete briefly causes the app to render the wrong state
+- [x] Theme is not saved on page reload (put it in localstorage?)
 ## DB
 - [x] Implement order on questions
 - [x] send questions and answeroptions ordered on DB level
