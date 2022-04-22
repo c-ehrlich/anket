@@ -213,7 +213,7 @@ const EditSurveyQuestion = (props: Props) => {
       ) : !survey.data?.questions[props.index] ? (
         'That question does not exist'
       ) : (
-        <Paper shadow='lg' radius='md' p='md'>
+        <Paper shadow='lg' radius='md' p='md' withBorder>
           <Group align='flex-start'>
             <Stack sx={{ flexGrow: 1 }}>
               <Group style={{ justifyContent: 'space-between' }}>

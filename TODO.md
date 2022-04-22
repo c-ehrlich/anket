@@ -7,7 +7,6 @@
 ### UI
 - [ ] Make the main theme color green...look up how to theme Mantine
 - [ ] small screen: sidebar in/out should be animated
-- [ ] Change question styling... the drop shadow is barely visible on top/left. maybe a border?
 - [ ] Get question framer motion working
 - [ ] make all the disabled stuff in the anket creator not have special mouse cursors
 - [ ] Choose nicer fonts
@@ -63,6 +62,7 @@
 - [x] Create nice logged in user indicator / logout indicator
 - [x] small screen: sidebar should close if we navigate to a new page
 - [x] Sidebar icons and themeing
+- [x] Add border to question cards
 ### Create/Edit Survey
 - [x] Use React Query to manage survey in frontend
   - [x] Make /survey/create just a dummy page that creates a survey and redirects to /survey/edit/id, that way create and edit are basically the same!
