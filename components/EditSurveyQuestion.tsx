@@ -23,7 +23,7 @@ import useDeleteQuestion from '../hooks/useDeleteQuestion';
 import useEditQuestion from '../hooks/useEditQuestion';
 import useReorderQuestion from '../hooks/useReorderQuestion';
 import { QuestionTypeString } from '../types/questionType';
-import EditSurveyAnswerOption from './EditSurveyAnswerOption';
+import EditSurveyMultipleChoiceOption from './EditSurveyMultipleChoiceOption';
 
 type Props = { index: number; surveyId: string; question: QuestionResponse, questionCount: number };
 
@@ -158,7 +158,7 @@ const EditSurveyQuestion = (props: Props) => {
             <Title order={4}>Answer Options</Title>
             {props.question.multipleChoiceOptions.map(
               (mcOption, index) => (
-                <EditSurveyAnswerOption
+                <EditSurveyMultipleChoiceOption
                   key={mcOption.id}
                   index={index}
                   questionIndex={props.index}
