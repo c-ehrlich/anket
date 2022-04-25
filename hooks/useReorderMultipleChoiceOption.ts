@@ -4,10 +4,12 @@ import { QuestionResponse } from '../api/question/question.schema';
 import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
 
 const useReorderMultipleChoiceOption = ({
+  optionId,
   optionIndex,
   questionIndex,
   surveyId,
 }: {
+  optionId: string;
   optionIndex: number;
   questionIndex: number;
   surveyId: string;
@@ -17,7 +19,9 @@ const useReorderMultipleChoiceOption = ({
   return useMutation(
     ['survey', surveyId],
     (newOrder: number) => {
-      return axios.patch('', {});
+      return axios.patch(`/api/multiplechoiceoption/reorder/${optionId}`, {
+        order: newOrder,
+      });
     },
     {
       onError: (e: any) => window.alert(e),

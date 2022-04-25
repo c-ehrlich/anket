@@ -34,6 +34,7 @@ const EditSurveyAnswerOption = (props: Props) => {
   });
 
   const reorderMultipleChoiceOptionMutation = useReorderMultipleChoiceOption({
+    optionId: props.option.id,
     optionIndex: props.index,
     questionIndex: props.questionIndex,
     surveyId: props.surveyId,
@@ -61,7 +62,6 @@ const EditSurveyAnswerOption = (props: Props) => {
           variant='default'
           disabled={props.index === 0}
           onClick={() => {
-            console.log(props.index);
             reorderMultipleChoiceOptionMutation.mutate(props.index - 1);
           }}
         >
@@ -71,7 +71,6 @@ const EditSurveyAnswerOption = (props: Props) => {
           variant='default'
           disabled={props.index >= props.optionCount - 1}
           onClick={() => {
-            console.log(props.index);
             reorderMultipleChoiceOptionMutation.mutate(props.index + 1);
           }}
         >

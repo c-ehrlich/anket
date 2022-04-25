@@ -50,6 +50,7 @@
 - [x] Optimistic update on reorder questions produces incorrect data
 - [x] answer option delete briefly causes the app to render the wrong state
 - [x] Theme is not saved on page reload (put it in localstorage?)
+- [x] Fix answer option reorder not working
 ## DB
 - [x] Implement order on questions
 - [x] send questions and answeroptions ordered on DB level
@@ -94,6 +95,7 @@
 - [x] Create neat Public/Private badge
 - [x] Create neat In Created / Incomplete badge
 - [x] Create custom hooks for React Query queries and mutations
+- [x] Only use one useQuery to manage the entire survey creation
 ### Take Survey
 ### Misc Backend Stuff
 - [x] clone the logger from tom does tech youtube clone, and re-convert every consoleDOTlog/error to that logger
