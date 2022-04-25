@@ -8,6 +8,7 @@ import { QuestionResponse } from '../api/question/question.schema';
 import { MultipleChoiceOptionResponse } from '../api/multipleChoiceOption/multipleChoiceOption.schema';
 import { CaretDown, CaretUp, Trash } from 'tabler-icons-react';
 import useEditMultipleChoiceOption from '../hooks/useEditMultipleChoiceOption';
+import useDeleteMultipleChoiceOption from '../hooks/useDeleteMultipleChoiceOption';
 
 type Props = {
   index: number;
@@ -29,60 +30,12 @@ const EditSurveyAnswerOption = (props: Props) => {
     questionIndex: props.questionIndex,
   });
 
-  const deleteMultipleChoiceOptionMutation = useMutation(
-    ['survey', props.surveyId],
-    async () => {
-      function delay(time: number) {
-        return new Promise((resolve) => setTimeout(resolve, time));
-      }
-      await delay(1000);
-      return axios.delete(`/api/multiplechoiceoption/${option!.id}`);
-    },
-    {
-      onError: (e: any) => window.alert(e),
-      onMutate: () => {
-        queryClient.cancelQueries(['survey', props.surveyId]);
-        const oldSurvey: CreateDefaultSurveyResponse | undefined =
-          queryClient.getQueryData(['survey', props.surveyId]);
-        if (oldSurvey) {
-          console.log(
-            oldSurvey.questions[props.questionIndex].multipleChoiceOptions
-          );
-          const optimisticUpdate = {
-            ...oldSurvey,
-            questions: ([] as QuestionResponse[]).concat(
-              oldSurvey.questions.slice(0, props.questionIndex),
-              {
-                ...oldSurvey.questions[props.questionIndex],
-                multipleChoiceOptions: (
-                  [] as MultipleChoiceOptionResponse[]
-                ).concat(
-                  oldSurvey.questions[
-                    props.questionIndex
-                  ].multipleChoiceOptions.slice(0, props.index),
-                  oldSurvey.questions[
-                    props.questionIndex
-                  ].multipleChoiceOptions.slice(props.index + 1)
-                ),
-              },
-              oldSurvey.questions.slice(props.questionIndex + 1)
-            ),
-          };
-          console.log(
-            optimisticUpdate.questions[props.questionIndex]
-              .multipleChoiceOptions
-          );
-          queryClient.setQueryData(
-            ['survey', props.surveyId],
-            optimisticUpdate
-          );
-        }
-      },
-      onSettled: () => {
-        queryClient.invalidateQueries(['survey', props.surveyId]);
-      },
-    }
-  );
+  const deleteMultipleChoiceOption = useDeleteMultipleChoiceOption({
+    surveyId: props.surveyId,
+    optionId: question!.multipleChoiceOptions[props.index].id,
+    optionIndex: props.index,
+    questionIndex: props.questionIndex,
+  })
 
   const reorderMultipleChoiceOptionMutation = useMutation(
     ['survey', props.surveyId],
@@ -247,7 +200,7 @@ const EditSurveyAnswerOption = (props: Props) => {
             </ActionIcon>
             <ActionIcon
               variant='default'
-              onClick={() => deleteMultipleChoiceOptionMutation.mutate()}
+              onClick={() => deleteMultipleChoiceOption.mutate()}
             >
               <Trash />
             </ActionIcon>
