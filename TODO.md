@@ -50,6 +50,7 @@
 - [x] answer option delete briefly causes the app to render the wrong state
 - [x] Theme is not saved on page reload (put it in localstorage?)
 - [x] Fix answer option reorder not working
+- [x] AddQuestion mutation briefly adds TWO questions (until we get back the server response?)
 ## DB
 - [x] Implement order on questions
 - [x] send questions and answeroptions ordered on DB level

@@ -15,6 +15,7 @@ import useCreateQuestion from '../hooks/useCreateQuestion';
 import useDeleteSurvey from '../hooks/useDeleteSurvey';
 import useEditSurvey from '../hooks/useEditSurvey';
 import useGetSingleSurvey from '../hooks/useGetSingleSurvey';
+import animations from '../utils/framer-animations';
 import EditSurveyQuestion from './EditSurveyQuestion';
 import DeleteSurveyModal from './modals/DeleteSurveyModal';
 
@@ -51,7 +52,7 @@ const EditSurveyHaveData = ({
   const [surveyDescription, setSurveyDescription] = useState<string>(
     survey.description
   );
-  
+
   const debouncedEditSurvey = useDebouncedCallback(
     (
       data: Partial<
@@ -114,7 +115,7 @@ const EditSurveyHaveData = ({
           <Title order={3}>Questions</Title>
           <AnimatePresence>
             {survey.questions.map((question, index) => (
-              <motion.div key={question.id}>
+              <motion.div key={question.id} layout {...animations}>
                 <EditSurveyQuestion
                   question={question}
                   index={index}

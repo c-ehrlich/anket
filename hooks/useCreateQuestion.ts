@@ -14,27 +14,9 @@ const useCreateQuestion = ({ surveyId }: { surveyId: string }) => {
     {
       onError: (e: any) => window.alert(e),
       onMutate: () => {
-        queryClient.cancelQueries(['survey', surveyId]);
-        const oldSurvey: CreateDefaultSurveyResponse | undefined =
-          queryClient.getQueryData(['survey', surveyId]);
-        if (oldSurvey) {
-          const newQuestion: QuestionResponse = {
-            id: '0',
-            question: '',
-            details: '',
-            surveyId,
-            order: 999999,
-            isRequired: true,
-            questionType: 'multipleChoiceSingle',
-            multipleChoiceOptions: [],
-          };
-          queryClient.setQueryData(['survey', surveyId], () => {
-            return {
-              ...oldSurvey,
-              questions: [...oldSurvey.questions, newQuestion],
-            };
-          });
-        }
+        // TODO
+        // we don't have optimistic updates here because we don't know the ID of the created
+        // question, and that's used the ref that framer motion uses
       },
       onSettled: () => {
         queryClient.invalidateQueries(['survey', surveyId]);
