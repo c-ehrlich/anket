@@ -17,10 +17,11 @@ import {
 import { useMediaQuery } from '@mantine/hooks';
 import axios from 'axios';
 import React from 'react';
-import { useMutation, useQueryClient } from 'react-query';
+import { useQueryClient, useMutation } from 'react-query';
 import { CaretDown, CaretUp, Trash } from 'tabler-icons-react';
 import { QuestionResponse } from '../api/question/question.schema';
 import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
+import useEditQuestion from '../hooks/useEditQuestion';
 import useGetSingleSurvey from '../hooks/useGetSingleSurvey';
 import { QuestionTypeString } from '../types/questionType';
 import EditSurveyAnswerOption from './EditSurveyAnswerOption';
@@ -34,43 +35,7 @@ const EditSurveyQuestion = (props: Props) => {
 
   const xs = useMediaQuery('(max-width: 576px)');
 
-  const editQuestionMutation = useMutation(
-    ['survey', props.surveyId],
-    (
-      data: Partial<
-        Pick<
-          QuestionResponse,
-          'question' | 'details' | 'isRequired' | 'questionType'
-        >
-      >
-    ) => {
-      return axios.patch(
-        `/api/question/${survey.data?.questions[props.index].id}`,
-        data
-      );
-    },
-    {
-      onError: (e: any) => window.alert(e),
-      onMutate: (data) => {
-        queryClient.cancelQueries(['survey', props.surveyId]);
-        const oldSurvey: CreateDefaultSurveyResponse | undefined =
-          queryClient.getQueryData(['survey', props.surveyId]);
-        if (oldSurvey) {
-          queryClient.setQueryData(['survey', props.surveyId], {
-            ...oldSurvey,
-            questions: ([] as QuestionResponse[]).concat(
-              oldSurvey.questions.slice(0, props.index),
-              { ...oldSurvey.questions[props.index], ...data },
-              oldSurvey.questions.slice(props.index + 1)
-            ),
-          });
-        }
-      },
-      onSettled: () => {
-        queryClient.invalidateQueries(['survey', props.surveyId]);
-      },
-    }
-  );
+  const editQuestion = useEditQuestion({ surveyId: props.surveyId, questionIndex: props.index, questionId: survey.data!.questions[props.index].id})
 
   const deleteQuestionMutation = useMutation(
     ['survey', props.surveyId],
@@ -269,7 +234,7 @@ const EditSurveyQuestion = (props: Props) => {
               label='Required'
               checked={survey.data.questions[props.index].isRequired}
               onChange={(e: React.FormEvent<HTMLInputElement>) => {
-                editQuestionMutation.mutate({
+                editQuestion.mutate({
                   isRequired: e.currentTarget.checked,
                 });
               }}
@@ -280,7 +245,7 @@ const EditSurveyQuestion = (props: Props) => {
               placeholder='Your question text'
               value={survey.data.questions[props.index].question}
               onChange={(e: React.FormEvent<HTMLInputElement>) => {
-                editQuestionMutation.mutate({
+                editQuestion.mutate({
                   question: e.currentTarget.value,
                 });
               }}
@@ -290,7 +255,7 @@ const EditSurveyQuestion = (props: Props) => {
               placeholder='(optional)'
               value={survey.data.questions[props.index].details}
               onChange={(e: React.FormEvent<HTMLInputElement>) => {
-                editQuestionMutation.mutate({
+                editQuestion.mutate({
                   details: e.currentTarget.value,
                 });
               }}
@@ -307,7 +272,7 @@ const EditSurveyQuestion = (props: Props) => {
                 ]
               }
               onChange={(e: React.FormEvent<HTMLSelectElement>) => {
-                editQuestionMutation.mutate({
+                editQuestion.mutate({
                   questionType: (
                     Object.keys(
                       QuestionTypeString
