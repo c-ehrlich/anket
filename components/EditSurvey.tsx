@@ -9,6 +9,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
+import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
 import useCreateQuestion from '../hooks/useCreateQuestion';
 import useDeleteSurvey from '../hooks/useDeleteSurvey';
 import useEditSurvey from '../hooks/useEditSurvey';
@@ -16,21 +17,54 @@ import useGetSingleSurvey from '../hooks/useGetSingleSurvey';
 import EditSurveyQuestion from './EditSurveyQuestion';
 import DeleteSurveyModal from './modals/DeleteSurveyModal';
 
-type Props = {
-  surveyId: string;
+const EditSurvey = ({ surveyId }: { surveyId: string }) => {
+  const survey = useGetSingleSurvey(surveyId);
+
+  return (
+    <>
+      {survey.isLoading ? (
+        'Loading...'
+      ) : survey.isError ? (
+        'Error...'
+      ) : !survey.isFetched ? (
+        'Not yet fetched...'
+      ) : !survey.data ? (
+        'Dont have the data yet for some other reason'
+      ) : (
+        <EditSurveyHaveData survey={survey.data} />
+      )}
+    </>
+  );
 };
 
-const EditSurvey = (props: Props) => {
+const EditSurveyHaveData = ({
+  survey,
+}: {
+  survey: CreateDefaultSurveyResponse;
+}) => {
   const router = useRouter();
-  const survey = useGetSingleSurvey(props.surveyId);
+
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
 
-  const editSurvey = useEditSurvey({ surveyId: props.surveyId });
+  const [surveyName, setSurveyName] = useState<string>(survey.name);
+  const [surveyDescription, setSurveyDescription] = useState<string>(
+    survey.description
+  );
+  const handleEditSurveyName = (e: React.FormEvent<HTMLInputElement>) => {
+    setSurveyName(e.currentTarget.value);
+    editSurvey.mutate({ name: e.currentTarget.value });
+  };
+  const handleEditSurveyDesc = (e: React.FormEvent<HTMLInputElement>) => {
+    setSurveyDescription(e.currentTarget.value);
+    editSurvey.mutate({ description: e.currentTarget.value });
+  };
+
+  const editSurvey = useEditSurvey({ surveyId: survey.id });
   const deleteSurvey = useDeleteSurvey({
-    surveyId: props.surveyId,
-    setDeleteModalOpen: setDeleteModalOpen,
+    surveyId: survey.id,
+    setDeleteModalOpen,
   });
-  const createQuestion = useCreateQuestion({ surveyId: props.surveyId });
+  const createQuestion = useCreateQuestion({ surveyId: survey.id });
 
   return (
     <>
@@ -40,81 +74,67 @@ const EditSurvey = (props: Props) => {
         title='Delete Survey'
         onClickDelete={() => deleteSurvey.mutate()}
       />
-      {survey.isLoading ? (
-        'Loading...'
-      ) : survey.isError ? (
-        'Error...'
-      ) : !survey.isFetched ? (
-        'Not yet fetched...'
-      ) : (
-        <Stack style={{ marginBottom: '64px' }}>
-          {/* <Title order={2}>Creating survey</Title> */}
-          <TextInput
-            label='Survey Name'
-            placeholder='The name for your survey'
-            required
-            value={survey.data.name}
-            onChange={(e: React.FormEvent<HTMLInputElement>) => {
-              editSurvey.mutate({ name: e.currentTarget.value });
-            }}
-          />
+      <Stack style={{ marginBottom: '64px' }}>
+        {/* <Title order={2}>Creating survey</Title> */}
+        <TextInput
+          label='Survey Name'
+          placeholder='The name for your survey'
+          required
+          value={surveyName}
+          onChange={handleEditSurveyName}
+        />
 
-          <TextInput
-            label='Survey Description'
-            placeholder='(optional)'
-            value={survey.data.description}
-            onChange={(e: React.FormEvent<HTMLInputElement>) => {
-              editSurvey.mutate({ description: e.currentTarget.value });
-            }}
-          />
+        <TextInput
+          label='Survey Description'
+          placeholder='(optional)'
+          value={surveyDescription}
+          onChange={handleEditSurveyDesc}
+        />
 
-          <Checkbox
-            checked={survey.data.isPublic}
-            label='Public (public surveys show up on the front page, private surveys are only accessible by url)'
-            onChange={(e: React.FormEvent<HTMLInputElement>) => {
-              editSurvey.mutate({ isPublic: e.currentTarget.checked });
-            }}
-          />
+        <Checkbox
+          checked={survey.isPublic}
+          label='Public (public surveys show up on the front page, private surveys are only accessible by url)'
+          onChange={(e: React.FormEvent<HTMLInputElement>) => {
+            editSurvey.mutate({ isPublic: e.currentTarget.checked });
+          }}
+        />
 
-          <Stack>
-            <Title order={3}>Questions</Title>
-            <AnimatePresence>
-              {survey.data.questions.map((question, index) => (
-                <motion.div key={question.id}>
-                  <EditSurveyQuestion
-                    question={question}
-                    index={index}
-                    surveyId={survey.data.id}
-                    questionCount={survey.data.questions.length}
-                  />
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </Stack>
-
-          <Button
-            onClick={() => {
-              createQuestion.mutate();
-            }}
-          >
-            Add Question
-          </Button>
-          <Group grow>
-            <Button
-              variant='outline'
-              color='red'
-              onClick={() => setDeleteModalOpen(true)}
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={() => router.push(`/survey/preview/${survey.data.id}`)}
-            >
-              Preview
-            </Button>
-          </Group>
+        <Stack>
+          <Title order={3}>Questions</Title>
+          <AnimatePresence>
+            {survey.questions.map((question, index) => (
+              <motion.div key={question.id}>
+                <EditSurveyQuestion
+                  question={question}
+                  index={index}
+                  surveyId={survey.id}
+                  questionCount={survey.questions.length}
+                />
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </Stack>
-      )}
+
+        <Button
+          onClick={() => {
+            createQuestion.mutate();
+          }}
+        >
+          Add Question
+        </Button>
+        <Group grow>
+          <Button
+            variant='outline'
+            color='red'
+            onClick={() => setDeleteModalOpen(true)}
+          >
+            Cancel
+          </Button>
+          <Button onClick={() => router.push(`/survey/preview/${survey.id}`)}>
+            Preview
+          </Button>
+        </Group>
+      </Stack>
     </>
   );
 };
