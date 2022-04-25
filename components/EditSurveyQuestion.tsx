@@ -176,7 +176,10 @@ const EditSurveyQuestion = (props: Props) => {
                       index={index}
                       questionIndex={props.index}
                       questionId={survey.data.questions[props.index].id}
+                      questionType={survey.data.questions[props.index].questionType}
                       surveyId={props.surveyId}
+                      option={mcOption}
+                      optionCount={survey.data.questions[props.index].multipleChoiceOptions.length}
                     />
                   )
                 )}
