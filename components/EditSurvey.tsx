@@ -81,7 +81,12 @@ const EditSurvey = (props: Props) => {
             <AnimatePresence>
               {survey.data.questions.map((question, index) => (
                 <motion.div key={question.id}>
-                  <EditSurveyQuestion surveyId={survey.data.id} index={index} />
+                  <EditSurveyQuestion
+                    question={question}
+                    index={index}
+                    surveyId={survey.data.id}
+                    questionCount={survey.data.questions.length}
+                  />
                 </motion.div>
               ))}
             </AnimatePresence>
