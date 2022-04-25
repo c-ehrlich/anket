@@ -32,7 +32,7 @@
   - [ ] Exclude common words?
   - [ ] Or just open a modal that contains all the responses?
 ### Queries
-- [ ] I'll probably need to go back to state for every text box in order to be able to debounce, right? because otherwise we don't even get to the optimistic update...
+- [!] use a single useQuery and props?
 - [ ] Debounce one text input axios request
 - [ ] Debounce all text input axios requests
 ### Maybe
@@ -93,6 +93,7 @@
 - [x] Change Inputs to TextInputs
 - [x] Create neat Public/Private badge
 - [x] Create neat In Created / Incomplete badge
+- [x] Create custom hooks for React Query queries and mutations
 ### Take Survey
 ### Misc Backend Stuff
 - [x] clone the logger from tom does tech youtube clone, and re-convert every consoleDOTlog/error to that logger

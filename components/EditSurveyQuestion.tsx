@@ -15,15 +15,14 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import axios from 'axios';
 import React from 'react';
-import { useQueryClient, useMutation } from 'react-query';
+import { useQueryClient } from 'react-query';
 import { CaretDown, CaretUp, Trash } from 'tabler-icons-react';
-import { QuestionResponse } from '../api/question/question.schema';
-import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
+import useCreateMultipleChoiceOption from '../hooks/useCreateMultipleChoiceOption';
 import useDeleteQuestion from '../hooks/useDeleteQuestion';
 import useEditQuestion from '../hooks/useEditQuestion';
 import useGetSingleSurvey from '../hooks/useGetSingleSurvey';
+import useReorderQuestion from '../hooks/useReorderQuestion';
 import { QuestionTypeString } from '../types/questionType';
 import EditSurveyAnswerOption from './EditSurveyAnswerOption';
 
@@ -46,113 +45,15 @@ const EditSurveyQuestion = (props: Props) => {
     questionIndex: props.index,
     questionId: survey.data!.questions[props.index].id,
   });
-
-  const reorderQuestionMutation = useMutation(
-    ['survey', survey.data!.id],
-    (newOrder: number) => {
-      return axios.patch(
-        `/api/question/reorder/${survey.data?.questions[props.index].id}`,
-        {
-          order: newOrder,
-        }
-      );
-    },
-    {
-      onError: (e: any) => window.alert(e),
-      onMutate: (newOrder) => {
-        queryClient.cancelQueries(['survey', props.surveyId]);
-        const oldSurvey: CreateDefaultSurveyResponse | undefined =
-          queryClient.getQueryData(['survey', props.surveyId]);
-        if (oldSurvey) {
-          const oldOrder = oldSurvey.questions[props.index].order;
-          if (newOrder > oldOrder) {
-            // -1 to order of items with order: gt oldorder, lte neworder
-            const otherMovedItems = oldSurvey.questions
-              .filter(
-                (question) =>
-                  question.order > oldOrder && question.order <= newOrder
-              )
-              .map((question) => {
-                return { ...question, order: question.order - 1 };
-              });
-            // change order of the item we're actually moving
-            const movedQuestion = {
-              ...oldSurvey.questions[props.index],
-              order: newOrder,
-            };
-            // rebuild survey object with new questions
-            queryClient.setQueryData(['survey', oldSurvey.id], {
-              ...oldSurvey,
-              questions: ([] as QuestionResponse[]).concat(
-                // the lower stuff
-                oldSurvey.questions.slice(0, oldOrder),
-                // the stuff we moved
-                ...otherMovedItems,
-                movedQuestion,
-                // everything after the stuff we moved
-                oldSurvey.questions.slice(newOrder + 1)
-              ),
-            });
-          }
-          if (newOrder < oldOrder) {
-            // +1 to order of items with order: lt oldorder, gte newOrder
-            const otherMovedItems = oldSurvey.questions
-              .filter(
-                (question) =>
-                  question.order < oldOrder && question.order >= newOrder
-              )
-              .map((question) => {
-                return { ...question, order: question.order + 1 };
-              });
-            // change order of the item we're actually moving
-            const movedQuestion = {
-              ...oldSurvey.questions[props.index],
-              order: newOrder,
-            };
-            // rebuild survey object with new questions
-            queryClient.setQueryData(['survey', oldSurvey.id], {
-              ...oldSurvey,
-              questions: ([] as QuestionResponse[]).concat(
-                // the lower stuff
-                oldSurvey.questions.slice(0, newOrder),
-                // the stuff we moved
-                movedQuestion,
-                ...otherMovedItems,
-                // everything after the stuff we moved
-                oldSurvey.questions.slice(oldOrder + 1)
-              ),
-            });
-          }
-          // if they're the same, we don't need to do anything
-        }
-      },
-      onSettled: () => {
-        queryClient.invalidateQueries(['survey', props.surveyId]);
-      },
-    }
-  );
-
-  const createMultipleChoiceOptionMutation = useMutation(
-    ['survey', props.surveyId],
-    () => {
-      return axios.post('/api/multiplechoiceoption', {
-        questionId: survey.data?.questions[props.index].id,
-      });
-    },
-    {
-      onError: (e: any) => window.alert(e),
-      onMutate: () => {
-        // TODO: for the time being we're not doing optimistic updates here because
-        // we're using the id for the element key in the frontend
-        // and we don't have the id until we get a response from the server
-        // we can't just use a bogus id because it messes with framer-motion
-        // (or maybe we can? see if there is a way...)
-      },
-      onSettled: () => {
-        queryClient.invalidateQueries(['survey', props.surveyId]);
-      },
-    }
-  );
+  const reorderQuestion = useReorderQuestion({
+    surveyId: props.surveyId,
+    questionIndex: props.index,
+    questionId: survey.data!.questions[props.index].id,
+  });
+  const createMultipleChoiceOption = useCreateMultipleChoiceOption({
+    surveyId: props.surveyId,
+    questionId: survey.data!.questions[props.index].id,
+  });
 
   return (
     <>
@@ -184,7 +85,7 @@ const EditSurveyQuestion = (props: Props) => {
                   variant='default'
                   disabled={props.index === 0}
                   onClick={() => {
-                    reorderQuestionMutation.mutate(props.index - 1);
+                    reorderQuestion.mutate(props.index - 1);
                   }}
                 >
                   <CaretUp />
@@ -193,7 +94,7 @@ const EditSurveyQuestion = (props: Props) => {
                   variant='default'
                   disabled={props.index >= survey.data.questions.length - 1}
                   onClick={() => {
-                    reorderQuestionMutation.mutate(props.index + 1);
+                    reorderQuestion.mutate(props.index + 1);
                   }}
                 >
                   <CaretDown />
@@ -281,9 +182,7 @@ const EditSurveyQuestion = (props: Props) => {
                     />
                   )
                 )}
-                <Button
-                  onClick={() => createMultipleChoiceOptionMutation.mutate()}
-                >
+                <Button onClick={() => createMultipleChoiceOption.mutate()}>
                   Add Answer Option
                 </Button>
               </>
