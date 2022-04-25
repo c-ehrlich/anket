@@ -6,13 +6,11 @@ import {
   TextInput,
   Title,
 } from '@mantine/core';
-import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
-import { QuestionResponse } from '../api/question/question.schema';
-import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
+import { useQueryClient } from 'react-query';
+import useCreateQuestion from '../hooks/useCreateQuestion';
 import useDeleteSurvey from '../hooks/useDeleteSurvey';
 import useEditSurvey from '../hooks/useEditSurvey';
 import useGetSingleSurvey from '../hooks/useGetSingleSurvey';
@@ -34,44 +32,7 @@ const EditSurvey = (props: Props) => {
     surveyId: props.surveyId,
     setDeleteModalOpen: setDeleteModalOpen,
   });
-
-  const createQuestionMutation = useMutation(
-    ['survey', props.surveyId],
-    () => {
-      return axios.post('/api/question', {
-        surveyId: props.surveyId,
-      });
-    },
-    {
-      onError: (e: any) => window.alert(e),
-      onMutate: () => {
-        queryClient.cancelQueries(['survey', props.surveyId]);
-        const oldSurvey: CreateDefaultSurveyResponse | undefined =
-          queryClient.getQueryData(['survey', props.surveyId]);
-        if (oldSurvey) {
-          const newQuestion: QuestionResponse = {
-            id: '0',
-            question: '',
-            details: '',
-            surveyId: survey.data!.id,
-            order: 999999,
-            isRequired: true,
-            questionType: 'multipleChoiceSingle',
-            multipleChoiceOptions: [],
-          };
-          queryClient.setQueryData(['survey', props.surveyId], () => {
-            return {
-              ...oldSurvey,
-              questions: [...oldSurvey.questions, newQuestion],
-            };
-          });
-        }
-      },
-      onSettled: () => {
-        queryClient.invalidateQueries(['survey', props.surveyId]);
-      },
-    }
-  );
+  const createQuestion = useCreateQuestion({ surveyId: props.surveyId });
 
   return (
     <>
@@ -130,7 +91,7 @@ const EditSurvey = (props: Props) => {
 
           <Button
             onClick={() => {
-              createQuestionMutation.mutate();
+              createQuestion.mutate();
             }}
           >
             Add Question
