@@ -13,9 +13,9 @@ import React, { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { QuestionResponse } from '../api/question/question.schema';
 import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
+import useDeleteSurvey from '../hooks/useDeleteSurvey';
 import useEditSurvey from '../hooks/useEditSurvey';
 import useGetSingleSurvey from '../hooks/useGetSingleSurvey';
-import deleteSurveyRequest from '../requests/deleteSurveyRequest';
 import EditSurveyQuestion from './EditSurveyQuestion';
 import DeleteSurveyModal from './modals/DeleteSurveyModal';
 
@@ -30,18 +30,10 @@ const EditSurvey = (props: Props) => {
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
 
   const editSurvey = useEditSurvey({ surveyId: props.surveyId });
-
-  const deleteSurveyMutation = useMutation(
-    ['survey', props.surveyId],
-    () => deleteSurveyRequest(props.surveyId),
-    {
-      onError: (e: any) => window.alert(e),
-      onSuccess: () => {
-        setDeleteModalOpen(false);
-        router.push('/');
-      },
-    }
-  );
+  const deleteSurvey = useDeleteSurvey({
+    surveyId: props.surveyId,
+    setDeleteModalOpen: setDeleteModalOpen,
+  });
 
   const createQuestionMutation = useMutation(
     ['survey', props.surveyId],
@@ -87,7 +79,7 @@ const EditSurvey = (props: Props) => {
         opened={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
         title='Delete Survey'
-        onClickDelete={() => deleteSurveyMutation.mutate()}
+        onClickDelete={() => deleteSurvey.mutate()}
       />
       {survey.isLoading ? (
         'Loading...'
