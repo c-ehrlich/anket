@@ -21,6 +21,7 @@ import { useQueryClient, useMutation } from 'react-query';
 import { CaretDown, CaretUp, Trash } from 'tabler-icons-react';
 import { QuestionResponse } from '../api/question/question.schema';
 import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
+import useDeleteQuestion from '../hooks/useDeleteQuestion';
 import useEditQuestion from '../hooks/useEditQuestion';
 import useGetSingleSurvey from '../hooks/useGetSingleSurvey';
 import { QuestionTypeString } from '../types/questionType';
@@ -35,36 +36,16 @@ const EditSurveyQuestion = (props: Props) => {
 
   const xs = useMediaQuery('(max-width: 576px)');
 
-  const editQuestion = useEditQuestion({ surveyId: props.surveyId, questionIndex: props.index, questionId: survey.data!.questions[props.index].id})
-
-  const deleteQuestionMutation = useMutation(
-    ['survey', props.surveyId],
-    () => {
-      return axios.delete(
-        `/api/question/${survey.data?.questions[props.index].id}`
-      );
-    },
-    {
-      onError: (e: any) => window.alert(e),
-      onMutate: () => {
-        queryClient.cancelQueries(['survey', props.surveyId]);
-        const oldSurvey: CreateDefaultSurveyResponse | undefined =
-          queryClient.getQueryData(['survey', props.surveyId]);
-        if (oldSurvey) {
-          queryClient.setQueryData(['survey', props.surveyId], {
-            ...oldSurvey,
-            questions: ([] as QuestionResponse[]).concat(
-              oldSurvey.questions.slice(0, props.index),
-              oldSurvey.questions.slice(props.index + 1)
-            ),
-          });
-        }
-      },
-      onSettled: () => {
-        queryClient.invalidateQueries(['survey', props.surveyId]);
-      },
-    }
-  );
+  const editQuestion = useEditQuestion({
+    surveyId: props.surveyId,
+    questionIndex: props.index,
+    questionId: survey.data!.questions[props.index].id,
+  });
+  const deleteQuestion = useDeleteQuestion({
+    surveyId: props.surveyId,
+    questionIndex: props.index,
+    questionId: survey.data!.questions[props.index].id,
+  });
 
   const reorderQuestionMutation = useMutation(
     ['survey', survey.data!.id],
@@ -189,8 +170,8 @@ const EditSurveyQuestion = (props: Props) => {
             style={{
               backgroundColor:
                 theme.colorScheme === 'light'
-                  // ? theme.colors.green[0]
-                  ? '#f1fff1'
+                  ? // ? theme.colors.green[0]
+                    '#f1fff1'
                   : '#001b00',
               padding: '16px',
               marginBottom: '16px',
@@ -221,7 +202,7 @@ const EditSurveyQuestion = (props: Props) => {
                   variant='default'
                   onClick={() => {
                     // TODO make user confirm in a modal first
-                    deleteQuestionMutation.mutate();
+                    deleteQuestion.mutate();
                   }}
                 >
                   <Trash />
