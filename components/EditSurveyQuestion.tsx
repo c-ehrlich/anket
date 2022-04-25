@@ -15,8 +15,9 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import React from 'react';
+import React, { useState } from 'react';
 import { CaretDown, CaretUp, Trash } from 'tabler-icons-react';
+import { useDebouncedCallback } from 'use-debounce';
 import { QuestionResponse } from '../api/question/question.schema';
 import useCreateMultipleChoiceOption from '../hooks/useCreateMultipleChoiceOption';
 import useDeleteQuestion from '../hooks/useDeleteQuestion';
@@ -25,12 +26,24 @@ import useReorderQuestion from '../hooks/useReorderQuestion';
 import { QuestionTypeString } from '../types/questionType';
 import EditSurveyMultipleChoiceOption from './EditSurveyMultipleChoiceOption';
 
-type Props = { index: number; surveyId: string; question: QuestionResponse, questionCount: number };
+type Props = {
+  index: number;
+  surveyId: string;
+  question: QuestionResponse;
+  questionCount: number;
+};
 
 const EditSurveyQuestion = (props: Props) => {
   const theme = useMantineTheme();
 
   const xs = useMediaQuery('(max-width: 576px)');
+
+  const [questionText, setQuestionText] = useState<string>(
+    props.question.question
+  );
+  const [questionDetails, setQuestionDetails] = useState<string>(
+    props.question.details
+  );
 
   const editQuestion = useEditQuestion({
     surveyId: props.surveyId,
@@ -51,6 +64,28 @@ const EditSurveyQuestion = (props: Props) => {
     surveyId: props.surveyId,
     questionId: props.question.id,
   });
+
+  const debouncedEditQuestion = useDebouncedCallback(
+    (
+      data: Partial<
+        Pick<
+          QuestionResponse,
+          'question' | 'details' | 'isRequired' | 'questionType'
+        >
+      >
+    ) => editQuestion.mutate(data),
+    1000
+  );
+
+  const handleEditQuestionName = (e: React.FormEvent<HTMLInputElement>) => {
+    setQuestionText(e.currentTarget.value);
+    debouncedEditQuestion({ question: e.currentTarget.value });
+  };
+
+  const handleEditQuestionDetails = (e: React.FormEvent<HTMLInputElement>) => {
+    setQuestionDetails(e.currentTarget.value);
+    debouncedEditQuestion({ details: e.currentTarget.value });
+  };
 
   return (
     <Card shadow='lg' radius='md' p='md' withBorder>
@@ -112,22 +147,14 @@ const EditSurveyQuestion = (props: Props) => {
           label='Question'
           required
           placeholder='Your question text'
-          value={props.question.question}
-          onChange={(e: React.FormEvent<HTMLInputElement>) => {
-            editQuestion.mutate({
-              question: e.currentTarget.value,
-            });
-          }}
+          value={questionText}
+          onChange={handleEditQuestionName}
         />
         <TextInput
           label='Details'
           placeholder='(optional)'
-          value={props.question.details}
-          onChange={(e: React.FormEvent<HTMLInputElement>) => {
-            editQuestion.mutate({
-              details: e.currentTarget.value,
-            });
-          }}
+          value={questionDetails}
+          onChange={handleEditQuestionDetails}
         />
 
         <NativeSelect
@@ -135,9 +162,7 @@ const EditSurveyQuestion = (props: Props) => {
           data={Object.values(QuestionTypeString)}
           // The 'value' and 'onChange' are like this due to limitations in Prisma's enums
           // we're mapping the values to a separate object which contains the 'nice' string names
-          value={
-            QuestionTypeString[props.question.questionType]
-          }
+          value={QuestionTypeString[props.question.questionType]}
           onChange={(e: React.FormEvent<HTMLSelectElement>) => {
             editQuestion.mutate({
               questionType: (
@@ -150,26 +175,22 @@ const EditSurveyQuestion = (props: Props) => {
             });
           }}
         />
-        {props.question.questionType ===
-          'multipleChoiceMultiple' ||
-        props.question.questionType ===
-          'multipleChoiceSingle' ? (
+        {props.question.questionType === 'multipleChoiceMultiple' ||
+        props.question.questionType === 'multipleChoiceSingle' ? (
           <>
             <Title order={4}>Answer Options</Title>
-            {props.question.multipleChoiceOptions.map(
-              (mcOption, index) => (
-                <EditSurveyMultipleChoiceOption
-                  key={mcOption.id}
-                  index={index}
-                  questionIndex={props.index}
-                  questionId={props.question.id}
-                  questionType={props.question.questionType}
-                  surveyId={props.surveyId}
-                  option={mcOption}
-                  optionCount={props.question.multipleChoiceOptions.length}
-                />
-              )
-            )}
+            {props.question.multipleChoiceOptions.map((mcOption, index) => (
+              <EditSurveyMultipleChoiceOption
+                key={mcOption.id}
+                index={index}
+                questionIndex={props.index}
+                questionId={props.question.id}
+                questionType={props.question.questionType}
+                surveyId={props.surveyId}
+                option={mcOption}
+                optionCount={props.question.multipleChoiceOptions.length}
+              />
+            ))}
             <Button onClick={() => createMultipleChoiceOption.mutate()}>
               Add Answer Option
             </Button>

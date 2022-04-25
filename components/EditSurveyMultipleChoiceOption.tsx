@@ -1,13 +1,15 @@
 import { ActionIcon, Checkbox, Group, Radio, TextInput } from '@mantine/core';
-import React from 'react';
+import React, { useState } from 'react';
 import { CaretDown, CaretUp, Trash } from 'tabler-icons-react';
 import useEditMultipleChoiceOption from '../hooks/useEditMultipleChoiceOption';
 import useDeleteMultipleChoiceOption from '../hooks/useDeleteMultipleChoiceOption';
 import useReorderMultipleChoiceOption from '../hooks/useReorderMultipleChoiceOption';
 import { MultipleChoiceOptionResponse } from '../api/multipleChoiceOption/multipleChoiceOption.schema';
 import { QuestionType } from '@prisma/client';
+import { useDebouncedCallback } from 'use-debounce';
 
 // TODO see if we can do this with less props
+// For example we could pass a Pick<QuestionResponse> to get all the stuff from the question in one object
 type Props = {
   index: number;
   questionIndex: number;
@@ -19,6 +21,9 @@ type Props = {
 };
 
 const EditSurveyAnswerOption = (props: Props) => {
+  const [multipleChoiceOptionText, setMultipleChoiceOptionText] =
+    useState<string>(props.option.name);
+
   const editMultipleChoiceOption = useEditMultipleChoiceOption({
     surveyId: props.surveyId,
     optionId: props.option.id,
@@ -40,6 +45,19 @@ const EditSurveyAnswerOption = (props: Props) => {
     surveyId: props.surveyId,
   });
 
+  const debouncedEditMultipleChoiceOption = useDebouncedCallback(
+    (data: Partial<Pick<MultipleChoiceOptionResponse, 'name'>>) =>
+      editMultipleChoiceOption.mutate(data),
+    1000
+  );
+
+  const handleEditMultipleChoiceOptionTitle = (
+    e: React.FormEvent<HTMLInputElement>
+  ) => {
+    setMultipleChoiceOptionText(e.currentTarget.value);
+    debouncedEditMultipleChoiceOption({ name: e.currentTarget.value });
+  };
+
   return (
     <Group grow={false} style={{ width: '100%' }}>
       {props.questionType === 'multipleChoiceMultiple' ? (
@@ -50,12 +68,8 @@ const EditSurveyAnswerOption = (props: Props) => {
       <TextInput
         style={{ flexGrow: 1 }}
         placeholder='Answer Text'
-        value={props.option!.name}
-        onChange={(e: React.FormEvent<HTMLInputElement>) => {
-          editMultipleChoiceOption.mutate({
-            name: e.currentTarget.value,
-          });
-        }}
+        value={multipleChoiceOptionText}
+        onChange={handleEditMultipleChoiceOptionTitle}
       />
       <Group>
         <ActionIcon

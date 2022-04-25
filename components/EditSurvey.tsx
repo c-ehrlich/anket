@@ -64,7 +64,6 @@ const EditSurveyHaveData = ({
   const handleEditSurveyName = (e: React.FormEvent<HTMLInputElement>) => {
     setSurveyName(e.currentTarget.value);
     debouncedEditSurvey({ name: e.currentTarget.value });
-    // editSurvey.mutate({ name: e.currentTarget.value });
   };
   const handleEditSurveyDesc = (e: React.FormEvent<HTMLInputElement>) => {
     setSurveyDescription(e.currentTarget.value);
