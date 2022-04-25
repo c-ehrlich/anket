@@ -3,14 +3,14 @@ import axios from 'axios';
 import { SurveyWithAuthor } from '../types/survey';
 import { useSession } from 'next-auth/react';
 
-const fetchMySurveys = async (userId: string) => {
+const getMySurveys = async (userId: string) => {
   const surveys: SurveyWithAuthor[] = await axios
     .get(`/api/survey/user?id=${userId}`)
     .then((res) => res.data);
   return surveys;
 };
 
-export default function useMySurveys() {
+export default function useGetMySurveys() {
   const { data: session } = useSession();
   let userId = '';
   if (session?.user?.id) {
@@ -20,6 +20,6 @@ export default function useMySurveys() {
   }
 
   return useQuery<SurveyWithAuthor[], Error>(['my-surveys'], () =>
-    fetchMySurveys(userId)
+    getMySurveys(userId)
   );
 }

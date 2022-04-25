@@ -1,6 +1,6 @@
 import { ActionIcon, Checkbox, Group, Radio, TextInput } from '@mantine/core';
 import React from 'react';
-import useSurvey from '../hooks/useSurvey';
+import useGetSingleSurvey from '../hooks/useGetSingleSurvey';
 import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
 import { useMutation, useQueryClient } from 'react-query';
 import axios from 'axios';
@@ -16,7 +16,7 @@ type Props = {
 };
 
 const EditSurveyAnswerOption = (props: Props) => {
-  const survey = useSurvey(props.surveyId);
+  const survey = useGetSingleSurvey(props.surveyId);
   const queryClient = useQueryClient();
   const question = survey.data?.questions[props.questionIndex];
   const option = question?.multipleChoiceOptions[props.index];

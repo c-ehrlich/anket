@@ -27,9 +27,7 @@ const SurveyHero = (props: Props) => {
 
   if (!session) return null;
 
-  if (!session.user) return 'no user';
-
-  console.log(session.user.id);
+  if (!session.user) return (<div>No user</div>);
 
   return (
     <Card shadow='sm' p='lg'>

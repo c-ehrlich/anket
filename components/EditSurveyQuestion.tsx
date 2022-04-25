@@ -21,7 +21,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { CaretDown, CaretUp, Trash } from 'tabler-icons-react';
 import { QuestionResponse } from '../api/question/question.schema';
 import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
-import useSurvey from '../hooks/useSurvey';
+import useGetSingleSurvey from '../hooks/useGetSingleSurvey';
 import { QuestionTypeString } from '../types/questionType';
 import EditSurveyAnswerOption from './EditSurveyAnswerOption';
 
@@ -29,7 +29,7 @@ type Props = { index: number; surveyId: string };
 
 const EditSurveyQuestion = (props: Props) => {
   const queryClient = useQueryClient();
-  const survey = useSurvey(props.surveyId);
+  const survey = useGetSingleSurvey(props.surveyId);
   const theme = useMantineTheme();
 
   const xs = useMediaQuery('(max-width: 576px)');

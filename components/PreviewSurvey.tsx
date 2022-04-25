@@ -17,14 +17,14 @@ import { useMediaQuery } from '@mantine/hooks';
 import Link from 'next/link';
 import React from 'react';
 import { AlertCircle, Eye, EyeOff } from 'tabler-icons-react';
-import useSurvey from '../hooks/useSurvey';
+import useGetSingleSurvey from '../hooks/useGetSingleSurvey';
 
 type Props = {
   surveyId: string;
 };
 
 const PreviewSurvey = (props: Props) => {
-  const survey = useSurvey(props.surveyId);
+  const survey = useGetSingleSurvey(props.surveyId);
   const xs = useMediaQuery('(max-width: 576px)');
 
   return survey.isLoading ? (

@@ -1,10 +1,10 @@
 import { Stack, Text, Title } from '@mantine/core';
 import React from 'react'
 import SurveyHero from '../../components/SurveyHero';
-import useAllSurveys from '../../hooks/useAllSurveys'
+import useGetAllSurveys from '../../hooks/useGetAllSurveys'
 
 const AllSurveys = () => {
-  const {data: surveys, status} = useAllSurveys();
+  const {data: surveys, status} = useGetAllSurveys();
 
   if (status === 'loading') {
     return (<div>Loading...</div>)

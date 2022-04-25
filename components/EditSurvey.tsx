@@ -8,7 +8,7 @@ import {
   QuestionResponse,
 } from '../api/question/question.schema';
 import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
-import useSurvey from '../hooks/useSurvey';
+import useGetSingleSurvey from '../hooks/useGetSingleSurvey';
 import deleteSurveyRequest from '../requests/deleteSurveyRequest';
 import EditSurveyQuestion from './EditSurveyQuestion';
 import DeleteSurveyModal from './modals/DeleteSurveyModal';
@@ -20,7 +20,7 @@ type Props = {
 const EditSurvey = (props: Props) => {
   const router = useRouter();
   const queryClient = useQueryClient();
-  const survey = useSurvey(props.surveyId);
+  const survey = useGetSingleSurvey(props.surveyId);
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
 
   const editSurveyMutation = useMutation(
