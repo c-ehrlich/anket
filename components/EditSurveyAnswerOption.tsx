@@ -1,14 +1,11 @@
 import { ActionIcon, Checkbox, Group, Radio, TextInput } from '@mantine/core';
 import React from 'react';
 import useGetSingleSurvey from '../hooks/useGetSingleSurvey';
-import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
-import { useMutation, useQueryClient } from 'react-query';
-import axios from 'axios';
-import { QuestionResponse } from '../api/question/question.schema';
-import { MultipleChoiceOptionResponse } from '../api/multipleChoiceOption/multipleChoiceOption.schema';
+import { useQueryClient } from 'react-query';
 import { CaretDown, CaretUp, Trash } from 'tabler-icons-react';
 import useEditMultipleChoiceOption from '../hooks/useEditMultipleChoiceOption';
 import useDeleteMultipleChoiceOption from '../hooks/useDeleteMultipleChoiceOption';
+import useReorderMultipleChoiceOption from '../hooks/useReorderMultipleChoiceOption';
 
 type Props = {
   index: number;
@@ -35,114 +32,13 @@ const EditSurveyAnswerOption = (props: Props) => {
     optionId: question!.multipleChoiceOptions[props.index].id,
     optionIndex: props.index,
     questionIndex: props.questionIndex,
-  })
+  });
 
-  const reorderMultipleChoiceOptionMutation = useMutation(
-    ['survey', props.surveyId],
-    (newOrder: number) => {
-      return axios.patch(`/api/multiplechoiceoption/reorder/${option!.id}`, {
-        order: newOrder,
-      });
-    },
-    {
-      onError: (e: any) => window.alert(e),
-      onMutate: (newOrder) => {
-        queryClient.cancelQueries(['survey', props.surveyId]);
-        const oldSurvey: CreateDefaultSurveyResponse | undefined =
-          queryClient.getQueryData(['survey', props.surveyId]);
-        if (oldSurvey) {
-          const oldOrder =
-            oldSurvey.questions[props.questionIndex].multipleChoiceOptions[
-              props.index
-            ].order;
-          if (newOrder > oldOrder) {
-            // -1 to order of items with oder: gt oldOrder, lte newOrder
-            const otherMovedItems = oldSurvey.questions[
-              props.questionIndex
-            ].multipleChoiceOptions
-              .filter(
-                (mcItem) => mcItem.order > oldOrder && mcItem.order <= newOrder
-              )
-              .map((mcItem) => {
-                return { ...mcItem, order: mcItem.order - 1 };
-              });
-            // change order of the item we're actually moving
-            const movedMultipleChoiceOption = {
-              ...oldSurvey.questions[props.questionIndex].multipleChoiceOptions[
-                props.index
-              ],
-              order: newOrder,
-            };
-            // rebuild survey object with new answerOptions
-            queryClient.setQueryData(['survey', oldSurvey.id], {
-              ...oldSurvey,
-              questions: ([] as QuestionResponse[]).concat(
-                oldSurvey.questions.slice(0, props.questionIndex),
-                {
-                  ...oldSurvey.questions[props.questionIndex],
-                  multipleChoiceOptions: [
-                    ...oldSurvey.questions[
-                      props.questionIndex
-                    ].multipleChoiceOptions.slice(0, oldOrder),
-                    ...otherMovedItems,
-                    movedMultipleChoiceOption,
-                    ...oldSurvey.questions[
-                      props.questionIndex
-                    ].multipleChoiceOptions.slice(newOrder + 1),
-                  ],
-                },
-                oldSurvey.questions.slice(props.questionIndex + 1)
-              ),
-            });
-          }
-          if (newOrder < oldOrder) {
-            // +1 to order of items with order: lt oldOrder, gte newOrder
-            const otherMovedItems = oldSurvey.questions[
-              props.questionIndex
-            ].multipleChoiceOptions
-              .filter(
-                (mcItem) => mcItem.order < oldOrder && mcItem.order >= newOrder
-              )
-              .map((mcItem) => {
-                return { ...mcItem, order: mcItem.order + 1 };
-              });
-            // change order of the item we're actually moving
-            const movedMultipleChoiceOption = {
-              ...oldSurvey.questions[props.questionIndex].multipleChoiceOptions[
-                props.index
-              ],
-              order: newOrder,
-            };
-            // rebuild survey object with new questions
-            queryClient.setQueryData(['survey', oldSurvey.id], {
-              ...oldSurvey,
-              questions: ([] as QuestionResponse[]).concat(
-                oldSurvey.questions.slice(0, props.questionIndex),
-                {
-                  ...oldSurvey.questions[props.questionIndex],
-                  multipleChoiceOptions: [
-                    ...oldSurvey.questions[
-                      props.questionIndex
-                    ].multipleChoiceOptions.slice(0, newOrder),
-                    movedMultipleChoiceOption,
-                    ...otherMovedItems,
-                    ...oldSurvey.questions[
-                      props.questionIndex
-                    ].multipleChoiceOptions.slice(oldOrder + 1),
-                  ],
-                },
-                oldSurvey.questions.slice(props.questionIndex + 1)
-              ),
-            });
-          }
-          // if they're the same, we don't need to do anything
-        }
-      },
-      onSettled: () => {
-        queryClient.invalidateQueries(['survey', props.surveyId]);
-      },
-    }
-  );
+  const reorderMultipleChoiceOptionMutation = useReorderMultipleChoiceOption({
+    optionIndex: props.index,
+    questionIndex: props.questionIndex,
+    surveyId: props.surveyId,
+  });
 
   return (
     <>
