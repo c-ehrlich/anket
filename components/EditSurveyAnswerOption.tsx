@@ -7,6 +7,7 @@ import axios from 'axios';
 import { QuestionResponse } from '../api/question/question.schema';
 import { MultipleChoiceOptionResponse } from '../api/multipleChoiceOption/multipleChoiceOption.schema';
 import { CaretDown, CaretUp, Trash } from 'tabler-icons-react';
+import useEditMultipleChoiceOption from '../hooks/useEditMultipleChoiceOption';
 
 type Props = {
   index: number;
@@ -21,55 +22,18 @@ const EditSurveyAnswerOption = (props: Props) => {
   const question = survey.data?.questions[props.questionIndex];
   const option = question?.multipleChoiceOptions[props.index];
 
-  const editMultipleChoiceOptionMutation = useMutation(
-    ['survey', props.surveyId],
-    (data: Partial<Pick<MultipleChoiceOptionResponse, 'name'>>) => {
-      return axios.patch(`/api/multiplechoiceoption/${option!.id}`, data);
-    },
-    {
-      onError: (e: any) => window.alert(e),
-      onMutate: (data) => {
-        queryClient.cancelQueries(['survey', props.surveyId]);
-        const oldSurvey: CreateDefaultSurveyResponse | undefined =
-          queryClient.getQueryData(['survey', props.surveyId]);
-        if (oldSurvey) {
-          queryClient.setQueryData(['survey', props.surveyId], {
-            ...oldSurvey,
-            questions: ([] as QuestionResponse[]).concat(
-              oldSurvey.questions.slice(0, props.questionIndex),
-              {
-                ...oldSurvey.questions[props.questionIndex],
-                multipleChoiceOptions: (
-                  [] as MultipleChoiceOptionResponse[]
-                ).concat(
-                  oldSurvey.questions[
-                    props.questionIndex
-                  ].multipleChoiceOptions.slice(0, props.index),
-                  {
-                    ...oldSurvey.questions[props.questionIndex]
-                      .multipleChoiceOptions[props.index],
-                    ...data,
-                  },
-                  oldSurvey.questions[
-                    props.questionIndex
-                  ].multipleChoiceOptions.slice(props.index + 1)
-                ),
-              },
-              oldSurvey.questions.slice(props.questionIndex + 1)
-            ),
-          });
-        }
-      },
-      onSettled: () =>
-        queryClient.invalidateQueries(['survey', props.surveyId]),
-    }
-  );
+  const editMultipleChoiceOption = useEditMultipleChoiceOption({
+    surveyId: props.surveyId,
+    optionId: question!.multipleChoiceOptions[props.index].id,
+    optionIndex: props.index,
+    questionIndex: props.questionIndex,
+  });
 
   const deleteMultipleChoiceOptionMutation = useMutation(
     ['survey', props.surveyId],
     async () => {
       function delay(time: number) {
-        return new Promise(resolve => setTimeout(resolve, time));
+        return new Promise((resolve) => setTimeout(resolve, time));
       }
       await delay(1000);
       return axios.delete(`/api/multiplechoiceoption/${option!.id}`);
@@ -81,7 +45,9 @@ const EditSurveyAnswerOption = (props: Props) => {
         const oldSurvey: CreateDefaultSurveyResponse | undefined =
           queryClient.getQueryData(['survey', props.surveyId]);
         if (oldSurvey) {
-          console.log(oldSurvey.questions[props.questionIndex].multipleChoiceOptions)
+          console.log(
+            oldSurvey.questions[props.questionIndex].multipleChoiceOptions
+          );
           const optimisticUpdate = {
             ...oldSurvey,
             questions: ([] as QuestionResponse[]).concat(
@@ -101,9 +67,15 @@ const EditSurveyAnswerOption = (props: Props) => {
               },
               oldSurvey.questions.slice(props.questionIndex + 1)
             ),
-          }
-          console.log(optimisticUpdate.questions[props.questionIndex].multipleChoiceOptions)
-          queryClient.setQueryData(['survey', props.surveyId], optimisticUpdate);
+          };
+          console.log(
+            optimisticUpdate.questions[props.questionIndex]
+              .multipleChoiceOptions
+          );
+          queryClient.setQueryData(
+            ['survey', props.surveyId],
+            optimisticUpdate
+          );
         }
       },
       onSettled: () => {
@@ -231,7 +203,7 @@ const EditSurveyAnswerOption = (props: Props) => {
           props.index
         ] ? (
         <>
-        {console.log(`don't have id: ${option?.id}, name: ${option?.name}`)}
+          {console.log(`don't have id: ${option?.id}, name: ${option?.name}`)}
         </>
       ) : (
         <Group grow={false} style={{ width: '100%' }}>
@@ -245,7 +217,7 @@ const EditSurveyAnswerOption = (props: Props) => {
             placeholder='Answer Text'
             value={option!.name}
             onChange={(e: React.FormEvent<HTMLInputElement>) => {
-              editMultipleChoiceOptionMutation.mutate({
+              editMultipleChoiceOption.mutate({
                 name: e.currentTarget.value,
               });
             }}
