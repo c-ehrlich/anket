@@ -16,7 +16,6 @@ import {
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import React from 'react';
-import { useQueryClient } from 'react-query';
 import { CaretDown, CaretUp, Trash } from 'tabler-icons-react';
 import useCreateMultipleChoiceOption from '../hooks/useCreateMultipleChoiceOption';
 import useDeleteQuestion from '../hooks/useDeleteQuestion';
@@ -29,7 +28,6 @@ import EditSurveyAnswerOption from './EditSurveyAnswerOption';
 type Props = { index: number; surveyId: string };
 
 const EditSurveyQuestion = (props: Props) => {
-  const queryClient = useQueryClient();
   const survey = useGetSingleSurvey(props.surveyId);
   const theme = useMantineTheme();
 

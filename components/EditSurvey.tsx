@@ -9,7 +9,6 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-import { useQueryClient } from 'react-query';
 import useCreateQuestion from '../hooks/useCreateQuestion';
 import useDeleteSurvey from '../hooks/useDeleteSurvey';
 import useEditSurvey from '../hooks/useEditSurvey';
@@ -23,7 +22,6 @@ type Props = {
 
 const EditSurvey = (props: Props) => {
   const router = useRouter();
-  const queryClient = useQueryClient();
   const survey = useGetSingleSurvey(props.surveyId);
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
 

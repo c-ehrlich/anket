@@ -1,7 +1,6 @@
 import { ActionIcon, Checkbox, Group, Radio, TextInput } from '@mantine/core';
 import React from 'react';
 import useGetSingleSurvey from '../hooks/useGetSingleSurvey';
-import { useQueryClient } from 'react-query';
 import { CaretDown, CaretUp, Trash } from 'tabler-icons-react';
 import useEditMultipleChoiceOption from '../hooks/useEditMultipleChoiceOption';
 import useDeleteMultipleChoiceOption from '../hooks/useDeleteMultipleChoiceOption';
@@ -16,7 +15,6 @@ type Props = {
 
 const EditSurveyAnswerOption = (props: Props) => {
   const survey = useGetSingleSurvey(props.surveyId);
-  const queryClient = useQueryClient();
   const question = survey.data?.questions[props.questionIndex];
   const option = question?.multipleChoiceOptions[props.index];
 
