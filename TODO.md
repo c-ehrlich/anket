@@ -69,6 +69,7 @@
 - [x] Revise Create Question card design
   - [*] Color scheme: https://smart-swatch.netlify.app/#green
 - [x] Framer Motion reordering: AnswerOptions
+- [x] Framer motion animations: Questions
 ### Create/Edit Survey
 - [x] Use React Query to manage survey in frontend
   - [x] Make /survey/create just a dummy page that creates a survey and redirects to /survey/edit/id, that way create and edit are basically the same!
