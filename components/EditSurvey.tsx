@@ -1,13 +1,19 @@
-import { Button, Checkbox, Group, Stack, TextInput, Title } from '@mantine/core';
+import {
+  Button,
+  Checkbox,
+  Group,
+  Stack,
+  TextInput,
+  Title,
+} from '@mantine/core';
 import axios from 'axios';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
-import {
-  QuestionResponse,
-} from '../api/question/question.schema';
+import { QuestionResponse } from '../api/question/question.schema';
 import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
+import useEditSurvey from '../hooks/useEditSurvey';
 import useGetSingleSurvey from '../hooks/useGetSingleSurvey';
 import deleteSurveyRequest from '../requests/deleteSurveyRequest';
 import EditSurveyQuestion from './EditSurveyQuestion';
@@ -23,32 +29,8 @@ const EditSurvey = (props: Props) => {
   const survey = useGetSingleSurvey(props.surveyId);
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
 
-  const editSurveyMutation = useMutation(
-    ['survey', props.surveyId],
-    // TODO: create a more precise schema for this
-    (data: Partial<CreateDefaultSurveyResponse>) => {
-      return axios
-        .patch(`/api/survey/${props.surveyId}`, { ...data })
-        .then((res) => res.data);
-    },
-    {
-      onError: (e: any) => window.alert(e),
-      onMutate: (values: Partial<CreateDefaultSurveyResponse>) => {
-        queryClient.cancelQueries(['survey', props.surveyId]);
-        const oldSurvey: CreateDefaultSurveyResponse | undefined =
-          queryClient.getQueryData(['survey', props.surveyId]);
-        if (oldSurvey)
-          queryClient.setQueryData(['survey', props.surveyId], () => {
-            return {
-              ...oldSurvey,
-              ...values,
-            };
-          });
-      },
-      onSettled: () =>
-        queryClient.invalidateQueries(['survey', props.surveyId]),
-    }
-  );
+  const editSurvey = useEditSurvey({ surveyId: props.surveyId });
+
   const deleteSurveyMutation = useMutation(
     ['survey', props.surveyId],
     () => deleteSurveyRequest(props.surveyId),
@@ -122,7 +104,7 @@ const EditSurvey = (props: Props) => {
             required
             value={survey.data.name}
             onChange={(e: React.FormEvent<HTMLInputElement>) => {
-              editSurveyMutation.mutate({ name: e.currentTarget.value });
+              editSurvey.mutate({ name: e.currentTarget.value });
             }}
           />
 
@@ -131,7 +113,7 @@ const EditSurvey = (props: Props) => {
             placeholder='(optional)'
             value={survey.data.description}
             onChange={(e: React.FormEvent<HTMLInputElement>) => {
-              editSurveyMutation.mutate({ description: e.currentTarget.value });
+              editSurvey.mutate({ description: e.currentTarget.value });
             }}
           />
 
@@ -139,7 +121,7 @@ const EditSurvey = (props: Props) => {
             checked={survey.data.isPublic}
             label='Public (public surveys show up on the front page, private surveys are only accessible by url)'
             onChange={(e: React.FormEvent<HTMLInputElement>) => {
-              editSurveyMutation.mutate({ isPublic: e.currentTarget.checked });
+              editSurvey.mutate({ isPublic: e.currentTarget.checked });
             }}
           />
 
