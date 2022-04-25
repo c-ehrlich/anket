@@ -9,6 +9,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
 import useCreateQuestion from '../hooks/useCreateQuestion';
 import useDeleteSurvey from '../hooks/useDeleteSurvey';
@@ -50,13 +51,24 @@ const EditSurveyHaveData = ({
   const [surveyDescription, setSurveyDescription] = useState<string>(
     survey.description
   );
+  
+  const debouncedEditSurvey = useDebouncedCallback(
+    (
+      data: Partial<
+        Pick<CreateDefaultSurveyResponse, 'name' | 'description' | 'isPublic'>
+      >
+    ) => editSurvey.mutate(data),
+    1000
+  );
+
   const handleEditSurveyName = (e: React.FormEvent<HTMLInputElement>) => {
     setSurveyName(e.currentTarget.value);
-    editSurvey.mutate({ name: e.currentTarget.value });
+    debouncedEditSurvey({ name: e.currentTarget.value });
+    // editSurvey.mutate({ name: e.currentTarget.value });
   };
   const handleEditSurveyDesc = (e: React.FormEvent<HTMLInputElement>) => {
     setSurveyDescription(e.currentTarget.value);
-    editSurvey.mutate({ description: e.currentTarget.value });
+    debouncedEditSurvey({ description: e.currentTarget.value });
   };
 
   const editSurvey = useEditSurvey({ surveyId: survey.id });

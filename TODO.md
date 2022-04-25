@@ -98,6 +98,9 @@
 - [x] Only use one useQuery to manage the entire survey creation
 - [x] Only load EditSurvey after we have query data
 - [x] Put EditSurvey text field data in local state
+- [x] Debounce text inputs in EditSurvey
+- [ ] Debounce text inputs in EditSurveyQuestion
+- [ ] Debounce text inputs in EditMultipleChoiceAnswer
 ### Take Survey
 ### Misc Backend Stuff
 - [x] clone the logger from tom does tech youtube clone, and re-convert every consoleDOTlog/error to that logger
