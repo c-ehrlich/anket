@@ -15,6 +15,7 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
+import { AnimatePresence, motion } from 'framer-motion';
 import React, { useState } from 'react';
 import { CaretDown, CaretUp, Trash } from 'tabler-icons-react';
 import { useDebouncedCallback } from 'use-debounce';
@@ -24,6 +25,7 @@ import useDeleteQuestion from '../hooks/useDeleteQuestion';
 import useEditQuestion from '../hooks/useEditQuestion';
 import useReorderQuestion from '../hooks/useReorderQuestion';
 import { QuestionTypeString } from '../types/questionType';
+import animations from '../utils/framer-animations';
 import EditSurveyMultipleChoiceOption from './EditSurveyMultipleChoiceOption';
 
 type Props = {
@@ -179,21 +181,26 @@ const EditSurveyQuestion = (props: Props) => {
         props.question.questionType === 'multipleChoiceSingle' ? (
           <>
             <Title order={4}>Answer Options</Title>
-            {props.question.multipleChoiceOptions.map((mcOption, index) => (
-              <EditSurveyMultipleChoiceOption
-                key={mcOption.id}
-                index={index}
-                questionIndex={props.index}
-                questionId={props.question.id}
-                questionType={props.question.questionType}
-                surveyId={props.surveyId}
-                option={mcOption}
-                optionCount={props.question.multipleChoiceOptions.length}
-              />
-            ))}
-            <Button onClick={() => createMultipleChoiceOption.mutate()}>
-              Add Answer Option
-            </Button>
+            <AnimatePresence>
+              {props.question.multipleChoiceOptions.map((mcOption, index) => (
+                <motion.div key={mcOption.id} layout {...animations}>
+                  <EditSurveyMultipleChoiceOption
+                    index={index}
+                    questionIndex={props.index}
+                    questionId={props.question.id}
+                    questionType={props.question.questionType}
+                    surveyId={props.surveyId}
+                    option={mcOption}
+                    optionCount={props.question.multipleChoiceOptions.length}
+                  />
+                </motion.div>
+              ))}
+              <motion.div key='addAnswerOptionButton' layout {...animations}>
+                <Button onClick={() => createMultipleChoiceOption.mutate()} fullWidth>
+                  Add Answer Option
+                </Button>
+              </motion.div>
+            </AnimatePresence>
           </>
         ) : props.question.questionType === 'textResponse' ? (
           <Textarea

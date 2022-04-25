@@ -1,12 +1,12 @@
 # Anket Todo (current)
 ## MVP v1
 ### Bugs
-- [ ] Login framer motion stuff is broken for some reason
 - [ ] useDebouncedCallback doesn't save data if we type, hit tab, type again very fast => because the previous requests get cancelled
   - [*] solution: use separate debounces for each field
 
 ### DB
 ### UI
+- [!] Question container height: make transitions take time so the framer motion delete animation doesn't get hidden by the container shrinking
 - [ ] small screen: sidebar in/out should be animated
 - [ ] Get question framer motion working
 - [ ] make all the disabled stuff in the anket creator not have special mouse cursors
@@ -67,6 +67,7 @@
 - [x] make green color scheme
 - [x] Revise Create Question card design
   - [*] Color scheme: https://smart-swatch.netlify.app/#green
+- [x] Framer Motion reordering: AnswerOptions
 ### Create/Edit Survey
 - [x] Use React Query to manage survey in frontend
   - [x] Make /survey/create just a dummy page that creates a survey and redirects to /survey/edit/id, that way create and edit are basically the same!
