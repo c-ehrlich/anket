@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
-import { QuestionResponse } from '../api/question/question.schema';
+import { QuestionFE } from '../api/question/question.schema';
 import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
 
 const useDeleteQuestion = ({
@@ -28,7 +28,7 @@ const useDeleteQuestion = ({
         if (oldSurvey) {
           queryClient.setQueryData(['survey', surveyId], {
             ...oldSurvey,
-            questions: ([] as QuestionResponse[]).concat(
+            questions: ([] as QuestionFE[]).concat(
               oldSurvey.questions.slice(0, questionIndex),
               oldSurvey.questions.slice(questionIndex + 1)
             ),

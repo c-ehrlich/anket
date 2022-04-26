@@ -19,7 +19,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React, { useState } from 'react';
 import { CaretDown, CaretUp, Trash } from 'tabler-icons-react';
 import { useDebouncedCallback } from 'use-debounce';
-import { QuestionResponse } from '../api/question/question.schema';
+import { QuestionFE } from '../api/question/question.schema';
 import useCreateMultipleChoiceOption from '../hooks/useCreateMultipleChoiceOption';
 import useDeleteQuestion from '../hooks/useDeleteQuestion';
 import useEditQuestion from '../hooks/useEditQuestion';
@@ -31,7 +31,7 @@ import EditSurveyMultipleChoiceOption from './EditSurveyMultipleChoiceOption';
 type Props = {
   index: number;
   surveyId: string;
-  question: QuestionResponse;
+  question: QuestionFE;
   questionCount: number;
 };
 
@@ -70,10 +70,7 @@ const EditSurveyQuestion = (props: Props) => {
   const debouncedEditQuestion = useDebouncedCallback(
     (
       data: Partial<
-        Pick<
-          QuestionResponse,
-          'question' | 'details' | 'isRequired' | 'questionType'
-        >
+        Pick<QuestionFE, 'question' | 'details' | 'isRequired' | 'questionType'>
       >
     ) => editQuestion.mutate(data),
     1000
@@ -109,7 +106,7 @@ const EditSurveyQuestion = (props: Props) => {
               variant='default'
               disabled={props.index === 0}
               onClick={() => {
-                reorderQuestion.mutate(props.index - 1);
+                reorderQuestion.mutate({ order: props.index - 1 });
               }}
             >
               <CaretUp />
@@ -118,7 +115,7 @@ const EditSurveyQuestion = (props: Props) => {
               variant='default'
               disabled={props.index >= props.questionCount - 1}
               onClick={() => {
-                reorderQuestion.mutate(props.index + 1);
+                reorderQuestion.mutate({ order: props.index + 1 });
               }}
             >
               <CaretDown />
@@ -196,7 +193,10 @@ const EditSurveyQuestion = (props: Props) => {
                 </motion.div>
               ))}
               <motion.div key='addAnswerOptionButton' layout {...animations}>
-                <Button onClick={() => createMultipleChoiceOption.mutate()} fullWidth>
+                <Button
+                  onClick={() => createMultipleChoiceOption.mutate()}
+                  fullWidth
+                >
                   Add Answer Option
                 </Button>
               </motion.div>

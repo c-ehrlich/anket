@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
-import { QuestionResponse } from '../api/question/question.schema';
+import { QuestionFE, ReorderQuestionData } from '../api/question/question.schema';
 import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
 
 const useReorderQuestion = ({
@@ -16,25 +16,25 @@ const useReorderQuestion = ({
 
   return useMutation(
     [],
-    (newOrder: number) => {
+    (data: ReorderQuestionData) => {
       return axios.patch(`/api/question/reorder/${questionId}`, {
-        order: newOrder,
+        order: data.order,
       });
     },
     {
       onError: (e: any) => window.alert(e),
-      onMutate: (newOrder) => {
+      onMutate: (data) => {
         queryClient.cancelQueries(['survey', surveyId]);
         const oldSurvey: CreateDefaultSurveyResponse | undefined =
           queryClient.getQueryData(['survey', surveyId]);
         if (oldSurvey) {
           const oldOrder = oldSurvey.questions[questionIndex].order;
-          if (newOrder > oldOrder) {
+          if (data.order > oldOrder) {
             // -1 to order of items with order: gt oldorder, lte neworder
             const otherMovedItems = oldSurvey.questions
               .filter(
                 (question) =>
-                  question.order > oldOrder && question.order <= newOrder
+                  question.order > oldOrder && question.order <= data.order
               )
               .map((question) => {
                 return { ...question, order: question.order - 1 };
@@ -42,28 +42,28 @@ const useReorderQuestion = ({
             // change order of the item we're actually moving
             const movedQuestion = {
               ...oldSurvey.questions[questionIndex],
-              order: newOrder,
+              order: data.order,
             };
             // rebuild survey object with new questions
             queryClient.setQueryData(['survey', oldSurvey.id], {
               ...oldSurvey,
-              questions: ([] as QuestionResponse[]).concat(
+              questions: ([] as QuestionFE[]).concat(
                 // the lower stuff
                 oldSurvey.questions.slice(0, oldOrder),
                 // the stuff we moved
                 ...otherMovedItems,
                 movedQuestion,
                 // everything after the stuff we moved
-                oldSurvey.questions.slice(newOrder + 1)
+                oldSurvey.questions.slice(data.order + 1)
               ),
             });
           }
-          if (newOrder < oldOrder) {
+          if (data.order < oldOrder) {
             // +1 to order of items with order: lt oldorder, gte newOrder
             const otherMovedItems = oldSurvey.questions
               .filter(
                 (question) =>
-                  question.order < oldOrder && question.order >= newOrder
+                  question.order < oldOrder && question.order >= data.order
               )
               .map((question) => {
                 return { ...question, order: question.order + 1 };
@@ -71,14 +71,14 @@ const useReorderQuestion = ({
             // change order of the item we're actually moving
             const movedQuestion = {
               ...oldSurvey.questions[questionIndex],
-              order: newOrder,
+              order: data.order,
             };
             // rebuild survey object with new questions
             queryClient.setQueryData(['survey', oldSurvey.id], {
               ...oldSurvey,
-              questions: ([] as QuestionResponse[]).concat(
+              questions: ([] as QuestionFE[]).concat(
                 // the lower stuff
-                oldSurvey.questions.slice(0, newOrder),
+                oldSurvey.questions.slice(0, data.order),
                 // the stuff we moved
                 movedQuestion,
                 ...otherMovedItems,

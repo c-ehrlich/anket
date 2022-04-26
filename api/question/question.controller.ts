@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
 import logger from '../utils/logger';
-import { QuestionResponse } from './question.schema';
+import { QuestionFE } from './question.schema';
 import {
   createDefaultQuestion,
   deleteQuestion,
@@ -11,7 +11,7 @@ import {
 
 export async function addDefaultQuestionToSurvey(
   req: NextApiRequest,
-  res: NextApiResponse<QuestionResponse | { message: string }>
+  res: NextApiResponse<QuestionFE | { message: string }>
 ) {
   // make sure we have a survey id and a user
   const session = await getSession({ req });
@@ -34,7 +34,7 @@ export async function addDefaultQuestionToSurvey(
 
 export async function editQuestionHandler(
   req: NextApiRequest,
-  res: NextApiResponse<QuestionResponse | { message: string }>
+  res: NextApiResponse<QuestionFE | { message: string }>
 ) {
   // make sure we have a questionid
   const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
@@ -44,7 +44,7 @@ export async function editQuestionHandler(
   // get the data from the request
   const data: Partial<
     Pick<
-      QuestionResponse,
+      QuestionFE,
       'question' | 'details' | 'isRequired' | 'questionType'
     >
   > = req.body;
@@ -52,7 +52,7 @@ export async function editQuestionHandler(
   // TODO make sure the user is allowed to modify that question/survey
 
   // call a service that edits the question
-  const editedQuestion: QuestionResponse | undefined = await editQuestion({
+  const editedQuestion: QuestionFE | undefined = await editQuestion({
     id,
     data,
   });
@@ -65,7 +65,7 @@ export async function editQuestionHandler(
 
 export async function deleteQuestionHandler(
   req: NextApiRequest,
-  res: NextApiResponse<QuestionResponse | { message: string }>
+  res: NextApiResponse<QuestionFE | { message: string }>
 ) {
   // make sure we have a questionid
   const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
@@ -75,7 +75,7 @@ export async function deleteQuestionHandler(
   // TODO make sure the user is allowed to modify that question/survey
 
   // call a service that deletes the question (cascade the answersoptions)
-  const deletedQuestion: QuestionResponse | undefined = await deleteQuestion({
+  const deletedQuestion: QuestionFE | undefined = await deleteQuestion({
     id,
   });
 
@@ -87,7 +87,7 @@ export async function deleteQuestionHandler(
 
 export async function reorderQuestionHandler(
   req: NextApiRequest,
-  res: NextApiResponse<QuestionResponse[] | { message: string }>
+  res: NextApiResponse<QuestionFE[] | { message: string }>
 ) {
   // make sure we have a questionid
   const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
@@ -102,7 +102,7 @@ export async function reorderQuestionHandler(
     res.status(400).send({ message: 'failed to get order from body' });
 
   // call handler
-  const reorderedQuestions: QuestionResponse[] | undefined =
+  const reorderedQuestions: QuestionFE[] | undefined =
     await reorderQuestion({ id, order });
 
   // check if we have the object and return it or an error

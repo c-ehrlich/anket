@@ -1,7 +1,7 @@
 import _logger from 'next-auth/lib/logger';
 import logger from '../utils/logger';
 import prisma from '../utils/prisma';
-import { QuestionResponse } from './question.schema';
+import { QuestionFE } from './question.schema';
 
 export async function createDefaultQuestion({
   surveyId,
@@ -24,7 +24,7 @@ export async function createDefaultQuestion({
       : 0;
 
   try {
-    const question: QuestionResponse = await prisma.question.create({
+    const question: QuestionFE = await prisma.question.create({
       data: {
         surveyId,
         question: '',
@@ -49,14 +49,14 @@ export async function editQuestion({
   id: string;
   data: Partial<
     Pick<
-      QuestionResponse,
+      QuestionFE,
       'question' | 'details' | 'isRequired' | 'questionType'
     >
   >;
 }) {
   // update stuff
   try {
-    const updatedQuestion: QuestionResponse | undefined =
+    const updatedQuestion: QuestionFE | undefined =
       await prisma.question.update({
         where: { id },
         data: { ...data },
@@ -88,7 +88,7 @@ export async function editQuestion({
 
 export async function deleteQuestion({ id }: { id: string }) {
   try {
-    const deletedQuestion: QuestionResponse = await prisma.question.delete({
+    const deletedQuestion: QuestionFE = await prisma.question.delete({
       where: { id },
       include: {
         multipleChoiceOptions: true,

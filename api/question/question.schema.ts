@@ -2,6 +2,8 @@ import { QuestionType } from '@prisma/client';
 import { z } from 'zod';
 import { multipleChoiceOptionResponseSchema } from '../multipleChoiceOption/multipleChoiceOption.schema';
 
+// QuestionFE type for the frontend
+
 export const questionResponseSchema = z.object({
   id: z.string({}).cuid(),
   question: z.string({}),
@@ -13,5 +15,30 @@ export const questionResponseSchema = z.object({
   surveyId: z.string({}).cuid(),
 });
 
-export type QuestionResponse = z.infer<typeof questionResponseSchema>
+export type QuestionFE = z.infer<typeof questionResponseSchema>;
 
+// For schema validation
+
+export const editQuestionSchema = z.object({
+  body: z.object({
+    question: z.string({}).optional(),
+    details: z.string({}).optional(),
+    isRequired: z.boolean({}).optional(),
+    questionType: z.nativeEnum(QuestionType).optional(),
+  }),
+});
+export type EditQuestionData = z.infer<typeof editQuestionSchema>['body'];
+
+export const reorderQuestionSchema = z.object({
+  body: z.object({
+    order: z.number().int(),
+  }),
+});
+export type ReorderQuestionData = z.infer<typeof reorderQuestionSchema>['body'];
+
+export const createQuestionSchema = z.object({
+  body: z.object({
+    surveyId: z.string({}).cuid(),
+  }),
+});
+export type CreateQuestionData = z.infer<typeof createQuestionSchema>['body'];

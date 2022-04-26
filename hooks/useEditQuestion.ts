@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
-import { QuestionResponse } from '../api/question/question.schema';
+import { EditQuestionData, QuestionFE } from '../api/question/question.schema';
 import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
 
 const useEditQuestion = ({
@@ -16,14 +16,7 @@ const useEditQuestion = ({
 
   return useMutation(
     ['survey', surveyId],
-    (
-      data: Partial<
-        Pick<
-          QuestionResponse,
-          'question' | 'details' | 'isRequired' | 'questionType'
-        >
-      >
-    ) => {
+    (data: EditQuestionData) => {
       return axios.patch(`/api/question/${questionId}`, data);
     },
     {
@@ -35,7 +28,7 @@ const useEditQuestion = ({
         if (oldSurvey) {
           queryClient.setQueryData(['survey', surveyId], {
             ...oldSurvey,
-            questions: ([] as QuestionResponse[]).concat(
+            questions: ([] as QuestionFE[]).concat(
               oldSurvey.questions.slice(0, questionIndex),
               { ...oldSurvey.questions[questionIndex], ...data },
               oldSurvey.questions.slice(questionIndex + 1)

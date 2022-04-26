@@ -1,15 +1,14 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
-import { QuestionResponse } from '../api/question/question.schema';
-import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
+import { CreateQuestionData } from '../api/question/question.schema';
 
-const useCreateQuestion = ({ surveyId }: { surveyId: string }) => {
+const useCreateQuestion = (data: CreateQuestionData) => {
   const queryClient = useQueryClient();
 
   return useMutation(
-    ['survey', surveyId],
+    ['survey', data.surveyId],
     () => {
-      return axios.post('/api/question', { surveyId });
+      return axios.post('/api/question', data);
     },
     {
       onError: (e: any) => window.alert(e),
@@ -19,7 +18,7 @@ const useCreateQuestion = ({ surveyId }: { surveyId: string }) => {
         // question, and that's used the ref that framer motion uses
       },
       onSettled: () => {
-        queryClient.invalidateQueries(['survey', surveyId]);
+        queryClient.invalidateQueries(['survey', data.surveyId]);
       },
     }
   );
