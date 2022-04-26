@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { EditMultipleChoiceOptionData, MultipleChoiceOptionFE } from '../api/multipleChoiceOption/multipleChoiceOption.schema';
-import { QuestionResponse } from '../api/question/question.schema';
+import { QuestionFE } from '../api/question/question.schema';
 import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
 
 const useEditMultipleChoiceOption = ({
@@ -31,7 +31,7 @@ const useEditMultipleChoiceOption = ({
         if (oldSurvey) {
           queryClient.setQueryData(['survey', surveyId], {
             ...oldSurvey,
-            questions: ([] as QuestionResponse[]).concat(
+            questions: ([] as QuestionFE[]).concat(
               oldSurvey.questions.slice(0, questionIndex),
               {
                 ...oldSurvey.questions[questionIndex],

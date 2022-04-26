@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { ReorderMultipleChoiceOptionType } from '../api/multipleChoiceOption/multipleChoiceOption.schema';
-import { QuestionResponse } from '../api/question/question.schema';
+import { QuestionFE } from '../api/question/question.schema';
 import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
 
 const useReorderMultipleChoiceOption = ({
@@ -54,7 +54,7 @@ const useReorderMultipleChoiceOption = ({
             // rebuild survey object with new answerOptions
             queryClient.setQueryData(['survey', oldSurvey.id], {
               ...oldSurvey,
-              questions: ([] as QuestionResponse[]).concat(
+              questions: ([] as QuestionFE[]).concat(
                 oldSurvey.questions.slice(0, questionIndex),
                 {
                   ...oldSurvey.questions[questionIndex],
@@ -94,7 +94,7 @@ const useReorderMultipleChoiceOption = ({
             // rebuild survey object with new questions
             queryClient.setQueryData(['survey', oldSurvey.id], {
               ...oldSurvey,
-              questions: ([] as QuestionResponse[]).concat(
+              questions: ([] as QuestionFE[]).concat(
                 oldSurvey.questions.slice(0, questionIndex),
                 {
                   ...oldSurvey.questions[questionIndex],
