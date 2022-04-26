@@ -3,13 +3,15 @@
 // so when we get to our controller, we know that the body is exactly what we expect
 
 import { NextApiRequest, NextApiResponse } from 'next';
-import { NextHandler, RequestHandler } from 'next-connect';
+import { NextHandler } from 'next-connect';
 import { AnyZodObject } from 'zod';
+import logger from '../utils/logger';
 
 const validateResource =
   (schema: AnyZodObject) =>
   (req: NextApiRequest, res: NextApiResponse, next: NextHandler) => {
     try {
+      console.log(req.body);
       schema.parse({
         body: req.body,
         query: req.query,
@@ -18,7 +20,7 @@ const validateResource =
       next();
     } catch (e: any) {
       // if our schema can not be parsed
-      return res.status(400).send(e.errors); // TODO is this errors or error?
+      return res.status(400).send(e.errors);
     }
   };
 

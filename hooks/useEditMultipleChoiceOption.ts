@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
-import { MultipleChoiceOptionFE } from '../api/multipleChoiceOption/multipleChoiceOption.schema';
+import { EditMultipleChoiceOptionData, MultipleChoiceOptionFE } from '../api/multipleChoiceOption/multipleChoiceOption.schema';
 import { QuestionResponse } from '../api/question/question.schema';
 import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
 
@@ -19,7 +19,7 @@ const useEditMultipleChoiceOption = ({
 
   return useMutation(
     ['survey', surveyId],
-    (data: Partial<Pick<MultipleChoiceOptionFE, 'name'>>) => {
+    (data: EditMultipleChoiceOptionData) => {
       return axios.patch(`/api/multiplechoiceoption/${optionId}`, data);
     },
     {

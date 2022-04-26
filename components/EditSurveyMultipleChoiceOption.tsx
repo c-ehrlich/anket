@@ -76,7 +76,9 @@ const EditSurveyAnswerOption = (props: Props) => {
           variant='default'
           disabled={props.index === 0}
           onClick={() => {
-            reorderMultipleChoiceOptionMutation.mutate(props.index - 1);
+            reorderMultipleChoiceOptionMutation.mutate({
+              order: props.index - 1,
+            });
           }}
         >
           <CaretUp />
@@ -85,7 +87,9 @@ const EditSurveyAnswerOption = (props: Props) => {
           variant='default'
           disabled={props.index >= props.optionCount - 1}
           onClick={() => {
-            reorderMultipleChoiceOptionMutation.mutate(props.index + 1);
+            reorderMultipleChoiceOptionMutation.mutate({
+              order: props.index + 1,
+            });
           }}
         >
           <CaretDown />

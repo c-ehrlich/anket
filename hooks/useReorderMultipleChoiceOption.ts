@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
+import { ReorderMultipleChoiceOptionType } from '../api/multipleChoiceOption/multipleChoiceOption.schema';
 import { QuestionResponse } from '../api/question/question.schema';
 import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
 
@@ -18,14 +19,12 @@ const useReorderMultipleChoiceOption = ({
 
   return useMutation(
     ['survey', surveyId],
-    (newOrder: number) => {
-      return axios.patch(`/api/multiplechoiceoption/reorder/${optionId}`, {
-        order: newOrder,
-      });
+    (data: ReorderMultipleChoiceOptionType) => {
+      return axios.patch(`/api/multiplechoiceoption/reorder/${optionId}`, data);
     },
     {
       onError: (e: any) => window.alert(e),
-      onMutate: (newOrder) => {
+      onMutate: (data) => {
         queryClient.cancelQueries(['survey', surveyId]);
         const oldSurvey: CreateDefaultSurveyResponse | undefined =
           queryClient.getQueryData(['survey', surveyId]);
@@ -34,13 +33,13 @@ const useReorderMultipleChoiceOption = ({
             oldSurvey.questions[questionIndex].multipleChoiceOptions[
               optionIndex
             ].order;
-          if (newOrder > oldOrder) {
+          if (data.order > oldOrder) {
             // -1 to order of items with oder: gt oldOrder, lte newOrder
             const otherMovedItems = oldSurvey.questions[
               questionIndex
             ].multipleChoiceOptions
               .filter(
-                (mcItem) => mcItem.order > oldOrder && mcItem.order <= newOrder
+                (mcItem) => mcItem.order > oldOrder && mcItem.order <= data.order
               )
               .map((mcItem) => {
                 return { ...mcItem, order: mcItem.order - 1 };
@@ -50,7 +49,7 @@ const useReorderMultipleChoiceOption = ({
               ...oldSurvey.questions[questionIndex].multipleChoiceOptions[
                 optionIndex
               ],
-              order: newOrder,
+              order: data.order,
             };
             // rebuild survey object with new answerOptions
             queryClient.setQueryData(['survey', oldSurvey.id], {
@@ -67,20 +66,20 @@ const useReorderMultipleChoiceOption = ({
                     movedMultipleChoiceOption,
                     ...oldSurvey.questions[
                       questionIndex
-                    ].multipleChoiceOptions.slice(newOrder + 1),
+                    ].multipleChoiceOptions.slice(data.order + 1),
                   ],
                 },
                 oldSurvey.questions.slice(questionIndex + 1)
               ),
             });
           }
-          if (newOrder < oldOrder) {
+          if (data.order < oldOrder) {
             // +1 to order of items with order: lt oldOrder, gte newOrder
             const otherMovedItems = oldSurvey.questions[
               questionIndex
             ].multipleChoiceOptions
               .filter(
-                (mcItem) => mcItem.order < oldOrder && mcItem.order >= newOrder
+                (mcItem) => mcItem.order < oldOrder && mcItem.order >= data.order
               )
               .map((mcItem) => {
                 return { ...mcItem, order: mcItem.order + 1 };
@@ -90,7 +89,7 @@ const useReorderMultipleChoiceOption = ({
               ...oldSurvey.questions[questionIndex].multipleChoiceOptions[
                 optionIndex
               ],
-              order: newOrder,
+              order: data.order,
             };
             // rebuild survey object with new questions
             queryClient.setQueryData(['survey', oldSurvey.id], {
@@ -102,7 +101,7 @@ const useReorderMultipleChoiceOption = ({
                   multipleChoiceOptions: [
                     ...oldSurvey.questions[
                       questionIndex
-                    ].multipleChoiceOptions.slice(0, newOrder),
+                    ].multipleChoiceOptions.slice(0, data.order),
                     movedMultipleChoiceOption,
                     ...otherMovedItems,
                     ...oldSurvey.questions[
