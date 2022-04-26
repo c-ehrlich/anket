@@ -4,7 +4,7 @@ import { CaretDown, CaretUp, Trash } from 'tabler-icons-react';
 import useEditMultipleChoiceOption from '../hooks/useEditMultipleChoiceOption';
 import useDeleteMultipleChoiceOption from '../hooks/useDeleteMultipleChoiceOption';
 import useReorderMultipleChoiceOption from '../hooks/useReorderMultipleChoiceOption';
-import { MultipleChoiceOptionResponse } from '../api/multipleChoiceOption/multipleChoiceOption.schema';
+import { MultipleChoiceOptionFE } from '../api/multipleChoiceOption/multipleChoiceOption.schema';
 import { QuestionType } from '@prisma/client';
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -15,7 +15,7 @@ type Props = {
   questionIndex: number;
   questionId: string;
   surveyId: string;
-  option: MultipleChoiceOptionResponse;
+  option: MultipleChoiceOptionFE;
   optionCount: number;
   questionType: QuestionType;
 };
@@ -46,7 +46,7 @@ const EditSurveyAnswerOption = (props: Props) => {
   });
 
   const debouncedEditMultipleChoiceOption = useDebouncedCallback(
-    (data: Partial<Pick<MultipleChoiceOptionResponse, 'name'>>) =>
+    (data: Partial<Pick<MultipleChoiceOptionFE, 'name'>>) =>
       editMultipleChoiceOption.mutate(data),
     1000
   );

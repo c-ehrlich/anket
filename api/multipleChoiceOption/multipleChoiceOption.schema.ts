@@ -1,7 +1,8 @@
 import { z } from 'zod';
 
-const createDefaultMultipleChoiceOptionSchema = z.object({
-  questionId: z.string({}).uuid()
+export const createDefaultMultipleChoiceOptionSchema = z.object({
+  name: z.string({}),
+  questionId: z.string({}).cuid({})
 })
 
 export const multipleChoiceOptionResponseSchema = z.object({
@@ -10,4 +11,4 @@ export const multipleChoiceOptionResponseSchema = z.object({
   name: z.string({}),
 })
 
-export type MultipleChoiceOptionResponse = z.infer<typeof multipleChoiceOptionResponseSchema>;
+export type MultipleChoiceOptionFE = z.infer<typeof multipleChoiceOptionResponseSchema>;

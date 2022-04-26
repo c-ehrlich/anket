@@ -1,6 +1,6 @@
 import logger from '../utils/logger';
 import prisma from '../utils/prisma';
-import { MultipleChoiceOptionResponse } from './multipleChoiceOption.schema';
+import { MultipleChoiceOptionFE } from './multipleChoiceOption.schema';
 
 export async function createDefaultMultipleChoiceOption({
   questionId,
@@ -37,7 +37,7 @@ export async function editMultipleChoiceOption({
   data,
 }: {
   id: string;
-  data: Partial<Pick<MultipleChoiceOptionResponse, 'name'>>;
+  data: Partial<Pick<MultipleChoiceOptionFE, 'name'>>;
 }) {
   try {
     const multipleChoiceOption = await prisma.multipleChoiceOption.update({

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
-import { MultipleChoiceOptionResponse } from '../api/multipleChoiceOption/multipleChoiceOption.schema';
+import { MultipleChoiceOptionFE } from '../api/multipleChoiceOption/multipleChoiceOption.schema';
 import { QuestionResponse } from '../api/question/question.schema';
 import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
 
@@ -36,7 +36,7 @@ const useDeleteMultipleChoiceOption = ({
               {
                 ...oldSurvey.questions[questionIndex],
                 multipleChoiceOptions: (
-                  [] as MultipleChoiceOptionResponse[]
+                  [] as MultipleChoiceOptionFE[]
                 ).concat(
                   oldSurvey.questions[
                     questionIndex

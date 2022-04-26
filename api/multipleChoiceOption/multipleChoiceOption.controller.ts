@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
 import logger from '../utils/logger';
-import { MultipleChoiceOptionResponse } from './multipleChoiceOption.schema';
+import { MultipleChoiceOptionFE } from './multipleChoiceOption.schema';
 import {
   createDefaultMultipleChoiceOption,
   deleteMultipleChoiceOption,
@@ -9,9 +9,9 @@ import {
   reorderMultipleChoiceOption,
 } from './multipleChoiceOption.service';
 
-export async function addDefaultMultipleChoiceOptionToQuestion(
+export async function createMultipleChoiceOptionHandler(
   req: NextApiRequest,
-  res: NextApiResponse<MultipleChoiceOptionResponse | { message: string }>
+  res: NextApiResponse<MultipleChoiceOptionFE | { message: string }>
 ) {
   const session = await getSession({ req });
   const authorId = session!.user!.id;
@@ -41,7 +41,7 @@ export async function addDefaultMultipleChoiceOptionToQuestion(
 
 export async function deleteMultipleChoiceOptionHandler(
   req: NextApiRequest,
-  res: NextApiResponse<MultipleChoiceOptionResponse | { message: string }>
+  res: NextApiResponse<MultipleChoiceOptionFE | { message: string }>
 ) {
   // make sure we have an id
   const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
@@ -51,7 +51,7 @@ export async function deleteMultipleChoiceOptionHandler(
   // TODO make sure the user is allowed to modify that option
 
   // call a service that deletes the option
-  const deletedOption: MultipleChoiceOptionResponse | undefined =
+  const deletedOption: MultipleChoiceOptionFE | undefined =
     await deleteMultipleChoiceOption({ id });
 
   // return the deleted option (invalidate survey in frontend)
@@ -64,7 +64,7 @@ export async function deleteMultipleChoiceOptionHandler(
 
 export async function editMultipleChoiceOptionHandler(
   req: NextApiRequest,
-  res: NextApiResponse<MultipleChoiceOptionResponse | { message: string }>
+  res: NextApiResponse<MultipleChoiceOptionFE | { message: string }>
 ) {
   // make sure we have a questionid
   const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
@@ -74,14 +74,14 @@ export async function editMultipleChoiceOptionHandler(
   logger.info(`id: ${id}`);
 
   // get the data from the request
-  const data: Partial<Pick<MultipleChoiceOptionResponse, 'name'>> = req.body;
+  const data: Partial<Pick<MultipleChoiceOptionFE, 'name'>> = req.body;
 
   logger.info(`data: ${JSON.stringify({...data})}`);
 
   // TODO make sure the user is allowed to modify that mcoption
 
   // call a service that edits the mcoption
-  const editedMultipleChoiceOption: MultipleChoiceOptionResponse | undefined =
+  const editedMultipleChoiceOption: MultipleChoiceOptionFE | undefined =
     await editMultipleChoiceOption({
       id,
       data,
@@ -100,7 +100,7 @@ export async function editMultipleChoiceOptionHandler(
 
 export async function reorderMultipleChoiceOptionHandler(
   req: NextApiRequest,
-  res: NextApiResponse<MultipleChoiceOptionResponse[] | { message: string }>
+  res: NextApiResponse<MultipleChoiceOptionFE[] | { message: string }>
 ) {
   // make sure we have an id
   const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
@@ -117,7 +117,7 @@ export async function reorderMultipleChoiceOptionHandler(
 
   // call handler
   const reorderedMultipleChoiceOptions:
-    | MultipleChoiceOptionResponse[]
+    | MultipleChoiceOptionFE[]
     | undefined = await reorderMultipleChoiceOption({ id, order });
 
   // check if we have the object and return it or an error
