@@ -29,7 +29,10 @@ export const editQuestionSchema = z.object({
     })
     .partial()
     .strict()
-    .refine((data) => Object.keys(data).length >= 1),
+    .refine(
+      (data) => Object.keys(data).length >= 1,
+      'Need to edit at least one field'
+    ),
 });
 export type EditQuestionData = z.infer<typeof editQuestionSchema>['body'];
 
