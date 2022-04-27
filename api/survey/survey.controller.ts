@@ -4,7 +4,7 @@ import { getSession } from 'next-auth/react';
 import logger from '../utils/logger';
 import {
   CreateDefaultSurveyInput,
-  CreateDefaultSurveyResponse,
+  SurveyFE,
 } from './survey.schema';
 import {
   createDefaultSurvey,
@@ -17,7 +17,7 @@ import {
 
 export async function createNewSurveyHandler(
   req: NextApiRequest,
-  res: NextApiResponse<CreateDefaultSurveyResponse | { message: string }>
+  res: NextApiResponse<SurveyFE | { message: string }>
 ) {
   const session = await getSession({ req });
   const authorId = session!.user!.id;
@@ -41,7 +41,7 @@ export async function createNewSurveyHandler(
 
 export async function getSingleSurveyHandler(
   req: NextApiRequest,
-  res: NextApiResponse<{ message: string} | CreateDefaultSurveyInput>
+  res: NextApiResponse<{ message: string} | SurveyFE>
 ) {
   const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
   if (!id) return res.status(400).json({ message: 'failed to get ID from query'})

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
-import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
+import { EditSurveyData, SurveyFE } from '../api/survey/survey.schema';
 
 const useEditSurvey = ({ surveyId }: { surveyId: string }) => {
   const queryClient = useQueryClient();
@@ -8,9 +8,7 @@ const useEditSurvey = ({ surveyId }: { surveyId: string }) => {
   return useMutation(
     ['survey', surveyId],
     (
-      data: Partial<
-        Pick<CreateDefaultSurveyResponse, 'name' | 'description' | 'isPublic'>
-      >
+      data: EditSurveyData
     ) => {
       return axios
         .patch(`/api/survey/${surveyId}`, { ...data })
@@ -19,12 +17,10 @@ const useEditSurvey = ({ surveyId }: { surveyId: string }) => {
     {
       onError: (e: any) => window.alert(e),
       onMutate: (
-        values: Partial<
-          Pick<CreateDefaultSurveyResponse, 'name' | 'description' | 'isPublic'>
-        >
+        values
       ) => {
         queryClient.cancelQueries(['survey', surveyId]);
-        const oldSurvey: CreateDefaultSurveyResponse | undefined =
+        const oldSurvey: SurveyFE | undefined =
           queryClient.getQueryData(['survey', surveyId]);
         if (oldSurvey)
           queryClient.setQueryData(['survey', surveyId], () => {

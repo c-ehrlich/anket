@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { QuestionFE, ReorderQuestionData } from '../api/question/question.schema';
-import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
+import { SurveyFE } from '../api/survey/survey.schema';
 
 const useReorderQuestion = ({
   surveyId,
@@ -25,7 +25,7 @@ const useReorderQuestion = ({
       onError: (e: any) => window.alert(e),
       onMutate: (data) => {
         queryClient.cancelQueries(['survey', surveyId]);
-        const oldSurvey: CreateDefaultSurveyResponse | undefined =
+        const oldSurvey: SurveyFE | undefined =
           queryClient.getQueryData(['survey', surveyId]);
         if (oldSurvey) {
           const oldOrder = oldSurvey.questions[questionIndex].order;

@@ -1,6 +1,6 @@
 import {
   CreateDefaultSurveyInput,
-  CreateDefaultSurveyResponse,
+  SurveyFE,
 } from './survey.schema';
 import prisma from '../utils/prisma';
 import { Survey } from '@prisma/client';
@@ -13,7 +13,7 @@ export async function createDefaultSurvey(data: CreateDefaultSurveyInput) {
    * that instead of creating a new one...
    */
   try {
-    const existingSurvey: CreateDefaultSurveyResponse | null =
+    const existingSurvey: SurveyFE | null =
       await prisma.survey.findFirst({
         where: {
           name: '',
@@ -46,7 +46,7 @@ export async function createDefaultSurvey(data: CreateDefaultSurveyInput) {
 
   // ...If not, create one
   try {
-    const survey: CreateDefaultSurveyResponse = await prisma.survey.create({
+    const survey: SurveyFE = await prisma.survey.create({
       data: {
         ...data,
         name: '',

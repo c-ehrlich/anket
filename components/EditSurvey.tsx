@@ -10,7 +10,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
+import { SurveyFE } from '../api/survey/survey.schema';
 import useCreateQuestion from '../hooks/useCreateQuestion';
 import useDeleteSurvey from '../hooks/useDeleteSurvey';
 import useEditSurvey from '../hooks/useEditSurvey';
@@ -42,7 +42,7 @@ const EditSurvey = ({ surveyId }: { surveyId: string }) => {
 const EditSurveyHaveData = ({
   survey,
 }: {
-  survey: CreateDefaultSurveyResponse;
+  survey: SurveyFE;
 }) => {
   const router = useRouter();
 
@@ -56,7 +56,7 @@ const EditSurveyHaveData = ({
   const debouncedEditSurvey = useDebouncedCallback(
     (
       data: Partial<
-        Pick<CreateDefaultSurveyResponse, 'name' | 'description' | 'isPublic'>
+        Pick<SurveyFE, 'name' | 'description' | 'isPublic'>
       >
     ) => editSurvey.mutate(data),
     1000

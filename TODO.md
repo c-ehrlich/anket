@@ -39,6 +39,8 @@
 - [ ] Creating a survey also creates the first question, creating a question also creates the first answer option
 - [ ] Type React Query errors (is it just the type of { message: string? }) probably not...look at one and figure it out
 - [ ] See where we can reduce the number of props (for example in EditSurveyMultipleChoiceAnswer by passing an object instead of multiple parts of that object)
+- [ ] User profiles ... users can have settings, nicknames, etc
+  - [ ] When logging in with a user that doesn't exist in the db yet, force them to create a user profile
 
 # Anket Done
 ## MVP v1
@@ -104,5 +106,11 @@
 - [x] Put in state and debounce text inputs in EditSurveyQuestion
 - [x] Put in state and debounce text inputs in EditSurveyMultipleChoiceAnswer
 ### Take Survey
-### Misc Backend Stuff
+### Backend
 - [x] clone the logger from tom does tech youtube clone, and re-convert every consoleDOTlog/error to that logger
+- [x] Create schema for everything and validate every request
+  - [ ] Also use these types in the frontend, so we have no more Partial<>, Pick<>, etc
+  - [ ] There's also some Partial<>s in the backend...fix those also
+  - [ ] Move surveywithauthor from .d.ts to a zod schema
+  - [ ] Check the types on every res in controllers... still using some Prisma generated types
+  - [ ] Create errors for schema

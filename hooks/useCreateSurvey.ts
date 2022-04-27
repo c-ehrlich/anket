@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
+import { SurveyFE } from '../api/survey/survey.schema';
 
 export const createSurvey = async () => {
-  const survey: CreateDefaultSurveyResponse = await axios
+  const survey: SurveyFE = await axios
     .post('/api/survey')
     .then((res) => res.data);
   return survey;

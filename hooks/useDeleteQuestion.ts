@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { QuestionFE } from '../api/question/question.schema';
-import { CreateDefaultSurveyResponse } from '../api/survey/survey.schema';
+import { SurveyFE } from '../api/survey/survey.schema';
 
 const useDeleteQuestion = ({
   surveyId,
@@ -23,7 +23,7 @@ const useDeleteQuestion = ({
       onError: (e: any) => window.alert(e),
       onMutate: () => {
         queryClient.cancelQueries(['survey', surveyId]);
-        const oldSurvey: CreateDefaultSurveyResponse | undefined =
+        const oldSurvey: SurveyFE | undefined =
           queryClient.getQueryData(['survey', surveyId]);
         if (oldSurvey) {
           queryClient.setQueryData(['survey', surveyId], {
