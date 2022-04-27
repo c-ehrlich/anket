@@ -15,31 +15,30 @@ export async function createDefaultSurvey(data: CreateDefaultSurveyInput) {
    * that instead of creating a new one...
    */
   try {
-    const existingSurvey: SurveyFE | null =
-      await prisma.survey.findFirst({
-        where: {
-          name: '',
-          description: '',
-          authorId: data.authorId,
-          questions: {
-            none: {},
-          },
+    const existingSurvey: SurveyFE | null = await prisma.survey.findFirst({
+      where: {
+        name: '',
+        description: '',
+        authorId: data.authorId,
+        questions: {
+          none: {},
         },
-        include: {
-          questions: {
-            include: {
-              multipleChoiceOptions: {
-                orderBy: {
-                  order: 'asc',
-                },
+      },
+      include: {
+        questions: {
+          include: {
+            multipleChoiceOptions: {
+              orderBy: {
+                order: 'asc',
               },
             },
-            orderBy: {
-              order: 'asc',
-            },
+          },
+          orderBy: {
+            order: 'asc',
           },
         },
-      });
+      },
+    });
 
     if (existingSurvey) return existingSurvey;
   } catch (e: any) {
@@ -183,13 +182,27 @@ export async function deleteSurvey({ id }: { id: string }) {
       include: {
         questions: {
           include: {
-            multipleChoiceOptions: true
-          }
-        }
-      }
+            multipleChoiceOptions: true,
+          },
+        },
+      },
     });
     return deletedSurvey;
   } catch (e) {
     logger.error(e);
+  }
+}
+
+export async function getSurveyOwner(id: string) {
+  try {
+    const survey = await prisma.survey.findUnique({
+      where: { id },
+      select: {
+        authorId: true
+      }
+    })
+    return survey?.authorId;
+  } catch (e) {
+    console.log(e);
   }
 }

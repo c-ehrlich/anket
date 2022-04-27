@@ -1,11 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
-import logger from '../utils/logger';
+import { getSurveyOwner } from '../survey/survey.service';
 import { EditQuestionData, QuestionFE } from './question.schema';
 import {
   createDefaultQuestion,
   deleteQuestion,
   editQuestion,
+  getQuestionOwner,
   reorderQuestion,
 } from './question.service';
 
@@ -13,16 +14,14 @@ export async function addDefaultQuestionToSurvey(
   req: NextApiRequest,
   res: NextApiResponse<QuestionFE | { message: string }>
 ) {
-  // make sure we have a survey id and a user
-  const session = await getSession({ req });
-  const authorId = session!.user!.id;
-
-  if (!authorId) {
-    logger.error('no session');
-    return res.status(400).json({ message: 'No session' });
-  }
-
   const { surveyId }: { surveyId: string } = req.body;
+
+  // make sure the user is allowed to modify that question/survey
+  const surveyOwner = await getSurveyOwner(surveyId)
+  const session = await getSession({ req });
+  if (!session?.user || surveyOwner !== session.user.id) {
+    return res.status(400).send({ message: 'Invalid user. Permission denied.' });
+  }
 
   const question = await createDefaultQuestion({ surveyId });
 
@@ -44,7 +43,12 @@ export async function editQuestionHandler(
   // get the data from the request
   const data: EditQuestionData = req.body;
 
-  // TODO make sure the user is allowed to modify that question/survey
+  // make sure the user is allowed to modify that question/survey
+  const questionOwner = await getQuestionOwner(id);
+  const session = await getSession({ req });
+  if (!session?.user || questionOwner !== session.user.id) {
+    return res.status(400).send({ message: 'Invalid user. Permission denied.' });
+  }
 
   // call a service that edits the question
   const editedQuestion: QuestionFE | undefined = await editQuestion({
@@ -67,7 +71,12 @@ export async function deleteQuestionHandler(
   if (!id)
     return res.status(400).json({ message: 'failed to get ID from query' });
 
-  // TODO make sure the user is allowed to modify that question/survey
+  // make sure the user is allowed to modify that question/survey
+  const questionOwner = await getQuestionOwner(id);
+  const session = await getSession({ req });
+  if (!session?.user || questionOwner !== session.user.id) {
+    return res.status(400).send({ message: 'Invalid user. Permission denied.' });
+  }
 
   // call a service that deletes the question (cascade the answersoptions)
   const deletedQuestion: QuestionFE | undefined = await deleteQuestion({
@@ -89,16 +98,23 @@ export async function reorderQuestionHandler(
   if (!id)
     return res.status(400).json({ message: 'failed to get ID from query' });
 
-  // TODO make sure the user is allowed to modify that question/survey
+  // make sure the user is allowed to modify that question/survey
+  const questionOwner = await getQuestionOwner(id);
+  const session = await getSession({ req });
+  if (!session?.user || questionOwner !== session.user.id) {
+    return res.status(400).send({ message: 'Invalid user. Permission denied.' });
+  }
 
   // get the new order from req
   const { order } = req.body;
   if (!order && order !== 0)
-    res.status(400).send({ message: 'failed to get order from body' });
+    return res.status(400).send({ message: 'failed to get order from body' });
 
   // call handler
-  const reorderedQuestions: QuestionFE[] | undefined =
-    await reorderQuestion({ id, order });
+  const reorderedQuestions: QuestionFE[] | undefined = await reorderQuestion({
+    id,
+    order,
+  });
 
   // check if we have the object and return it or an error
   if (!reorderedQuestions)

@@ -210,8 +210,26 @@ export async function reorderQuestion({
         multipleChoiceOptions: true,
       },
     });
-    
+
     return allQuestions;
+  } catch (e: any) {
+    logger.error(e);
+  }
+}
+
+export async function getQuestionOwner(id: string) {
+  try {
+    const question = await prisma.question.findUnique({
+      where: { id },
+      select: {
+        survey: {
+          select: {
+            authorId: true
+          }
+        }
+      }
+    })
+    return question?.survey.authorId;
   } catch (e: any) {
     logger.error(e);
   }
