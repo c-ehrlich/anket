@@ -112,5 +112,4 @@
   - [x] Also use these types in the frontend, so we have no more Partial<>, Pick<>, etc
   - [x] There's also some Partial<>s in the backend...fix those also
   - [x] Move surveywithauthor from .d.ts to a zod schema
-  - [ ] Check the types on every res in controllers... still using some Prisma generated types
-  - [ ] Create errors for schema
+  - [x] Check the types on every res in controllers... still using some Prisma generated types

@@ -179,6 +179,14 @@ export async function deleteSurvey({ id }: { id: string }) {
   try {
     const deletedSurvey = await prisma.survey.delete({
       where: { id },
+      // TODO do we really need this whole object? Maybe only send the basic data
+      include: {
+        questions: {
+          include: {
+            multipleChoiceOptions: true
+          }
+        }
+      }
     });
     return deletedSurvey;
   } catch (e) {

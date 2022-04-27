@@ -1,4 +1,3 @@
-import { Survey } from '@prisma/client';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
 import logger from '../utils/logger';
@@ -75,7 +74,7 @@ export async function getUserSurveysHandler(
 
 export async function updateSurveyBasicInfoHandler(
   req: NextApiRequest,
-  res: NextApiResponse<{ message: string } | Survey>
+  res: NextApiResponse<{ message: string } | SurveyFE>
 ) {
   const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
   if (!id) return res.status(400).json({ message: 'failed to get ID from query'})
@@ -93,7 +92,7 @@ export async function updateSurveyBasicInfoHandler(
 
 export async function deleteSurveyHandler(
   req: NextApiRequest,
-  res: NextApiResponse<{ message: String } | Survey>
+  res: NextApiResponse<{ message: String } | SurveyFE>
 ) {
   const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
   if (!id) return res.status(400).json({ message: 'failed to get ID from query'})
