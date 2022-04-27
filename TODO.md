@@ -1,17 +1,13 @@
 # Anket Todo (current)
 ## MVP v1
 ### Bugs
-- [ ] useDebouncedCallback doesn't save data if we type, hit tab, type again very fast => because the previous requests get cancelled
-  - [*] solution: use separate debounces for each field
 
 ### DB
 ### UI
 - [!] Question container height: make transitions take time so the framer motion delete animation doesn't get hidden by the container shrinking
 - [ ] small screen: sidebar in/out should be animated
-- [ ] Get question framer motion working
 - [ ] make all the disabled stuff in the anket creator not have special mouse cursors
 - [ ] Choose nicer fonts
-- [ ] Get a theme going... green as the main accent color?
 - [ ] Make side margins about 1/2 of what they currently are on XS screens
 ### Create/Edit Survey
 - [ ] Submitting / error checking... what do we want to make sure of before submitting a survey?
@@ -53,6 +49,8 @@
 - [x] Theme is not saved on page reload (put it in localstorage?)
 - [x] Fix answer option reorder not working
 - [x] AddQuestion mutation briefly adds TWO questions (until we get back the server response?)
+- [x] useDebouncedCallback doesn't save data if we type, hit tab, type again very fast => because the previous requests get cancelled
+  - [*] solution: use separate debounces for each field
 ## DB
 - [x] Implement order on questions
 - [x] send questions and answeroptions ordered on DB level

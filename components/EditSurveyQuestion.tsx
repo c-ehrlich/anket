@@ -67,7 +67,13 @@ const EditSurveyQuestion = (props: Props) => {
     questionId: props.question.id,
   });
 
-  const debouncedEditQuestion = useDebouncedCallback(
+  const debouncedEditQuestionText = useDebouncedCallback(
+    (
+      data: EditQuestionData
+    ) => editQuestion.mutate(data),
+    1000
+  );
+  const debouncedEditQuestionDetails = useDebouncedCallback(
     (
       data: EditQuestionData
     ) => editQuestion.mutate(data),
@@ -76,12 +82,12 @@ const EditSurveyQuestion = (props: Props) => {
 
   const handleEditQuestionName = (e: React.FormEvent<HTMLInputElement>) => {
     setQuestionText(e.currentTarget.value);
-    debouncedEditQuestion({ question: e.currentTarget.value });
+    debouncedEditQuestionText({ question: e.currentTarget.value });
   };
 
   const handleEditQuestionDetails = (e: React.FormEvent<HTMLInputElement>) => {
     setQuestionDetails(e.currentTarget.value);
-    debouncedEditQuestion({ details: e.currentTarget.value });
+    debouncedEditQuestionDetails({ details: e.currentTarget.value });
   };
 
   return (

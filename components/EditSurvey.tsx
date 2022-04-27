@@ -53,7 +53,16 @@ const EditSurveyHaveData = ({
     survey.description
   );
 
-  const debouncedEditSurvey = useDebouncedCallback(
+  // we need a separate debounce for each field, otherwise
+  // hitting tab and continuing to type will cancel the requests
+  // for the previous field
+  const debouncedEditSurveyName = useDebouncedCallback(
+    (
+      data: EditSurveyData
+    ) => editSurvey.mutate(data),
+    1000
+  );
+  const debouncedEditSurveyDescription = useDebouncedCallback(
     (
       data: EditSurveyData
     ) => editSurvey.mutate(data),
@@ -62,11 +71,11 @@ const EditSurveyHaveData = ({
 
   const handleEditSurveyName = (e: React.FormEvent<HTMLInputElement>) => {
     setSurveyName(e.currentTarget.value);
-    debouncedEditSurvey({ name: e.currentTarget.value });
+    debouncedEditSurveyName({ name: e.currentTarget.value });
   };
   const handleEditSurveyDesc = (e: React.FormEvent<HTMLInputElement>) => {
     setSurveyDescription(e.currentTarget.value);
-    debouncedEditSurvey({ description: e.currentTarget.value });
+    debouncedEditSurveyDescription({ description: e.currentTarget.value });
   };
 
   const editSurvey = useEditSurvey({ surveyId: survey.id });
