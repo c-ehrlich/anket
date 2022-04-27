@@ -1,6 +1,9 @@
 import logger from '../utils/logger';
 import prisma from '../utils/prisma';
-import { EditMultipleChoiceOptionData, MultipleChoiceOptionFE } from './multipleChoiceOption.schema';
+import {
+  EditMultipleChoiceOptionData,
+  MultipleChoiceOptionFE,
+} from './multipleChoiceOption.schema';
 
 export async function createDefaultMultipleChoiceOption({
   questionId,
@@ -37,7 +40,7 @@ export async function editMultipleChoiceOption({
   data,
 }: {
   id: string;
-  data: EditMultipleChoiceOptionData 
+  data: EditMultipleChoiceOptionData;
 }) {
   try {
     const multipleChoiceOption = await prisma.multipleChoiceOption.update({
@@ -179,6 +182,28 @@ export async function reorderMultipleChoiceOption({
       where: { questionId: option.questionId },
     });
     return allOptions;
+  } catch (e: any) {
+    logger.error(e);
+  }
+}
+
+export async function getMultipleChoiceOptionOwner(id: string) {
+  try {
+    const option = await prisma.multipleChoiceOption.findUnique({
+      where: { id },
+      select: {
+        question: {
+          select: {
+            survey: {
+              select: {
+                authorId: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    return option?.question.survey.authorId;
   } catch (e: any) {
     logger.error(e);
   }
