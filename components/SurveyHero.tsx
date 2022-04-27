@@ -3,7 +3,6 @@ import {
   Avatar,
   Badge,
   Card,
-  Chip,
   Group,
   Image,
   Stack,
@@ -13,9 +12,9 @@ import {
 } from '@mantine/core';
 import { useSession } from 'next-auth/react';
 import React from 'react';
-import { SurveyWithAuthor } from '../types/survey';
 import { AlertTriangle, Check, Edit } from 'tabler-icons-react';
 import Link from 'next/link';
+import { SurveyWithAuthor } from '../api/survey/survey.schema';
 
 type Props = {
   survey: SurveyWithAuthor;

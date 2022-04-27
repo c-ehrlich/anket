@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 import axios from 'axios';
-import { SurveyWithAuthor } from '../types/survey';
+import { SurveyWithAuthor } from '../api/survey/survey.schema';
 
 export default function useGetAllSurveys() {
   return useQuery<SurveyWithAuthor[], Error>(['all-surveys'], () =>

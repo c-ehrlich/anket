@@ -111,6 +111,6 @@
 - [x] Create schema for everything and validate every request
   - [ ] Also use these types in the frontend, so we have no more Partial<>, Pick<>, etc
   - [ ] There's also some Partial<>s in the backend...fix those also
-  - [ ] Move surveywithauthor from .d.ts to a zod schema
+  - [x] Move surveywithauthor from .d.ts to a zod schema
   - [ ] Check the types on every res in controllers... still using some Prisma generated types
   - [ ] Create errors for schema

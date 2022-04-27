@@ -46,3 +46,19 @@ export const editSurveySchema = z.object({
     ),
 });
 export type EditSurveyData = z.infer<typeof editSurveySchema>['body'];
+
+const surveyWithAuthorSchema = z.object({
+  id: z.string().cuid(),
+  name: z.string(),
+  description: z.string(),
+  isCompleted: z.boolean(),
+  isPublic: z.boolean(),
+  author: z.object({
+    id: z.string(),
+    name: z.string().optional(),
+    email: z.string().optional(),
+    image: z.string().optional(),
+    // there are other things on the user object but we don't want to send them
+  })
+});
+export type SurveyWithAuthor = z.infer<typeof surveyWithAuthorSchema>;
