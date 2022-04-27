@@ -20,12 +20,16 @@ export type QuestionFE = z.infer<typeof questionResponseSchema>;
 // For schema validation
 
 export const editQuestionSchema = z.object({
-  body: z.object({
-    question: z.string({}).optional(),
-    details: z.string({}).optional(),
-    isRequired: z.boolean({}).optional(),
-    questionType: z.nativeEnum(QuestionType).optional(),
-  }),
+  body: z
+    .object({
+      question: z.string({}),
+      details: z.string({}),
+      isRequired: z.boolean({}),
+      questionType: z.nativeEnum(QuestionType),
+    })
+    .partial()
+    .strict()
+    .refine((data) => Object.keys(data).length >= 1),
 });
 export type EditQuestionData = z.infer<typeof editQuestionSchema>['body'];
 

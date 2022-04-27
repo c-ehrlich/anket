@@ -19,7 +19,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React, { useState } from 'react';
 import { CaretDown, CaretUp, Trash } from 'tabler-icons-react';
 import { useDebouncedCallback } from 'use-debounce';
-import { QuestionFE } from '../api/question/question.schema';
+import { EditQuestionData, QuestionFE } from '../api/question/question.schema';
 import useCreateMultipleChoiceOption from '../hooks/useCreateMultipleChoiceOption';
 import useDeleteQuestion from '../hooks/useDeleteQuestion';
 import useEditQuestion from '../hooks/useEditQuestion';
@@ -69,9 +69,7 @@ const EditSurveyQuestion = (props: Props) => {
 
   const debouncedEditQuestion = useDebouncedCallback(
     (
-      data: Partial<
-        Pick<QuestionFE, 'question' | 'details' | 'isRequired' | 'questionType'>
-      >
+      data: EditQuestionData
     ) => editQuestion.mutate(data),
     1000
   );

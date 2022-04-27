@@ -1,9 +1,11 @@
 import {
   CreateDefaultSurveyInput,
+  EditSurveyData,
   SurveyFE,
+  SurveyPreviewWithAuthor,
 } from './survey.schema';
 import prisma from '../utils/prisma';
-import { Survey } from '@prisma/client';
+import { Survey, User } from '@prisma/client';
 import logger from '../utils/logger';
 
 export async function createDefaultSurvey(data: CreateDefaultSurveyInput) {
@@ -74,7 +76,7 @@ export async function createDefaultSurvey(data: CreateDefaultSurveyInput) {
 }
 
 export async function getAllPublicSurveyPreviews() {
-  const surveys = await prisma.survey.findMany({
+  const surveys: SurveyPreviewWithAuthor[] = await prisma.survey.findMany({
     where: {
       isCompleted: true,
       isPublic: true,
@@ -84,6 +86,8 @@ export async function getAllPublicSurveyPreviews() {
       id: true,
       name: true,
       description: true,
+      isCompleted: true,
+      isPublic: true,
     },
     orderBy: {
       updatedAt: 'desc',
@@ -144,7 +148,7 @@ export async function updateSurvey({
   data,
 }: {
   id: string;
-  data: Partial<Survey>;
+  data: EditSurveyData;
 }) {
   try {
     const updatedSurvey = await prisma.survey.update({

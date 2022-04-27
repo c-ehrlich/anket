@@ -1,5 +1,13 @@
+import { userInfo } from 'os';
 import { z } from 'zod';
 import { questionResponseSchema } from '../question/question.schema';
+
+const user = z.object({
+  id: z.string().cuid(),
+  name: z.string().nullable(),
+  image: z.string().nullable(),
+  // there are other things on the user object but we don't want to send them
+});
 
 // createDefaultSurvey input
 export const createDefaultSurveySchema = z.object({
@@ -53,12 +61,6 @@ const surveyWithAuthorSchema = z.object({
   description: z.string(),
   isCompleted: z.boolean(),
   isPublic: z.boolean(),
-  author: z.object({
-    id: z.string(),
-    name: z.string().optional(),
-    email: z.string().optional(),
-    image: z.string().optional(),
-    // there are other things on the user object but we don't want to send them
-  })
+  author: user,
 });
-export type SurveyWithAuthor = z.infer<typeof surveyWithAuthorSchema>;
+export type SurveyPreviewWithAuthor = z.infer<typeof surveyWithAuthorSchema>;

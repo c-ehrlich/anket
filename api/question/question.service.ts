@@ -1,7 +1,7 @@
 import _logger from 'next-auth/lib/logger';
 import logger from '../utils/logger';
 import prisma from '../utils/prisma';
-import { QuestionFE } from './question.schema';
+import { EditQuestionData, QuestionFE } from './question.schema';
 
 export async function createDefaultQuestion({
   surveyId,
@@ -47,12 +47,7 @@ export async function editQuestion({
   data,
 }: {
   id: string;
-  data: Partial<
-    Pick<
-      QuestionFE,
-      'question' | 'details' | 'isRequired' | 'questionType'
-    >
-  >;
+  data: EditQuestionData;
 }) {
   // update stuff
   try {

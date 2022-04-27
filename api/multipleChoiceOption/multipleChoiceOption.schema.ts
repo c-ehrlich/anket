@@ -1,7 +1,6 @@
 import { z } from 'zod';
 
 const name = z.string({});
-const optionalName = z.string({}).optional();
 const id = z.string({}).cuid({});
 const questionId = z.string({}).cuid({});
 const order = z.number({});
@@ -20,9 +19,13 @@ export const createDefaultMultipleChoiceOptionSchema = z.object({
 });
 
 export const editMultipleChoiceOptionSchema = z.object({
-  body: z.object({
-    name: optionalName,
-  }),
+  body: z
+    .object({
+      name,
+    })
+    .partial()
+    .strict()
+    .refine((data) => Object.keys(data).length >= 1),
 });
 export type EditMultipleChoiceOptionData = z.infer<
   typeof editMultipleChoiceOptionSchema

@@ -5,6 +5,7 @@ import logger from '../utils/logger';
 import {
   CreateDefaultSurveyInput,
   SurveyFE,
+  SurveyPreviewWithAuthor,
 } from './survey.schema';
 import {
   createDefaultSurvey,
@@ -55,7 +56,7 @@ export async function getSingleSurveyHandler(
 
 export async function getAllPublicSurveysHandler(
   req: NextApiRequest,
-  res: NextApiResponse<{ message: string } | Partial<Survey>[]>
+  res: NextApiResponse<{ message: string } | SurveyPreviewWithAuthor[]>
 ) {
   const surveys = await getAllPublicSurveyPreviews();
 
@@ -64,7 +65,7 @@ export async function getAllPublicSurveysHandler(
 
 export async function getUserSurveysHandler(
   req: NextApiRequest,
-  res: NextApiResponse<{ message: string } | Partial<Survey>[]>
+  res: NextApiResponse<{ message: string } | SurveyPreviewWithAuthor[]>
 ) {
   const userId = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
 

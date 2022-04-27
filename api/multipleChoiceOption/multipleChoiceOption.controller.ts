@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
 import logger from '../utils/logger';
-import { MultipleChoiceOptionFE } from './multipleChoiceOption.schema';
+import { EditMultipleChoiceOptionData, MultipleChoiceOptionFE } from './multipleChoiceOption.schema';
 import {
   createDefaultMultipleChoiceOption,
   deleteMultipleChoiceOption,
@@ -74,7 +74,7 @@ export async function editMultipleChoiceOptionHandler(
   logger.info(`id: ${id}`);
 
   // get the data from the request
-  const data: Partial<Pick<MultipleChoiceOptionFE, 'name'>> = req.body;
+  const data: EditMultipleChoiceOptionData = req.body;
 
   logger.info(`data: ${JSON.stringify({...data})}`);
 

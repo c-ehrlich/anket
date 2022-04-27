@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
 import logger from '../utils/logger';
-import { QuestionFE } from './question.schema';
+import { EditQuestionData, QuestionFE } from './question.schema';
 import {
   createDefaultQuestion,
   deleteQuestion,
@@ -42,12 +42,7 @@ export async function editQuestionHandler(
     return res.status(400).json({ message: 'failed to get ID from query' });
 
   // get the data from the request
-  const data: Partial<
-    Pick<
-      QuestionFE,
-      'question' | 'details' | 'isRequired' | 'questionType'
-    >
-  > = req.body;
+  const data: EditQuestionData = req.body;
 
   // TODO make sure the user is allowed to modify that question/survey
 

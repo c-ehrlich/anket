@@ -14,10 +14,10 @@ import { useSession } from 'next-auth/react';
 import React from 'react';
 import { AlertTriangle, Check, Edit } from 'tabler-icons-react';
 import Link from 'next/link';
-import { SurveyWithAuthor } from '../api/survey/survey.schema';
+import { SurveyPreviewWithAuthor } from '../api/survey/survey.schema';
 
 type Props = {
-  survey: SurveyWithAuthor;
+  survey: SurveyPreviewWithAuthor;
 };
 
 const SurveyHero = (props: Props) => {
