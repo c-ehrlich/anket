@@ -1,10 +1,13 @@
 import { ActionIcon, Checkbox, Group, Radio, TextInput } from '@mantine/core';
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import { CaretDown, CaretUp, Trash } from 'tabler-icons-react';
 import useEditMultipleChoiceOption from '../hooks/useEditMultipleChoiceOption';
 import useDeleteMultipleChoiceOption from '../hooks/useDeleteMultipleChoiceOption';
 import useReorderMultipleChoiceOption from '../hooks/useReorderMultipleChoiceOption';
-import { EditMultipleChoiceOptionData, MultipleChoiceOptionFE } from '../api/multipleChoiceOption/multipleChoiceOption.schema';
+import {
+  EditMultipleChoiceOptionData,
+  MultipleChoiceOptionFE,
+} from '../api/multipleChoiceOption/multipleChoiceOption.schema';
 import { QuestionType } from '@prisma/client';
 import { useDebouncedCallback } from 'use-debounce';
 
@@ -20,7 +23,7 @@ type Props = {
   questionType: QuestionType;
 };
 
-const EditSurveyAnswerOption = (props: Props) => {
+const EditSurveyMultipleChoiceOption = memo((props: Props) => {
   const [multipleChoiceOptionText, setMultipleChoiceOptionText] =
     useState<string>(props.option.name);
 
@@ -103,6 +106,8 @@ const EditSurveyAnswerOption = (props: Props) => {
       </Group>
     </Group>
   );
-};
+});
 
-export default EditSurveyAnswerOption;
+EditSurveyMultipleChoiceOption.displayName = 'EditSurveyMultipleChoiceOption';
+
+export default EditSurveyMultipleChoiceOption;

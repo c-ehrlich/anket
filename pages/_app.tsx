@@ -9,7 +9,6 @@ import {
   Burger,
   ColorScheme,
   ColorSchemeProvider,
-  Global,
   Group,
   Header,
   Image,

@@ -16,7 +16,7 @@ import {
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import { CaretDown, CaretUp, Trash } from 'tabler-icons-react';
 import { useDebouncedCallback } from 'use-debounce';
 import { EditQuestionData, QuestionFE } from '../api/question/question.schema';
@@ -35,7 +35,7 @@ type Props = {
   questionCount: number;
 };
 
-const EditSurveyQuestion = (props: Props) => {
+const EditSurveyQuestion = memo((props: Props) => {
   const theme = useMantineTheme();
 
   const xs = useMediaQuery('(max-width: 576px)');
@@ -68,15 +68,11 @@ const EditSurveyQuestion = (props: Props) => {
   });
 
   const debouncedEditQuestionText = useDebouncedCallback(
-    (
-      data: EditQuestionData
-    ) => editQuestion.mutate(data),
+    (data: EditQuestionData) => editQuestion.mutate(data),
     1000
   );
   const debouncedEditQuestionDetails = useDebouncedCallback(
-    (
-      data: EditQuestionData
-    ) => editQuestion.mutate(data),
+    (data: EditQuestionData) => editQuestion.mutate(data),
     1000
   );
 
@@ -182,29 +178,28 @@ const EditSurveyQuestion = (props: Props) => {
         props.question.questionType === 'multipleChoiceSingle' ? (
           <>
             <Title order={4}>Answer Options</Title>
-            <AnimatePresence>
-              {props.question.multipleChoiceOptions.map((mcOption, index) => (
-                <motion.div key={mcOption.id} layout {...animations}>
-                  <EditSurveyMultipleChoiceOption
-                    index={index}
-                    questionIndex={props.index}
-                    questionId={props.question.id}
-                    questionType={props.question.questionType}
-                    surveyId={props.surveyId}
-                    option={mcOption}
-                    optionCount={props.question.multipleChoiceOptions.length}
-                  />
-                </motion.div>
-              ))}
-              <motion.div key='addAnswerOptionButton' layout {...animations}>
-                <Button
-                  onClick={() => createMultipleChoiceOption.mutate()}
-                  fullWidth
-                >
-                  Add Answer Option
-                </Button>
+            {props.question.multipleChoiceOptions.map((mcOption, index) => (
+              <motion.div key={mcOption.id} layout {...animations}>
+                <EditSurveyMultipleChoiceOption
+                  key={mcOption.id}
+                  index={index}
+                  questionIndex={props.index}
+                  questionId={props.question.id}
+                  questionType={props.question.questionType}
+                  surveyId={props.surveyId}
+                  option={mcOption}
+                  optionCount={props.question.multipleChoiceOptions.length}
+                />
               </motion.div>
-            </AnimatePresence>
+            ))}
+            <motion.div key='addAnswerOptionButton' layout {...animations}>
+              <Button
+                onClick={() => createMultipleChoiceOption.mutate()}
+                fullWidth
+              >
+                Add Answer Option
+              </Button>
+            </motion.div>
           </>
         ) : props.question.questionType === 'textResponse' ? (
           <Textarea
@@ -228,6 +223,8 @@ const EditSurveyQuestion = (props: Props) => {
       </Stack>
     </Card>
   );
-};
+});
+
+EditSurveyQuestion.displayName = 'EditSurveyName';
 
 export default EditSurveyQuestion;

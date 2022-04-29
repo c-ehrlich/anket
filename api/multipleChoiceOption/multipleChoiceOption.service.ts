@@ -112,6 +112,9 @@ export async function reorderMultipleChoiceOption({
     if (order === option.order) {
       const unchangedOptions = await prisma.multipleChoiceOption.findMany({
         where: { questionId: option.questionId },
+        orderBy: {
+          order: 'asc',
+        },
       });
       return unchangedOptions;
     }
@@ -180,6 +183,9 @@ export async function reorderMultipleChoiceOption({
     // return _all_ options for that question
     const allOptions = await prisma.multipleChoiceOption.findMany({
       where: { questionId: option.questionId },
+      orderBy: {
+        order: 'asc',
+      },
     });
     return allOptions;
   } catch (e: any) {

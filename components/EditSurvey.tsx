@@ -8,7 +8,7 @@ import {
 } from '@mantine/core';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { EditSurveyData, SurveyFE } from '../api/survey/survey.schema';
 import useCreateQuestion from '../hooks/useCreateQuestion';
@@ -39,7 +39,7 @@ const EditSurvey = ({ surveyId }: { surveyId: string }) => {
   );
 };
 
-const EditSurveyHaveData = ({
+const EditSurveyHaveData = memo(({
   survey,
 }: {
   survey: SurveyFE;
@@ -124,6 +124,7 @@ const EditSurveyHaveData = ({
             {survey.questions.map((question, index) => (
               <motion.div key={question.id} layout {...animations}>
                 <EditSurveyQuestion
+                  key={question.id}
                   question={question}
                   index={index}
                   surveyId={survey.id}
@@ -156,6 +157,8 @@ const EditSurveyHaveData = ({
       </Stack>
     </>
   );
-};
+});
+
+EditSurveyHaveData.displayName = 'EditSurveyHaveData'
 
 export default EditSurvey;

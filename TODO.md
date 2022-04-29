@@ -1,14 +1,9 @@
 # Anket Todo (current)
 ## MVP v1
 ### Bugs
-
-### DB
 - [!] Question container height: make transitions take time so the framer motion delete animation doesn't get hidden by the container shrinking
-- [ ] Adding and removing answer options: sometimes stuff collapses into each other
-  - stuff to try:
-  - [ ] Hide the "Answer options" title and see what happens then
-  - [ ] Remove plain DIVs and put only Mantine components instead
-  - [ ] Ask in Mantine discord
+- [!] Answer Option Creation causes the container to bounce around - not making the question itself a motion.div fixes it - ask in framer motion discord
+### DB
 - [ ] Get the real DB running https://vercel.com/guides/nextjs-prisma-postgres
 ### UI
 - [ ] small screen: sidebar in/out should be animated
@@ -16,6 +11,7 @@
 - [ ] Choose nicer fonts
 - [ ] Make side margins about 1/2 of what they currently are on XS screens
 - [ ] Transition to styles api (there should be no `style={{}}` in the app)
+- [ ] Make MultipleChoiceOption reorder draggable, remove buttons https://www.framer.com/docs/reorder/
 ### Create/Edit Survey
 - [ ] Submitting / error checking... what do we want to make sure of before submitting a survey?
   - [ ] No empty questions (last question can be empty, just trim it)
@@ -58,6 +54,7 @@
 - [x] AddQuestion mutation briefly adds TWO questions (until we get back the server response?)
 - [x] useDebouncedCallback doesn't save data if we type, hit tab, type again very fast => because the previous requests get cancelled
   - [*] solution: use separate debounces for each field
+- [x] Adding and removing answer options: sometimes stuff collapses into each other
 ## DB
 - [x] Implement order on questions
 - [x] send questions and answeroptions ordered on DB level
