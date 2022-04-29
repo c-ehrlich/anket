@@ -3,12 +3,19 @@
 ### Bugs
 
 ### DB
-### UI
 - [!] Question container height: make transitions take time so the framer motion delete animation doesn't get hidden by the container shrinking
+- [ ] Adding and removing answer options: sometimes stuff collapses into each other
+  - stuff to try:
+  - [ ] Hide the "Answer options" title and see what happens then
+  - [ ] Remove plain DIVs and put only Mantine components instead
+  - [ ] Ask in Mantine discord
+- [ ] Get the real DB running https://vercel.com/guides/nextjs-prisma-postgres
+### UI
 - [ ] small screen: sidebar in/out should be animated
 - [ ] make all the disabled stuff in the anket creator not have special mouse cursors
 - [ ] Choose nicer fonts
 - [ ] Make side margins about 1/2 of what they currently are on XS screens
+- [ ] Transition to styles api (there should be no `style={{}}` in the app)
 ### Create/Edit Survey
 - [ ] Submitting / error checking... what do we want to make sure of before submitting a survey?
   - [ ] No empty questions (last question can be empty, just trim it)
@@ -30,7 +37,7 @@
   - [ ] Or just open a modal that contains all the responses?
 ### Queries
 ### Maybe / Todos
-- [ ] Make type names shorter
+- [x] Make type names shorter
 - [ ] DRY: make getting the ID in controllers a middleware? Then we can just assume that it's on the request
 - [ ] Creating a survey also creates the first question, creating a question also creates the first answer option
 - [ ] Type React Query errors (is it just the type of { message: string? }) probably not...look at one and figure it out
