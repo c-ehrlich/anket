@@ -4,10 +4,11 @@ interface Props {
   opened: boolean;
   onClose: () => void;
   title: string;
+  text: string;
   onClickDelete: () => void;
 }
 
-const DeleteSurveyModal = (props: Props) => {
+const DeleteModal = (props: Props) => {
   return (
     <Modal
       centered
@@ -16,7 +17,7 @@ const DeleteSurveyModal = (props: Props) => {
       title={props.title}
     >
       <Stack>
-        <Text>Are you sure? Your unsaved survey will be deleted.</Text>
+        <Text>{props.text}</Text>
         <Group grow>
           <Button variant='outline' onClick={props.onClose}>Cancel</Button>
           <Button color='red' onClick={props.onClickDelete}>Delete</Button>
@@ -26,4 +27,4 @@ const DeleteSurveyModal = (props: Props) => {
   );
 };
 
-export default DeleteSurveyModal;
+export default DeleteModal;

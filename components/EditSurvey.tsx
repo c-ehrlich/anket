@@ -17,7 +17,7 @@ import useEditSurvey from '../hooks/useEditSurvey';
 import useGetSingleSurvey from '../hooks/useGetSingleSurvey';
 import animations from '../utils/framer-animations';
 import EditSurveyQuestion from './EditSurveyQuestion';
-import DeleteSurveyModal from './modals/DeleteSurveyModal';
+import DeleteModal from './modals/DeleteModal';
 
 const EditSurvey = ({ surveyId }: { surveyId: string }) => {
   const survey = useGetSingleSurvey(surveyId);
@@ -79,10 +79,11 @@ const EditSurveyHaveData = memo(({ survey }: { survey: SurveyFE }) => {
 
   return (
     <>
-      <DeleteSurveyModal
+      <DeleteModal
         opened={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
         title='Delete Survey'
+        text='Are you sure? Your unsaved survey will be deleted.'
         onClickDelete={() => deleteSurvey.mutate()}
       />
       <Stack style={{ marginBottom: '64px' }}>
