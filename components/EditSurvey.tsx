@@ -39,11 +39,7 @@ const EditSurvey = ({ surveyId }: { surveyId: string }) => {
   );
 };
 
-const EditSurveyHaveData = memo(({
-  survey,
-}: {
-  survey: SurveyFE;
-}) => {
+const EditSurveyHaveData = memo(({ survey }: { survey: SurveyFE }) => {
   const router = useRouter();
 
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
@@ -57,15 +53,11 @@ const EditSurveyHaveData = memo(({
   // hitting tab and continuing to type will cancel the requests
   // for the previous field
   const debouncedEditSurveyName = useDebouncedCallback(
-    (
-      data: EditSurveyData
-    ) => editSurvey.mutate(data),
+    (data: EditSurveyData) => editSurvey.mutate(data),
     1000
   );
   const debouncedEditSurveyDescription = useDebouncedCallback(
-    (
-      data: EditSurveyData
-    ) => editSurvey.mutate(data),
+    (data: EditSurveyData) => editSurvey.mutate(data),
     1000
   );
 
@@ -159,6 +151,6 @@ const EditSurveyHaveData = memo(({
   );
 });
 
-EditSurveyHaveData.displayName = 'EditSurveyHaveData'
+EditSurveyHaveData.displayName = 'EditSurveyHaveData';
 
 export default EditSurvey;
