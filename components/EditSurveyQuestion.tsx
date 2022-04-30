@@ -105,6 +105,7 @@ const EditSurveyQuestion = memo((props: Props) => {
             <Group>
               <ActionIcon
                 variant='default'
+                size='lg'
                 disabled={props.index === 0}
                 onClick={() => {
                   reorderQuestion.mutate({ order: props.index - 1 });
@@ -114,6 +115,7 @@ const EditSurveyQuestion = memo((props: Props) => {
               </ActionIcon>
               <ActionIcon
                 variant='default'
+                size='lg'
                 disabled={props.index >= props.questionCount - 1}
                 onClick={() => {
                   reorderQuestion.mutate({ order: props.index + 1 });
@@ -122,7 +124,9 @@ const EditSurveyQuestion = memo((props: Props) => {
                 <CaretDown />
               </ActionIcon>
               <ActionIcon
-                variant='default'
+                variant='filled'
+                color='red'
+                size='lg'
                 onClick={() => {
                   // TODO make user confirm in a modal first
                   deleteQuestion.mutate();

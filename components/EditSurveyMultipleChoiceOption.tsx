@@ -77,6 +77,7 @@ const EditSurveyMultipleChoiceOption = memo((props: Props) => {
       <Group>
         <ActionIcon
           variant='default'
+          size='lg'
           disabled={props.index === 0}
           onClick={() => {
             reorderMultipleChoiceOptionMutation.mutate({
@@ -88,6 +89,7 @@ const EditSurveyMultipleChoiceOption = memo((props: Props) => {
         </ActionIcon>
         <ActionIcon
           variant='default'
+          size='lg'
           disabled={props.index >= props.optionCount - 1}
           onClick={() => {
             reorderMultipleChoiceOptionMutation.mutate({
@@ -98,7 +100,9 @@ const EditSurveyMultipleChoiceOption = memo((props: Props) => {
           <CaretDown />
         </ActionIcon>
         <ActionIcon
-          variant='default'
+          color='red'
+          variant='filled'
+          size='lg'
           onClick={() => deleteMultipleChoiceOption.mutate()}
         >
           <Trash />
