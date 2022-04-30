@@ -2,6 +2,7 @@
 ## MVP v1
 ### Want to do next
 - [ ] Make MultipleChoiceOption reorder draggable, remove buttons https://www.framer.com/docs/reorder/
+- [ ] Try switching to Mantine-Form and use Zod validation on it
 ### Bugs
 ### DB
 - [ ] Get the real DB running https://vercel.com/guides/nextjs-prisma-postgres

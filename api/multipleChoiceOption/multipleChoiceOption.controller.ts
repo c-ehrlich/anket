@@ -5,12 +5,14 @@ import logger from '../utils/logger';
 import {
   EditMultipleChoiceOptionData,
   MultipleChoiceOptionFE,
+  ReorderAllMultipleChoiceOptionsData,
 } from './multipleChoiceOption.schema';
 import {
   createDefaultMultipleChoiceOption,
   deleteMultipleChoiceOption,
   editMultipleChoiceOption,
   getMultipleChoiceOptionOwner,
+  reorderAllMultipleChoiceOptions,
   reorderMultipleChoiceOption,
 } from './multipleChoiceOption.service';
 
@@ -148,5 +150,34 @@ export async function reorderMultipleChoiceOptionHandler(
       .status(400)
       .json({ message: 'failed to reorder multiple choice option' });
   }
+  return res.status(200).json(reorderedMultipleChoiceOptions);
+}
+
+export async function reorderAllMultipleChoiceOptionsHandler(
+  req: NextApiRequest,
+  res: NextApiResponse<MultipleChoiceOptionFE[] | { message: string }>
+) {
+  // make sure we have an id
+  const questionId = Array.isArray(req.query.id)
+    ? req.query.id[0]
+    : req.query.id;
+  if (!questionId)
+    return res
+      .status(400)
+      .json({ message: 'failed to get Question ID from query' });
+
+  const data: ReorderAllMultipleChoiceOptionsData = req.body;
+
+  const reorderedMultipleChoiceOptions = await reorderAllMultipleChoiceOptions(
+    questionId,
+    data
+  );
+
+  if (!reorderedMultipleChoiceOptions) {
+    return res
+      .status(400)
+      .json({ message: 'failed to reorder Multiple Choice Options' });
+  }
+
   return res.status(200).json(reorderedMultipleChoiceOptions);
 }

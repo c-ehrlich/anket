@@ -15,7 +15,7 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { motion } from 'framer-motion';
+import { motion, Reorder, useDragControls } from 'framer-motion';
 import React, { memo, useState } from 'react';
 import { CaretDown, CaretUp, Trash } from 'tabler-icons-react';
 import { useDebouncedCallback } from 'use-debounce';
@@ -23,9 +23,9 @@ import { EditQuestionData, QuestionFE } from '../api/question/question.schema';
 import useCreateMultipleChoiceOption from '../hooks/useCreateMultipleChoiceOption';
 import useDeleteQuestion from '../hooks/useDeleteQuestion';
 import useEditQuestion from '../hooks/useEditQuestion';
+import useReorderAllMultipleChoiceOptions from '../hooks/useReorderAllMultipleChoiceOptions';
 import useReorderQuestion from '../hooks/useReorderQuestion';
 import { QuestionTypeString } from '../types/questionType';
-import animations from '../utils/framer-animations';
 import EditSurveyMultipleChoiceOption from './EditSurveyMultipleChoiceOption';
 import DeleteModal from './modals/DeleteModal';
 
@@ -69,6 +69,12 @@ const EditSurveyQuestion = memo((props: Props) => {
     surveyId: props.surveyId,
     questionId: props.question.id,
   });
+  const reorderAllMultipleChoiceOptionsMutation =
+    useReorderAllMultipleChoiceOptions({
+      surveyId: props.surveyId,
+      questionId: props.question.id,
+      questionIndex: props.index,
+    });
 
   const debouncedEditQuestionText = useDebouncedCallback(
     (data: EditQuestionData) => editQuestion.mutate(data),
@@ -146,58 +152,66 @@ const EditSurveyQuestion = memo((props: Props) => {
           </Group>
         </Card.Section>
         <Stack sx={{ flexGrow: 1 }}>
-          <motion.div layout key={`options-${props.question.id}`}>
-            <Stack sx={{ flexGrow: 1 }}>
-              <Checkbox
-                label='Required'
-                checked={props.question.isRequired}
-                onChange={(e: React.FormEvent<HTMLInputElement>) => {
-                  editQuestion.mutate({
-                    isRequired: e.currentTarget.checked,
-                  });
-                }}
-              />
-              <TextInput
-                label='Question'
-                required
-                placeholder='Your question text'
-                value={questionText}
-                onChange={handleEditQuestionName}
-              />
-              <TextInput
-                label='Details'
-                placeholder='(optional)'
-                value={questionDetails}
-                onChange={handleEditQuestionDetails}
-              />
-              <NativeSelect
-                label='Question Type'
-                data={Object.values(QuestionTypeString)}
-                // The 'value' and 'onChange' are like this due to limitations in Prisma's enums
-                // we're mapping the values to a separate object which contains the 'nice' string names
-                value={QuestionTypeString[props.question.questionType]}
-                onChange={(e: React.FormEvent<HTMLSelectElement>) => {
-                  editQuestion.mutate({
-                    questionType: (
-                      Object.keys(
-                        QuestionTypeString
-                      ) as (keyof typeof QuestionTypeString)[]
-                    ).find(
-                      (key) => QuestionTypeString[key] === e.currentTarget.value
-                    ),
-                  });
-                }}
-              />
-            </Stack>
-          </motion.div>
+          <Stack sx={{ flexGrow: 1 }}>
+            <Checkbox
+              label='Required'
+              checked={props.question.isRequired}
+              onChange={(e: React.FormEvent<HTMLInputElement>) => {
+                editQuestion.mutate({
+                  isRequired: e.currentTarget.checked,
+                });
+              }}
+            />
+            <TextInput
+              label='Question'
+              required
+              placeholder='Your question text'
+              value={questionText}
+              onChange={handleEditQuestionName}
+            />
+            <TextInput
+              label='Details'
+              placeholder='(optional)'
+              value={questionDetails}
+              onChange={handleEditQuestionDetails}
+            />
+            <NativeSelect
+              label='Question Type'
+              data={Object.values(QuestionTypeString)}
+              // The 'value' and 'onChange' are like this due to limitations in Prisma's enums
+              // we're mapping the values to a separate object which contains the 'nice' string names
+              value={QuestionTypeString[props.question.questionType]}
+              onChange={(e: React.FormEvent<HTMLSelectElement>) => {
+                editQuestion.mutate({
+                  questionType: (
+                    Object.keys(
+                      QuestionTypeString
+                    ) as (keyof typeof QuestionTypeString)[]
+                  ).find(
+                    (key) => QuestionTypeString[key] === e.currentTarget.value
+                  ),
+                });
+              }}
+            />
+          </Stack>
           {props.question.questionType === 'multipleChoiceMultiple' ||
           props.question.questionType === 'multipleChoiceSingle' ? (
             <>
-              <motion.div key='title' layout>
-                <Title order={4}>Answer Options</Title>
-              </motion.div>
-              {props.question.multipleChoiceOptions.map((mcOption, index) => (
-                <motion.div key={mcOption.id} layout {...animations}>
+              <Title order={4}>Answer Options</Title>
+              <Reorder.Group
+                as='div'
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '16px',
+                }}
+                axis='y'
+                values={props.question.multipleChoiceOptions}
+                onReorder={(data) =>
+                  reorderAllMultipleChoiceOptionsMutation.mutate(data)
+                }
+              >
+                {props.question.multipleChoiceOptions.map((mcOption, index) => (
                   <EditSurveyMultipleChoiceOption
                     key={mcOption.id}
                     index={index}
@@ -208,8 +222,8 @@ const EditSurveyQuestion = memo((props: Props) => {
                     option={mcOption}
                     optionCount={props.question.multipleChoiceOptions.length}
                   />
-                </motion.div>
-              ))}
+                ))}
+              </Reorder.Group>
               <Button
                 component={motion.button}
                 onClick={() => createMultipleChoiceOption.mutate()}

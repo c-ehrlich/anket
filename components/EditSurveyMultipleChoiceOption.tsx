@@ -1,6 +1,6 @@
 import { ActionIcon, Checkbox, Group, Radio, TextInput } from '@mantine/core';
 import React, { useState, memo } from 'react';
-import { CaretDown, CaretUp, Trash } from 'tabler-icons-react';
+import { CaretDown, CaretUp, GridDots, Trash } from 'tabler-icons-react';
 import useEditMultipleChoiceOption from '../hooks/useEditMultipleChoiceOption';
 import useDeleteMultipleChoiceOption from '../hooks/useDeleteMultipleChoiceOption';
 import useReorderMultipleChoiceOption from '../hooks/useReorderMultipleChoiceOption';
@@ -11,6 +11,7 @@ import {
 import { QuestionType } from '@prisma/client';
 import { useDebouncedCallback } from 'use-debounce';
 import DeleteModal from './modals/DeleteModal';
+import { Reorder, useDragControls } from 'framer-motion';
 
 // TODO see if we can do this with less props
 // For example we could pass a Pick<QuestionResponse> to get all the stuff from the question in one object
@@ -25,6 +26,8 @@ type Props = {
 };
 
 const EditSurveyMultipleChoiceOption = memo((props: Props) => {
+  const controls = useDragControls();
+
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
   const [multipleChoiceOptionText, setMultipleChoiceOptionText] =
     useState<string>(props.option.name);
@@ -64,7 +67,13 @@ const EditSurveyMultipleChoiceOption = memo((props: Props) => {
   };
 
   return (
-    <>
+    <Reorder.Item
+      as='div'
+      key={props.option.id}
+      value={props.option}
+      dragListener={false}
+      dragControls={controls}
+    >
       <DeleteModal
         opened={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
@@ -73,6 +82,14 @@ const EditSurveyMultipleChoiceOption = memo((props: Props) => {
         onClickDelete={() => deleteMultipleChoiceOption.mutate()}
       />
       <Group grow={false} style={{ width: '100%' }}>
+        <ActionIcon
+          className='reorder-handle'
+          variant='transparent'
+          size='lg'
+          onPointerDown={(e: any) => controls.start(e)}
+        >
+          <GridDots />
+        </ActionIcon>
         {props.questionType === 'multipleChoiceMultiple' ? (
           <Checkbox disabled />
         ) : props.questionType === 'multipleChoiceSingle' ? (
@@ -84,42 +101,16 @@ const EditSurveyMultipleChoiceOption = memo((props: Props) => {
           value={multipleChoiceOptionText}
           onChange={handleEditMultipleChoiceOptionTitle}
         />
-        <Group>
-          <ActionIcon
-            variant='default'
-            size='lg'
-            disabled={props.index === 0}
-            onClick={() => {
-              reorderMultipleChoiceOptionMutation.mutate({
-                order: props.index - 1,
-              });
-            }}
-          >
-            <CaretUp />
-          </ActionIcon>
-          <ActionIcon
-            variant='default'
-            size='lg'
-            disabled={props.index >= props.optionCount - 1}
-            onClick={() => {
-              reorderMultipleChoiceOptionMutation.mutate({
-                order: props.index + 1,
-              });
-            }}
-          >
-            <CaretDown />
-          </ActionIcon>
-          <ActionIcon
-            color='red'
-            variant='filled'
-            size='lg'
-            onClick={() => setDeleteModalOpen(true)}
-          >
-            <Trash />
-          </ActionIcon>
-        </Group>
+        <ActionIcon
+          color='red'
+          variant='filled'
+          size='lg'
+          onClick={() => setDeleteModalOpen(true)}
+        >
+          <Trash />
+        </ActionIcon>
       </Group>
-    </>
+    </Reorder.Item>
   );
 });
 

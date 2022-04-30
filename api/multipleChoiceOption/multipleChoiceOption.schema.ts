@@ -37,3 +37,10 @@ export const reorderMultipleChoiceOptionSchema = z.object({
 export type ReorderMultipleChoiceOptionType = z.infer<
   typeof reorderMultipleChoiceOptionSchema
 >['body'];
+
+export const reorderAllMultipleChoiceOptionsSchema = z.object({
+  body: multipleChoiceOptionResponseSchema.array(),
+});
+export type ReorderAllMultipleChoiceOptionsData = z.infer<
+  typeof reorderAllMultipleChoiceOptionsSchema
+>['body'];

@@ -203,6 +203,6 @@ export async function getSurveyOwner(id: string) {
     })
     return survey?.authorId;
   } catch (e) {
-    console.log(e);
+    logger.error(e);
   }
 }

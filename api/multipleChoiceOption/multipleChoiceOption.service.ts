@@ -1,8 +1,10 @@
+import { Id } from 'tabler-icons-react';
 import logger from '../utils/logger';
 import prisma from '../utils/prisma';
 import {
   EditMultipleChoiceOptionData,
   MultipleChoiceOptionFE,
+  ReorderAllMultipleChoiceOptionsData,
 } from './multipleChoiceOption.schema';
 
 export async function createDefaultMultipleChoiceOption({
@@ -188,6 +190,71 @@ export async function reorderMultipleChoiceOption({
       },
     });
     return allOptions;
+  } catch (e: any) {
+    logger.error(e);
+  }
+}
+
+export async function reorderAllMultipleChoiceOptions(
+  questionId: string,
+  data: ReorderAllMultipleChoiceOptionsData
+) {
+  // make sure that
+  // 1. we have all multiple choice options of that question (ids)
+  // 2. we don't have any IDs that do not belong to MCOs of that question
+  //    (just check that they're the same length)
+  // 3. the order numbers start at 0 and increase from there
+  try {
+    const question = await prisma.question.findUnique({
+      where: {
+        id: questionId,
+      },
+      include: {
+        multipleChoiceOptions: true,
+      },
+    });
+
+    if (!question) throw new Error('Failed to find question');
+
+    if (data.length !== question.multipleChoiceOptions.length) {
+      throw new Error('Invalid data length');
+    }
+
+    for (let i = 0; i < data.length; i++) {
+      if (data.findIndex((a) => a.order === i) === -1) {
+        throw new Error(`Failed to find item with index ${i}`);
+      }
+    }
+
+    logger.info('new order is ok');
+
+    for (const item of data) {
+      const updatedItem = await prisma.multipleChoiceOption.update({
+        where: { id: item.id },
+        data: { order: item.order },
+        select: {
+          id: true,
+          name: true,
+          order: true,
+        }
+      });
+      logger.info(updatedItem);
+    }
+
+    const allMultipleChoiceOptionsForQuestion =
+      await prisma.multipleChoiceOption.findMany({
+        where: { questionId },
+        orderBy: { order: 'asc' },
+        select: {
+          id: true,
+          name: true,
+          order: true,
+        }
+      });
+
+    logger.info(allMultipleChoiceOptionsForQuestion);
+
+    return allMultipleChoiceOptionsForQuestion;
   } catch (e: any) {
     logger.error(e);
   }
