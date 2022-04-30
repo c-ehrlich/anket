@@ -205,6 +205,8 @@ export async function reorderAllMultipleChoiceOptions(
   //    (just check that they're the same length)
   // 3. the order numbers start at 0 and increase from there
   try {
+    logger.info('initial data');
+    logger.info(data);
     const question = await prisma.question.findUnique({
       where: {
         id: questionId,
@@ -223,23 +225,28 @@ export async function reorderAllMultipleChoiceOptions(
     for (let i = 0; i < data.length; i++) {
       if (data.findIndex((a) => a.order === i) === -1) {
         throw new Error(`Failed to find item with index ${i}`);
+      } else {
+        logger.info(`found ${i}`);
       }
     }
 
     logger.info('new order is ok');
 
-    for (const item of data) {
+    let updatedItems: any[] = [];
+    for (let i = 0; i < data.length; i++) {
       const updatedItem = await prisma.multipleChoiceOption.update({
-        where: { id: item.id },
-        data: { order: item.order },
+        where: { id: data[i].id },
+        data: { order: i },
         select: {
           id: true,
           name: true,
           order: true,
-        }
+        },
       });
-      logger.info(updatedItem);
+      updatedItems.concat(updatedItem);
     }
+    logger.info('updatedItems');
+    logger.info(updatedItems);
 
     const allMultipleChoiceOptionsForQuestion =
       await prisma.multipleChoiceOption.findMany({
@@ -249,9 +256,10 @@ export async function reorderAllMultipleChoiceOptions(
           id: true,
           name: true,
           order: true,
-        }
+        },
       });
 
+    logger.info('all options');
     logger.info(allMultipleChoiceOptionsForQuestion);
 
     return allMultipleChoiceOptionsForQuestion;
