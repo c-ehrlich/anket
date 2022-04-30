@@ -10,6 +10,7 @@ import {
 } from '../api/multipleChoiceOption/multipleChoiceOption.schema';
 import { QuestionType } from '@prisma/client';
 import { useDebouncedCallback } from 'use-debounce';
+import DeleteModal from './modals/DeleteModal';
 
 // TODO see if we can do this with less props
 // For example we could pass a Pick<QuestionResponse> to get all the stuff from the question in one object
@@ -24,6 +25,7 @@ type Props = {
 };
 
 const EditSurveyMultipleChoiceOption = memo((props: Props) => {
+  const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
   const [multipleChoiceOptionText, setMultipleChoiceOptionText] =
     useState<string>(props.option.name);
 
@@ -62,53 +64,62 @@ const EditSurveyMultipleChoiceOption = memo((props: Props) => {
   };
 
   return (
-    <Group grow={false} style={{ width: '100%' }}>
-      {props.questionType === 'multipleChoiceMultiple' ? (
-        <Checkbox disabled />
-      ) : props.questionType === 'multipleChoiceSingle' ? (
-        <Radio disabled value='' />
-      ) : null}
-      <TextInput
-        style={{ flexGrow: 1 }}
-        placeholder='Answer Text'
-        value={multipleChoiceOptionText}
-        onChange={handleEditMultipleChoiceOptionTitle}
+    <>
+      <DeleteModal
+        opened={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        title='Delete Answer Option'
+        text='Are you sure? The answer option will be deleted permanently.'
+        onClickDelete={() => deleteMultipleChoiceOption.mutate()}
       />
-      <Group>
-        <ActionIcon
-          variant='default'
-          size='lg'
-          disabled={props.index === 0}
-          onClick={() => {
-            reorderMultipleChoiceOptionMutation.mutate({
-              order: props.index - 1,
-            });
-          }}
-        >
-          <CaretUp />
-        </ActionIcon>
-        <ActionIcon
-          variant='default'
-          size='lg'
-          disabled={props.index >= props.optionCount - 1}
-          onClick={() => {
-            reorderMultipleChoiceOptionMutation.mutate({
-              order: props.index + 1,
-            });
-          }}
-        >
-          <CaretDown />
-        </ActionIcon>
-        <ActionIcon
-          color='red'
-          variant='filled'
-          size='lg'
-          onClick={() => deleteMultipleChoiceOption.mutate()}
-        >
-          <Trash />
-        </ActionIcon>
+      <Group grow={false} style={{ width: '100%' }}>
+        {props.questionType === 'multipleChoiceMultiple' ? (
+          <Checkbox disabled />
+        ) : props.questionType === 'multipleChoiceSingle' ? (
+          <Radio disabled value='' />
+        ) : null}
+        <TextInput
+          style={{ flexGrow: 1 }}
+          placeholder='Answer Text'
+          value={multipleChoiceOptionText}
+          onChange={handleEditMultipleChoiceOptionTitle}
+        />
+        <Group>
+          <ActionIcon
+            variant='default'
+            size='lg'
+            disabled={props.index === 0}
+            onClick={() => {
+              reorderMultipleChoiceOptionMutation.mutate({
+                order: props.index - 1,
+              });
+            }}
+          >
+            <CaretUp />
+          </ActionIcon>
+          <ActionIcon
+            variant='default'
+            size='lg'
+            disabled={props.index >= props.optionCount - 1}
+            onClick={() => {
+              reorderMultipleChoiceOptionMutation.mutate({
+                order: props.index + 1,
+              });
+            }}
+          >
+            <CaretDown />
+          </ActionIcon>
+          <ActionIcon
+            color='red'
+            variant='filled'
+            size='lg'
+            onClick={() => setDeleteModalOpen(true)}
+          >
+            <Trash />
+          </ActionIcon>
+        </Group>
       </Group>
-    </Group>
+    </>
   );
 });
 

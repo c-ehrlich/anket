@@ -2,8 +2,6 @@
 ## MVP v1
 ### Want to do next
 - [ ] Make MultipleChoiceOption reorder draggable, remove buttons https://www.framer.com/docs/reorder/
-- [ ] Make Delete Question and Delete MCO buttons red
-- [ ] Make Delete Question and Delete MCO modals
 ### Bugs
 - [!] Question container height: make transitions take time so container doesn't shrink faster than the contents
 ### DB
@@ -14,6 +12,7 @@
 - [ ] Choose nicer fonts
 - [ ] Make side margins about 1/2 of what they currently are on XS screens
 - [ ] Transition to styles api (there should be no `style={{}}` in the app)
+- [ ] Modal styling... they look a bit sad
 ### Create/Edit Survey
 - [ ] Submitting / error checking... what do we want to make sure of before submitting a survey?
   - [ ] No empty questions (last question can be empty, just trim it)
@@ -77,6 +76,8 @@
   - [*] Color scheme: https://smart-swatch.netlify.app/#green
 - [x] Framer Motion reordering: AnswerOptions
 - [x] Framer motion animations: Questions
+- [x] Make Delete Question and Delete MCO buttons red
+- [x] Make Delete Question and Delete MCO modals
 ### Create/Edit Survey
 - [x] Use React Query to manage survey in frontend
   - [x] Make /survey/create just a dummy page that creates a survey and redirects to /survey/edit/id, that way create and edit are basically the same!
