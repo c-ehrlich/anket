@@ -4,6 +4,7 @@
 - [ ] Make MultipleChoiceOption reorder draggable, remove buttons https://www.framer.com/docs/reorder/
 - [ ] Try switching to Mantine-Form and use Zod validation on it
 ### Bugs
+- [!] Choppy MCO reordering - is it because it's doing it on optimistic updates, thus rerendering the entire dom?
 ### DB
 - [ ] Get the real DB running https://vercel.com/guides/nextjs-prisma-postgres
 ### UI
