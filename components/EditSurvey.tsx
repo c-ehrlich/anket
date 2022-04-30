@@ -113,7 +113,7 @@ const EditSurveyHaveData = memo(({ survey }: { survey: SurveyFE }) => {
 
         <Stack>
           <Title order={3}>Questions</Title>
-          <AnimatePresence>
+          <AnimatePresence initial={false}>
             {survey.questions.map((question, index) => (
               <motion.div key={question.id} layout {...animations}>
                 <EditSurveyQuestion

@@ -3,7 +3,6 @@
 ### Want to do next
 - [ ] Make MultipleChoiceOption reorder draggable, remove buttons https://www.framer.com/docs/reorder/
 ### Bugs
-- [!] Question container height: make transitions take time so container doesn't shrink faster than the contents
 ### DB
 - [ ] Get the real DB running https://vercel.com/guides/nextjs-prisma-postgres
 ### UI
@@ -57,6 +56,7 @@
   - [*] solution: use separate debounces for each field
 - [x] Adding and removing answer options: sometimes stuff collapses into each other
 - [x] Answer Option Creation causes the container to bounce around - not making the question itself a motion.div fixes it - ask in framer motion discord
+- [x] Question container height: make transitions take time so container doesn't shrink faster than the contents
 ## DB
 - [x] Implement order on questions
 - [x] send questions and answeroptions ordered on DB level

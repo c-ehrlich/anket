@@ -210,14 +210,13 @@ const EditSurveyQuestion = memo((props: Props) => {
                   />
                 </motion.div>
               ))}
-              <motion.div key='addAnswerOptionButton' layout {...animations}>
-                <Button
-                  onClick={() => createMultipleChoiceOption.mutate()}
-                  fullWidth
-                >
-                  Add Answer Option
-                </Button>
-              </motion.div>
+              <Button
+                component={motion.button}
+                onClick={() => createMultipleChoiceOption.mutate()}
+                fullWidth
+              >
+                Add Answer Option
+              </Button>
             </>
           ) : props.question.questionType === 'textResponse' ? (
             <Textarea
