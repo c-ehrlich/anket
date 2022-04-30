@@ -99,53 +99,52 @@ const EditSurveyQuestion = memo((props: Props) => {
         onClickDelete={() => deleteQuestion.mutate()}
       />
       <Card shadow='lg' radius='md' p='md' withBorder>
-        <motion.div layout style={{ margin: '-16px', padding: '0 0 16px 0' }}>
-          <Card.Section
-            style={{
-              backgroundColor:
-                theme.colorScheme === 'light'
-                  ? // ? theme.colors.green[0]
-                    '#f1fff1'
-                  : '#001b00',
-              padding: '16px',
-              marginBottom: '16px',
-            }}
-          >
-            <Group style={{ justifyContent: 'space-between' }}>
-              <Title order={3}>Question {props.index + 1}</Title>
-              <Group>
-                <ActionIcon
-                  variant='default'
-                  size='lg'
-                  disabled={props.index === 0}
-                  onClick={() => {
-                    reorderQuestion.mutate({ order: props.index - 1 });
-                  }}
-                >
-                  <CaretUp />
-                </ActionIcon>
-                <ActionIcon
-                  variant='default'
-                  size='lg'
-                  disabled={props.index >= props.questionCount - 1}
-                  onClick={() => {
-                    reorderQuestion.mutate({ order: props.index + 1 });
-                  }}
-                >
-                  <CaretDown />
-                </ActionIcon>
-                <ActionIcon
-                  variant='filled'
-                  color='red'
-                  size='lg'
-                  onClick={() => setDeleteModalOpen(true)}
-                >
-                  <Trash />
-                </ActionIcon>
-              </Group>
+        <Card.Section
+          component={motion.div}
+          style={{
+            backgroundColor:
+              theme.colorScheme === 'light'
+                ? // ? theme.colors.green[0]
+                  '#f1fff1'
+                : '#001b00',
+            padding: '16px',
+            marginBottom: '16px',
+          }}
+        >
+          <Group style={{ justifyContent: 'space-between' }}>
+            <Title order={3}>Question {props.index + 1}</Title>
+            <Group>
+              <ActionIcon
+                variant='default'
+                size='lg'
+                disabled={props.index === 0}
+                onClick={() => {
+                  reorderQuestion.mutate({ order: props.index - 1 });
+                }}
+              >
+                <CaretUp />
+              </ActionIcon>
+              <ActionIcon
+                variant='default'
+                size='lg'
+                disabled={props.index >= props.questionCount - 1}
+                onClick={() => {
+                  reorderQuestion.mutate({ order: props.index + 1 });
+                }}
+              >
+                <CaretDown />
+              </ActionIcon>
+              <ActionIcon
+                variant='filled'
+                color='red'
+                size='lg'
+                onClick={() => setDeleteModalOpen(true)}
+              >
+                <Trash />
+              </ActionIcon>
             </Group>
-          </Card.Section>
-        </motion.div>
+          </Group>
+        </Card.Section>
         <Stack sx={{ flexGrow: 1 }}>
           <motion.div layout key={`options-${props.question.id}`}>
             <Stack sx={{ flexGrow: 1 }}>
