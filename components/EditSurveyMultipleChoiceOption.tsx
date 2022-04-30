@@ -1,6 +1,13 @@
-import { ActionIcon, Checkbox, Group, Radio, TextInput } from '@mantine/core';
+import {
+  ActionIcon,
+  Checkbox,
+  Group,
+  Paper,
+  Radio,
+  TextInput,
+} from '@mantine/core';
 import React, { useState, memo } from 'react';
-import { CaretDown, CaretUp, GridDots, Trash } from 'tabler-icons-react';
+import { GridDots, Trash } from 'tabler-icons-react';
 import useEditMultipleChoiceOption from '../hooks/useEditMultipleChoiceOption';
 import useDeleteMultipleChoiceOption from '../hooks/useDeleteMultipleChoiceOption';
 import useReorderMultipleChoiceOption from '../hooks/useReorderMultipleChoiceOption';
@@ -46,13 +53,6 @@ const EditSurveyMultipleChoiceOption = memo((props: Props) => {
     questionIndex: props.questionIndex,
   });
 
-  const reorderMultipleChoiceOptionMutation = useReorderMultipleChoiceOption({
-    optionId: props.option.id,
-    optionIndex: props.index,
-    questionIndex: props.questionIndex,
-    surveyId: props.surveyId,
-  });
-
   const debouncedEditMultipleChoiceOption = useDebouncedCallback(
     (data: EditMultipleChoiceOptionData) =>
       editMultipleChoiceOption.mutate(data),
@@ -81,35 +81,37 @@ const EditSurveyMultipleChoiceOption = memo((props: Props) => {
         text='Are you sure? The answer option will be deleted permanently.'
         onClickDelete={() => deleteMultipleChoiceOption.mutate()}
       />
-      <Group grow={false} style={{ width: '100%' }}>
-        <ActionIcon
-          className='reorder-handle'
-          variant='transparent'
-          size='lg'
-          onPointerDown={(e: any) => controls.start(e)}
-        >
-          <GridDots />
-        </ActionIcon>
-        {props.questionType === 'multipleChoiceMultiple' ? (
-          <Checkbox disabled />
-        ) : props.questionType === 'multipleChoiceSingle' ? (
-          <Radio disabled value='' />
-        ) : null}
-        <TextInput
-          style={{ flexGrow: 1 }}
-          placeholder='Answer Text'
-          value={multipleChoiceOptionText}
-          onChange={handleEditMultipleChoiceOptionTitle}
-        />
-        <ActionIcon
-          color='red'
-          variant='filled'
-          size='lg'
-          onClick={() => setDeleteModalOpen(true)}
-        >
-          <Trash />
-        </ActionIcon>
-      </Group>
+      <Paper shadow='xs' p='xs' withBorder>
+        <Group grow={false} style={{ width: '100%' }}>
+          <ActionIcon
+            className='reorder-handle'
+            variant='transparent'
+            size='lg'
+            onPointerDown={(e: any) => controls.start(e)}
+          >
+            <GridDots />
+          </ActionIcon>
+          {props.questionType === 'multipleChoiceMultiple' ? (
+            <Checkbox disabled />
+          ) : props.questionType === 'multipleChoiceSingle' ? (
+            <Radio disabled value='' />
+          ) : null}
+          <TextInput
+            style={{ flexGrow: 1 }}
+            placeholder='Answer Text'
+            value={multipleChoiceOptionText}
+            onChange={handleEditMultipleChoiceOptionTitle}
+          />
+          <ActionIcon
+            color='red'
+            variant='filled'
+            size='lg'
+            onClick={() => setDeleteModalOpen(true)}
+          >
+            <Trash />
+          </ActionIcon>
+        </Group>
+      </Paper>
     </Reorder.Item>
   );
 });

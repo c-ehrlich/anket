@@ -203,7 +203,7 @@ const EditSurveyQuestion = memo((props: Props) => {
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '16px',
+                  gap: '8px',
                 }}
                 axis='y'
                 values={props.question.multipleChoiceOptions}

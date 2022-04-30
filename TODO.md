@@ -5,6 +5,7 @@
 - [ ] Try switching to Mantine-Form and use Zod validation on it
 ### Bugs
 - [!] Choppy MCO reordering - is it because it's doing it on optimistic updates, thus rerendering the entire dom?
+  - [ ] Also debounce them while at it
 ### DB
 - [ ] Get the real DB running https://vercel.com/guides/nextjs-prisma-postgres
 ### UI
@@ -113,6 +114,9 @@
 - [x] Debounce text inputs in EditSurvey
 - [x] Put in state and debounce text inputs in EditSurveyQuestion
 - [x] Put in state and debounce text inputs in EditSurveyMultipleChoiceAnswer
+- [x] Make delete modals
+- [x] Build backend stuff for reordering of all MCOs
+- [x] Reorder MCOs by dragging
 ### Take Survey
 ### Backend
 - [x] clone the logger from tom does tech youtube clone, and re-convert every consoleDOTlog/error to that logger
