@@ -72,7 +72,7 @@ const SurveyHero = (props: Props) => {
                   )}
                 </>
               ) : (
-                <div>TODO check if user has taken this</div>
+                <div>TODO check if user has taken this <Link href={`/survey/take/${props.survey.id}`}>Take</Link></div>
               )}
             </Group>
           </Title>

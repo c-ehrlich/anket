@@ -151,13 +151,11 @@ model QuestionResponse {
   surveyParticipation   SurveyParticipation @relation(fields: [surveyParticipationId], references: [id], onDelete: Cascade)
   surveyParticipationId String
 
-  isAnonymous Boolean @default(false)
-
   answerBoolean          Boolean?
   answerNumeric          Int?
   answerText             String?
   multipleChoiceOption   MultipleChoiceOption? @relation(fields: [multipleChoiceOptionId], references: [id], onDelete: SetNull)
-  multipleChoiceOptionId String
+  multipleChoiceOptionId String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
@@ -176,11 +174,10 @@ model SurveyParticipation {
 
   questionResponses QuestionResponse[]
 
-  isComplete  Boolean
-  isAnonymous Boolean
+  isComplete  Boolean @default(false)
 
-  createdAt DateTime
-  updatedAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
 
   @@unique([userId, surveyId])
 }

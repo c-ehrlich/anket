@@ -3,7 +3,7 @@ import { SurveyFE } from '../api/survey/survey.schema';
 
 export const createSurvey = async () => {
   const survey: SurveyFE = await axios
-    .post('/api/survey')
+    .put('/api/survey')
     .then((res) => res.data);
   return survey;
 };

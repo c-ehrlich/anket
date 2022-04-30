@@ -5,7 +5,6 @@ import {
   SurveyPreviewWithAuthor,
 } from './survey.schema';
 import prisma from '../utils/prisma';
-import { Survey, User } from '@prisma/client';
 import logger from '../utils/logger';
 
 export async function createDefaultSurvey(data: CreateDefaultSurveyInput) {
