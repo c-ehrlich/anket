@@ -1,8 +1,11 @@
 # Anket Todo (current)
 ## MVP v1
+### Want to do next
+- [ ] Make MultipleChoiceOption reorder draggable, remove buttons https://www.framer.com/docs/reorder/
+- [ ] Make Delete Question and Delete MCO buttons red
+- [ ] Make Delete Question and Delete MCO modals
 ### Bugs
-- [!] Question container height: make transitions take time so the framer motion delete animation doesn't get hidden by the container shrinking
-- [!] Answer Option Creation causes the container to bounce around - not making the question itself a motion.div fixes it - ask in framer motion discord
+- [!] Question container height: make transitions take time so container doesn't shrink faster than the contents
 ### DB
 - [ ] Get the real DB running https://vercel.com/guides/nextjs-prisma-postgres
 ### UI
@@ -11,7 +14,6 @@
 - [ ] Choose nicer fonts
 - [ ] Make side margins about 1/2 of what they currently are on XS screens
 - [ ] Transition to styles api (there should be no `style={{}}` in the app)
-- [ ] Make MultipleChoiceOption reorder draggable, remove buttons https://www.framer.com/docs/reorder/
 ### Create/Edit Survey
 - [ ] Submitting / error checking... what do we want to make sure of before submitting a survey?
   - [ ] No empty questions (last question can be empty, just trim it)
@@ -55,6 +57,7 @@
 - [x] useDebouncedCallback doesn't save data if we type, hit tab, type again very fast => because the previous requests get cancelled
   - [*] solution: use separate debounces for each field
 - [x] Adding and removing answer options: sometimes stuff collapses into each other
+- [x] Answer Option Creation causes the container to bounce around - not making the question itself a motion.div fixes it - ask in framer motion discord
 ## DB
 - [x] Implement order on questions
 - [x] send questions and answeroptions ordered on DB level

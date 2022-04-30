@@ -88,96 +88,103 @@ const EditSurveyQuestion = memo((props: Props) => {
 
   return (
     <Card shadow='lg' radius='md' p='md' withBorder>
-      <Card.Section
-        style={{
-          backgroundColor:
-            theme.colorScheme === 'light'
-              ? // ? theme.colors.green[0]
-                '#f1fff1'
-              : '#001b00',
-          padding: '16px',
-          marginBottom: '16px',
-        }}
-      >
-        <Group style={{ justifyContent: 'space-between' }}>
-          <Title order={3}>Question {props.index + 1}</Title>
-          <Group>
-            <ActionIcon
-              variant='default'
-              disabled={props.index === 0}
-              onClick={() => {
-                reorderQuestion.mutate({ order: props.index - 1 });
-              }}
-            >
-              <CaretUp />
-            </ActionIcon>
-            <ActionIcon
-              variant='default'
-              disabled={props.index >= props.questionCount - 1}
-              onClick={() => {
-                reorderQuestion.mutate({ order: props.index + 1 });
-              }}
-            >
-              <CaretDown />
-            </ActionIcon>
-            <ActionIcon
-              variant='default'
-              onClick={() => {
-                // TODO make user confirm in a modal first
-                deleteQuestion.mutate();
-              }}
-            >
-              <Trash />
-            </ActionIcon>
+      <motion.div layout style={{ margin: '-16px', padding: '0 0 16px 0' }}>
+        <Card.Section
+          style={{
+            backgroundColor:
+              theme.colorScheme === 'light'
+                ? // ? theme.colors.green[0]
+                  '#f1fff1'
+                : '#001b00',
+            padding: '16px',
+            marginBottom: '16px',
+          }}
+        >
+          <Group style={{ justifyContent: 'space-between' }}>
+            <Title order={3}>Question {props.index + 1}</Title>
+            <Group>
+              <ActionIcon
+                variant='default'
+                disabled={props.index === 0}
+                onClick={() => {
+                  reorderQuestion.mutate({ order: props.index - 1 });
+                }}
+              >
+                <CaretUp />
+              </ActionIcon>
+              <ActionIcon
+                variant='default'
+                disabled={props.index >= props.questionCount - 1}
+                onClick={() => {
+                  reorderQuestion.mutate({ order: props.index + 1 });
+                }}
+              >
+                <CaretDown />
+              </ActionIcon>
+              <ActionIcon
+                variant='default'
+                onClick={() => {
+                  // TODO make user confirm in a modal first
+                  deleteQuestion.mutate();
+                }}
+              >
+                <Trash />
+              </ActionIcon>
+            </Group>
           </Group>
-        </Group>
-      </Card.Section>
+        </Card.Section>
+      </motion.div>
       <Stack sx={{ flexGrow: 1 }}>
-        <Checkbox
-          label='Required'
-          checked={props.question.isRequired}
-          onChange={(e: React.FormEvent<HTMLInputElement>) => {
-            editQuestion.mutate({
-              isRequired: e.currentTarget.checked,
-            });
-          }}
-        />
-        <TextInput
-          label='Question'
-          required
-          placeholder='Your question text'
-          value={questionText}
-          onChange={handleEditQuestionName}
-        />
-        <TextInput
-          label='Details'
-          placeholder='(optional)'
-          value={questionDetails}
-          onChange={handleEditQuestionDetails}
-        />
-
-        <NativeSelect
-          label='Question Type'
-          data={Object.values(QuestionTypeString)}
-          // The 'value' and 'onChange' are like this due to limitations in Prisma's enums
-          // we're mapping the values to a separate object which contains the 'nice' string names
-          value={QuestionTypeString[props.question.questionType]}
-          onChange={(e: React.FormEvent<HTMLSelectElement>) => {
-            editQuestion.mutate({
-              questionType: (
-                Object.keys(
-                  QuestionTypeString
-                ) as (keyof typeof QuestionTypeString)[]
-              ).find(
-                (key) => QuestionTypeString[key] === e.currentTarget.value
-              ),
-            });
-          }}
-        />
+        <motion.div layout key={`options-${props.question.id}`}>
+          <Stack sx={{ flexGrow: 1 }}>
+            <Checkbox
+              label='Required'
+              checked={props.question.isRequired}
+              onChange={(e: React.FormEvent<HTMLInputElement>) => {
+                editQuestion.mutate({
+                  isRequired: e.currentTarget.checked,
+                });
+              }}
+            />
+            <TextInput
+              label='Question'
+              required
+              placeholder='Your question text'
+              value={questionText}
+              onChange={handleEditQuestionName}
+            />
+            <TextInput
+              label='Details'
+              placeholder='(optional)'
+              value={questionDetails}
+              onChange={handleEditQuestionDetails}
+            />
+            <NativeSelect
+              label='Question Type'
+              data={Object.values(QuestionTypeString)}
+              // The 'value' and 'onChange' are like this due to limitations in Prisma's enums
+              // we're mapping the values to a separate object which contains the 'nice' string names
+              value={QuestionTypeString[props.question.questionType]}
+              onChange={(e: React.FormEvent<HTMLSelectElement>) => {
+                editQuestion.mutate({
+                  questionType: (
+                    Object.keys(
+                      QuestionTypeString
+                    ) as (keyof typeof QuestionTypeString)[]
+                  ).find(
+                    (key) => QuestionTypeString[key] === e.currentTarget.value
+                  ),
+                });
+              }}
+            />
+          </Stack>
+        </motion.div>
         {props.question.questionType === 'multipleChoiceMultiple' ||
         props.question.questionType === 'multipleChoiceSingle' ? (
           <>
-            <Title order={4}>Answer Options</Title>
+            <motion.div key='title' layout>
+              <Title order={4}>Answer Options</Title>
+            </motion.div>
             {props.question.multipleChoiceOptions.map((mcOption, index) => (
               <motion.div key={mcOption.id} layout {...animations}>
                 <EditSurveyMultipleChoiceOption
