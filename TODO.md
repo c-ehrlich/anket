@@ -3,9 +3,13 @@
 ### Want to do next
 - [ ] Create QuestionResponses
 - [ ] Try switching to Mantine-Form and use Zod validation on it
+- [ ] Think about if I need to redesign QuestionResponse schema? For a MC-Multiple should it really be several DB entries, or just one? Not sure!!
 ### Bugs
+- [!] Adding an MCO is skippy again... make sure everything else on the same level is motion (or whatever else the problem was - check git diffs of when I first fixed it)
 - [!] Choppy MCO reordering - is it because it's doing it on optimistic updates, thus rerendering the entire dom?
   - [ ] Also debounce them while at it
+- [!] Editing a survey after it has been published - Submit button doesn't work
+  - [*] conditionally replace it with an update button?
 ### DB
 - [ ] Get the real DB running https://vercel.com/guides/nextjs-prisma-postgres
 ### UI
@@ -25,8 +29,12 @@
 - [ ] Give surveys optional header images
   - [ ] Figure out how image upload works
   - [ ] Where can we store them? What about in deployment? S3?
+- [ ] Description should support line breaks
 ### Taking a survey
 - [ ] figure out how to deal with the fact that we need to CREATE a bunch of stuff while the survey is being filled out (mutations...)
+- [ ] 0-10 should have the highlighted number in a contrast color
+- [ ] Optional questions should have the possibility to cancel/remove the answer
+- [ ] Text Response input should be resizeable
 ### Survey Responses
 - [ ] Get count of responses
 - [ ] For multiple choice, see what percentage of people chose each
