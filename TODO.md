@@ -1,7 +1,7 @@
 # Anket Todo (current)
 ## MVP v1
 ### Want to do next
-- [ ] Make MultipleChoiceOption reorder draggable, remove buttons https://www.framer.com/docs/reorder/
+- [ ] Create QuestionResponses
 - [ ] Try switching to Mantine-Form and use Zod validation on it
 ### Bugs
 - [!] Choppy MCO reordering - is it because it's doing it on optimistic updates, thus rerendering the entire dom?
@@ -26,7 +26,6 @@
   - [ ] Figure out how image upload works
   - [ ] Where can we store them? What about in deployment? S3?
 ### Taking a survey
-- [ ] create an interaction, then redirect
 - [ ] figure out how to deal with the fact that we need to CREATE a bunch of stuff while the survey is being filled out (mutations...)
 ### Survey Responses
 - [ ] Get count of responses
@@ -118,6 +117,7 @@
 - [x] Build backend stuff for reordering of all MCOs
 - [x] Reorder MCOs by dragging
 ### Take Survey
+- [x] Create SurveyInteraction
 ### Backend
 - [x] clone the logger from tom does tech youtube clone, and re-convert every consoleDOTlog/error to that logger
 - [x] Create schema for everything and validate every request
