@@ -88,6 +88,7 @@ const EditSurveyMultipleChoiceOption = memo((props: Props) => {
             variant='transparent'
             size='lg'
             onPointerDown={(e: any) => controls.start(e)}
+            disabled={props.optionCount < 2}
           >
             <GridDots />
           </ActionIcon>
