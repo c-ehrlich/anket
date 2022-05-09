@@ -107,7 +107,7 @@ const EditSurveyQuestion = memo((props: Props) => {
       <Card shadow='lg' radius='md' p='md' withBorder>
         <Card.Section
           component={motion.div}
-          key='card-section'
+          key={`card-section-${props.question.id}`}
           layout
           style={{
             backgroundColor:
@@ -154,7 +154,7 @@ const EditSurveyQuestion = memo((props: Props) => {
           </Group>
         </Card.Section>
         <Stack sx={{ flexGrow: 1 }}>
-          <motion.div key='question-options' layout>
+          <motion.div key={`question-options-${props.question.id}`} layout>
             <Stack sx={{ flexGrow: 1 }}>
               <Checkbox
                 label='Required'
@@ -201,10 +201,13 @@ const EditSurveyQuestion = memo((props: Props) => {
           {props.question.questionType === 'multipleChoiceMultiple' ||
           props.question.questionType === 'multipleChoiceSingle' ? (
             <>
-              <motion.div key='answer-options-title' layout>
+              <motion.div
+                key={`answer-options-title-${props.question.id}`}
+                layout
+              >
                 <Title order={4}>Answer Options</Title>
               </motion.div>
-              <motion.div key='reorder-group' layout>
+              <motion.div key={`mco-reorder-group-${props.question.id}`} layout>
                 <Reorder.Group
                   as='div'
                   style={{
@@ -238,7 +241,7 @@ const EditSurveyQuestion = memo((props: Props) => {
               </motion.div>
               <Button
                 component={motion.button}
-                key='add-answer-option'
+                key={`add-answer-option-${props.question.id}`}
                 layout
                 onClick={() => createMultipleChoiceOption.mutate()}
                 fullWidth
