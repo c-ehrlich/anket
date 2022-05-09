@@ -5,6 +5,7 @@ import logger from '../utils/logger';
 import {
   CreateDefaultSurveyInput,
   SurveyFE,
+  SurveyFEWithAuthor,
   SurveyPreviewWithAuthor,
 } from './survey.schema';
 import {
@@ -45,7 +46,7 @@ export async function createNewSurveyHandler(
 
 export async function getSingleSurveyHandler(
   req: NextApiRequest,
-  res: NextApiResponse<{ message: string } | SurveyFE>
+  res: NextApiResponse<{ message: string } | SurveyFEWithAuthor>
 ) {
   const id = getId(req);
   if (!id) {
@@ -56,13 +57,12 @@ export async function getSingleSurveyHandler(
   if (!survey)
     return res.status(400).json({ message: 'failed to find survey' });
 
-  const surveyOwner = survey?.authorId;
   const session = await getSession({ req });
 
   // allowed if: we own it OR it's public and complete
   if (
     !(
-      (session?.user && session.user.id === survey.authorId) ||
+      (session?.user && session.user.id === survey.author.id) ||
       (survey.isCompleted && survey.isPublic)
     )
   ) {

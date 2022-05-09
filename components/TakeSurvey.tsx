@@ -1,5 +1,6 @@
 import {
   Alert,
+  Avatar,
   Badge,
   Button,
   Checkbox,
@@ -37,6 +38,25 @@ const TakeSurvey = (props: Props) => {
   return (
     <Stack style={{ marginBottom: '64px' }}>
       <Title order={2}>{survey.data.name}</Title>
+      <div>
+        <Badge
+          color='gray'
+          size='lg'
+          variant='outline'
+          leftSection={
+            <Avatar
+              src={survey.data.author.image}
+              radius='xl'
+              size={25}
+              mr={5}
+            />
+          }
+          sx={{ paddingLeft: 0 }}
+          styles={{ inner: { textTransform: 'none' } }}
+        >
+          {survey.data.author.name}
+        </Badge>
+      </div>
       {survey.data.description !== '' && <Text>{survey.data.description}</Text>}
       <div>
         {survey.data.isPublic ? (
@@ -82,7 +102,11 @@ const TakeSurvey = (props: Props) => {
             {question.questionType === 'multipleChoiceMultiple' ? (
               <Stack>
                 {question.multipleChoiceOptions.map((option) => (
-                  <Checkbox key={option.id} label={option.name} onClick={() => console.log(option.id)} />
+                  <Checkbox
+                    key={option.id}
+                    label={option.name}
+                    onClick={() => console.log(option.id)}
+                  />
                 ))}
               </Stack>
             ) : question.questionType === 'multipleChoiceSingle' ? (

@@ -2,6 +2,7 @@ import {
   CreateDefaultSurveyInput,
   EditSurveyData,
   SurveyFE,
+  SurveyFEWithAuthor,
   SurveyPreviewWithAuthor,
 } from './survey.schema';
 import prisma from '../utils/prisma';
@@ -95,7 +96,7 @@ export async function getAllPublicSurveyPreviews() {
       isPublic: true,
     },
     select: {
-      author: { select: { id: true, name: true, image: true } },
+      author: { select: { id: true, name: true, image: true, email: true } },
       id: true,
       name: true,
       description: true,
@@ -116,7 +117,7 @@ export async function getUserSurveyPreviews(authorId: string) {
       authorId,
     },
     select: {
-      author: { select: { id: true, name: true, image: true } },
+      author: { select: { id: true, name: true, image: true, email: true } },
       id: true,
       name: true,
       description: true,
@@ -133,7 +134,7 @@ export async function getUserSurveyPreviews(authorId: string) {
 
 export async function getSingleSurvey(id: string) {
   try {
-    const survey = await prisma.survey.findUnique({
+    const survey: SurveyFEWithAuthor | null = await prisma.survey.findUnique({
       where: { id },
       include: {
         questions: {
@@ -146,6 +147,14 @@ export async function getSingleSurvey(id: string) {
           },
           orderBy: {
             order: 'asc',
+          },
+        },
+        author: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+            email: true,
           },
         },
       },

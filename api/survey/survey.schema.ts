@@ -5,6 +5,7 @@ import { questionResponseSchema } from '../question/question.schema';
 const user = z.object({
   id: z.string().cuid(),
   name: z.string().nullable(),
+  email: z.string().nullable(),
   image: z.string().nullable(),
   // there are other things on the user object but we don't want to send them
 });
@@ -36,6 +37,18 @@ const createDefaultSurveyResponseSchema = z.object({
 });
 
 export type SurveyFE = z.infer<typeof createDefaultSurveyResponseSchema>;
+
+const surveyFEWithAuthorSchema = z.object({
+  id: z.string({}).cuid(),
+  name: z.string({}),
+  description: z.string({}),
+  isCompleted: z.boolean({}),
+  isPublic: z.boolean({}),
+  questions: z.array(questionResponseSchema),
+  author: user,
+})
+
+export type SurveyFEWithAuthor = z.infer<typeof surveyFEWithAuthorSchema>;
 
 // For route validation & according frontend types
 export const editSurveySchema = z.object({
