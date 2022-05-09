@@ -51,6 +51,21 @@ export async function createDefaultSurvey(data: CreateDefaultSurveyInput) {
         ...data,
         name: '',
         description: '',
+        questions: {
+          create: {
+            question: '',
+            details: '',
+            order: 0,
+            isRequired: true,
+            questionType: 'multipleChoiceSingle',
+            multipleChoiceOptions: {
+              create: {
+                name: '',
+                order: 0,
+              },
+            },
+          },
+        },
       },
       include: {
         questions: {
@@ -197,9 +212,9 @@ export async function getSurveyOwner(id: string) {
     const survey = await prisma.survey.findUnique({
       where: { id },
       select: {
-        authorId: true
-      }
-    })
+        authorId: true,
+      },
+    });
     return survey?.authorId;
   } catch (e) {
     logger.error(e);
