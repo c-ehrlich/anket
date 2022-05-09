@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
+import getId from '../utils/getId';
 import logger from '../utils/logger';
 import {
   CreateDefaultSurveyInput,
@@ -46,9 +47,10 @@ export async function getSingleSurveyHandler(
   req: NextApiRequest,
   res: NextApiResponse<{ message: string } | SurveyFE>
 ) {
-  const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
-  if (!id)
+  const id = getId(req);
+  if (!id) {
     return res.status(400).json({ message: 'failed to get ID from query' });
+  }
 
   const survey = await getSingleSurvey(id);
   if (!survey)
@@ -85,7 +87,10 @@ export async function getUserSurveysHandler(
   req: NextApiRequest,
   res: NextApiResponse<{ message: string } | SurveyPreviewWithAuthor[]>
 ) {
-  const userId = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
+  const userId = getId(req);
+  if (!userId) {
+    return res.status(400).json({ message: 'failed to get ID from query ' });
+  }
 
   const surveys = await getUserSurveyPreviews(userId);
   return res.status(200).json(surveys);
@@ -95,9 +100,10 @@ export async function updateSurveyBasicInfoHandler(
   req: NextApiRequest,
   res: NextApiResponse<{ message: string } | SurveyFE>
 ) {
-  const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
-  if (!id)
+  const id = getId(req);
+  if (!id) {
     return res.status(400).json({ message: 'failed to get ID from query' });
+  }
 
   const data = req.body;
 
@@ -121,9 +127,10 @@ export async function deleteSurveyHandler(
   req: NextApiRequest,
   res: NextApiResponse<{ message: String } | SurveyFE>
 ) {
-  const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
-  if (!id)
+  const id = getId(req);
+  if (!id) {
     return res.status(400).json({ message: 'failed to get ID from query' });
+  }
 
   // make sure the user is allowed to modify that survey
   const surveyOwner = await getSurveyOwner(id);

@@ -5,6 +5,7 @@
 
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
+import getId from '../utils/getId';
 import logger from '../utils/logger';
 import {
   GetSurveyParticipationData,
@@ -29,10 +30,10 @@ export async function getOrCreateSurveyParticipationHandler(
     return res.status(400).json({ message: 'No session' });
   }
 
-  const surveyId = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
-  
-  if (!surveyId)
+  const surveyId = getId(req)
+  if (!surveyId) {
     return res.status(400).json({ message: 'failed to get ID from query' });
+  }
 
   const surveyParticipation = await getOrCreateSurveyParticipation({
     surveyId,

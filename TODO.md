@@ -1,14 +1,11 @@
 # Anket Todo (current)
 ## MVP v1
 ### Want to do next
-- [ ] Delete Product schema, see if there are any other product references left
 - [ ] Create QuestionResponses
 - [ ] Try switching to Mantine-Form and use Zod validation on it
 - [ ] Think about if I need to redesign QuestionResponse schema? For a MC-Multiple should it really be several DB entries, or just one? Not sure!!
 ### Bugs
-- [!] Adding an MCO is skippy again... make sure everything else on the same level is motion (or whatever else the problem was - check git diffs of when I first fixed it)
-- [!] Choppy MCO reordering - is it because it's doing it on optimistic updates, thus rerendering the entire dom?
-  - [ ] Also debounce them while at it
+- [!] Choppy MCO reordering - https://github.com/framer/motion/issues/1518
 - [!] Editing a survey after it has been published - Submit button doesn't work
   - [*] conditionally replace it with an update button?
 ### DB
@@ -45,8 +42,6 @@
 ### Queries
 ### Maybe / Todos
 - [x] Make type names shorter
-- [ ] DRY: make getting the ID in controllers a middleware? Then we can just assume that it's on the request
-- [ ] Creating a survey also creates the first question, creating a question also creates the first answer option
 - [ ] Type React Query errors (is it just the type of { message: string? }) probably not...look at one and figure it out
 - [ ] See where we can reduce the number of props (for example in EditSurveyMultipleChoiceAnswer by passing an object instead of multiple parts of that object)
 - [ ] User profiles ... users can have settings, nicknames, etc
@@ -68,6 +63,7 @@
 - [x] Adding and removing answer options: sometimes stuff collapses into each other
 - [x] Answer Option Creation causes the container to bounce around - not making the question itself a motion.div fixes it - ask in framer motion discord
 - [x] Question container height: make transitions take time so container doesn't shrink faster than the contents
+- [x] Adding an MCO is skippy again... make sure everything else on the same level is motion, key, layout
 ## DB
 - [x] Implement order on questions
 - [x] send questions and answeroptions ordered on DB level
@@ -125,6 +121,7 @@
 - [x] Make delete modals
 - [x] Build backend stuff for reordering of all MCOs
 - [x] Reorder MCOs by dragging
+- [x] Creating a survey also creates the first question, creating a question also creates the first answer option
 ### User Profile Page
 - [x] Create it
 ### Take Survey
@@ -136,3 +133,7 @@
   - [x] There's also some Partial<>s in the backend...fix those also
   - [x] Move surveywithauthor from .d.ts to a zod schema
   - [x] Check the types on every res in controllers... still using some Prisma generated types
+### Refactor
+- [x] DRY: make getting the ID in controllers a middleware? Then we can just assume that it's on the request
+  - [x] ...or at least a function
+- [x] Delete all references to Product

@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
 import { getQuestionOwner } from '../question/question.service';
+import getId from '../utils/getId';
 import logger from '../utils/logger';
 import {
   EditMultipleChoiceOptionData,
@@ -52,9 +53,10 @@ export async function deleteMultipleChoiceOptionHandler(
   res: NextApiResponse<MultipleChoiceOptionFE | { message: string }>
 ) {
   // make sure we have an id
-  const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
-  if (!id)
+  const id = getId(req);
+  if (!id) {
     return res.status(400).json({ message: 'failed to get ID from query' });
+  }
 
   // make sure the user is allowed to modify that question
   const optionOwner = await getMultipleChoiceOptionOwner(id);
@@ -82,9 +84,10 @@ export async function editMultipleChoiceOptionHandler(
   res: NextApiResponse<MultipleChoiceOptionFE | { message: string }>
 ) {
   // make sure we have a questionid
-  const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
-  if (!id)
+  const id = getId(req);
+  if (!id) {
     return res.status(400).json({ message: 'failed to get ID from query' });
+  }
 
   // get the data from the request
   const data: EditMultipleChoiceOptionData = req.body;
@@ -121,9 +124,10 @@ export async function reorderMultipleChoiceOptionHandler(
   res: NextApiResponse<MultipleChoiceOptionFE[] | { message: string }>
 ) {
   // make sure we have an id
-  const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
-  if (!id)
+  const id = getId(req);
+  if (!id) {
     return res.status(400).json({ message: 'failed to get ID from query' });
+  }
 
   // make sure the user is allowed to modify that question
   const optionOwner = await getMultipleChoiceOptionOwner(id);
@@ -158,9 +162,7 @@ export async function reorderAllMultipleChoiceOptionsHandler(
   res: NextApiResponse<MultipleChoiceOptionFE[] | { message: string }>
 ) {
   // make sure we have an id
-  const questionId = Array.isArray(req.query.id)
-    ? req.query.id[0]
-    : req.query.id;
+  const questionId = getId(req);
   if (!questionId)
     return res
       .status(400)
