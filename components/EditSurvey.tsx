@@ -83,7 +83,7 @@ const EditSurveyHaveData = memo(({ survey }: { survey: SurveyFE }) => {
         opened={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
         title='Delete Survey'
-        text='Are you sure? Your unsaved survey will be deleted.'
+        text='Are you sure? The survey will be deleted permanently.'
         onClickDelete={() => deleteSurvey.mutate()}
       />
       <Stack style={{ marginBottom: '64px' }}>
@@ -141,7 +141,7 @@ const EditSurveyHaveData = memo(({ survey }: { survey: SurveyFE }) => {
             color='red'
             onClick={() => setDeleteModalOpen(true)}
           >
-            Cancel
+            Delete
           </Button>
           <Button onClick={() => router.push(`/survey/preview/${survey.id}`)}>
             Preview
