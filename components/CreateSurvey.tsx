@@ -1,5 +1,5 @@
 import { Router, useRouter } from 'next/router';
-import { useEffect,  } from 'react';
+import { useEffect } from 'react';
 import { createSurvey } from '../hooks/useCreateSurvey';
 
 /**
@@ -9,14 +9,13 @@ import { createSurvey } from '../hooks/useCreateSurvey';
 
 const CreateSurveyRQ = () => {
   const router = useRouter();
-  
-  useEffect(() => {
-    createSurvey().then((survey) => router.push(`/survey/edit/${survey.id}`));
-  }, [router])
 
-  return (
-      <div>Creating survey...</div>
-  );
+  useEffect(() => {
+    console.log('in CreateSurvey useEffect');
+    createSurvey().then((survey) => router.push(`/survey/edit/${survey.id}`));
+  }, [router]);
+
+  return <div>Creating survey...</div>;
 };
 
 export default CreateSurveyRQ;

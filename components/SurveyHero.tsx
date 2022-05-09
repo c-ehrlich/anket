@@ -26,12 +26,16 @@ const SurveyHero = (props: Props) => {
 
   if (!session) return null;
 
-  if (!session.user) return (<div>No user</div>);
+  if (!session.user) return <div>No user</div>;
 
   return (
-    <Card shadow='sm' p='lg'>
+    <Card shadow='sm' p='lg' withBorder>
       <Card.Section>
-        <Image src='https://picsum.photos/600/300' height={160} alt='Norway' />
+        <Image
+          src='https://picsum.photos/600/300'
+          height={160}
+          alt='Survey Header Image'
+        />
       </Card.Section>
       <Stack style={{ marginTop: theme.spacing.sm }}>
         <Group style={{ justifyContent: 'space-between' }}>
@@ -44,17 +48,17 @@ const SurveyHero = (props: Props) => {
                 <>
                   {props.survey.isCompleted ? (
                     <Badge
-                    size='lg'
-                    variant='outline'
-                    leftSection={
-                      <Check
-                        size={22}
-                        style={{ position: 'relative', top: '4px' }}
-                      />
-                    }
-                  >
-                    Created
-                  </Badge>
+                      size='lg'
+                      variant='outline'
+                      leftSection={
+                        <Check
+                          size={22}
+                          style={{ position: 'relative', top: '4px' }}
+                        />
+                      }
+                    >
+                      Created
+                    </Badge>
                   ) : (
                     <Badge
                       size='lg'
@@ -72,7 +76,10 @@ const SurveyHero = (props: Props) => {
                   )}
                 </>
               ) : (
-                <div>TODO check if user has taken this <Link href={`/survey/take/${props.survey.id}`}>Take</Link></div>
+                <div>
+                  TODO check if user has taken this{' '}
+                  <Link href={`/survey/take/${props.survey.id}`}>Take</Link>
+                </div>
               )}
             </Group>
           </Title>
@@ -89,12 +96,23 @@ const SurveyHero = (props: Props) => {
             ? props.survey.description
             : '(no description)'}
         </Text>
-        <Group>
-          <Avatar src={props.survey.author.image} radius='xl' />
-          <Text size='sm' lineClamp={2} weight={500}>
-            {props.survey.author!.name}
-          </Text>
-        </Group>
+        <div>
+          {/* TODO base color on theme */}
+          <Link passHref href={`/user/${props.survey.author.id}`}>
+            <Badge
+              color='gray'
+              size='xl'
+              variant='outline'
+              leftSection={
+                <Avatar src={props.survey.author.image} radius='xl' size={32} mr={5} />
+              }
+              sx={{ paddingLeft: 0 }}
+              styles={{ inner: { textTransform: 'none' } }}
+            >
+              {props.survey.author!.name}
+            </Badge>
+          </Link>
+        </div>
       </Stack>
     </Card>
   );

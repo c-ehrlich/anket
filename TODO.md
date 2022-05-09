@@ -1,6 +1,7 @@
 # Anket Todo (current)
 ## MVP v1
 ### Want to do next
+- [ ] Delete Product schema, see if there are any other product references left
 - [ ] Create QuestionResponses
 - [ ] Try switching to Mantine-Form and use Zod validation on it
 - [ ] Think about if I need to redesign QuestionResponse schema? For a MC-Multiple should it really be several DB entries, or just one? Not sure!!
@@ -124,6 +125,8 @@
 - [x] Make delete modals
 - [x] Build backend stuff for reordering of all MCOs
 - [x] Reorder MCOs by dragging
+### User Profile Page
+- [x] Create it
 ### Take Survey
 - [x] Create SurveyInteraction
 ### Backend

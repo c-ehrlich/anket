@@ -20,6 +20,8 @@ export async function createNewSurveyHandler(
   req: NextApiRequest,
   res: NextApiResponse<SurveyFE | { message: string }>
 ) {
+  logger.info('in createNewsurveyHandler');
+
   const session = await getSession({ req });
   const authorId = session!.user!.id;
 
