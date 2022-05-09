@@ -29,8 +29,14 @@ export async function createDefaultQuestion({
         surveyId,
         question: '',
         details: '',
-        questionType: 'multipleChoiceMultiple',
+        questionType: 'multipleChoiceSingle',
         order,
+        multipleChoiceOptions: {
+          create: {
+            name: '',
+            order: 0,
+          }
+        }
       },
       include: {
         multipleChoiceOptions: true,
