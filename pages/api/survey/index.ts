@@ -5,6 +5,6 @@ import { createNewSurveyHandler, getAllPublicSurveysHandler } from '../../../api
 
 const handler = NextConnectHandler<NextApiRequest, NextApiResponse>()
   .get(requireSession, getAllPublicSurveysHandler)
-  .post(requireSession, createNewSurveyHandler);
+  .put(requireSession, createNewSurveyHandler);
 
 export default handler;
