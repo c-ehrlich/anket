@@ -107,6 +107,8 @@ const EditSurveyQuestion = memo((props: Props) => {
       <Card shadow='lg' radius='md' p='md' withBorder>
         <Card.Section
           component={motion.div}
+          key='card-section'
+          layout
           style={{
             backgroundColor:
               theme.colorScheme === 'light'
@@ -152,80 +154,92 @@ const EditSurveyQuestion = memo((props: Props) => {
           </Group>
         </Card.Section>
         <Stack sx={{ flexGrow: 1 }}>
-          <Stack sx={{ flexGrow: 1 }}>
-            <Checkbox
-              label='Required'
-              checked={props.question.isRequired}
-              onChange={(e: React.FormEvent<HTMLInputElement>) => {
-                editQuestion.mutate({
-                  isRequired: e.currentTarget.checked,
-                });
-              }}
-            />
-            <TextInput
-              label='Question'
-              required
-              placeholder='Your question text'
-              value={questionText}
-              onChange={handleEditQuestionName}
-            />
-            <TextInput
-              label='Details'
-              placeholder='(optional)'
-              value={questionDetails}
-              onChange={handleEditQuestionDetails}
-            />
-            <NativeSelect
-              label='Question Type'
-              data={Object.values(QuestionTypeString)}
-              // The 'value' and 'onChange' are like this due to limitations in Prisma's enums
-              // we're mapping the values to a separate object which contains the 'nice' string names
-              value={QuestionTypeString[props.question.questionType]}
-              onChange={(e: React.FormEvent<HTMLSelectElement>) => {
-                editQuestion.mutate({
-                  questionType: (
-                    Object.keys(
-                      QuestionTypeString
-                    ) as (keyof typeof QuestionTypeString)[]
-                  ).find(
-                    (key) => QuestionTypeString[key] === e.currentTarget.value
-                  ),
-                });
-              }}
-            />
-          </Stack>
+          <motion.div key='question-options' layout>
+            <Stack sx={{ flexGrow: 1 }}>
+              <Checkbox
+                label='Required'
+                checked={props.question.isRequired}
+                onChange={(e: React.FormEvent<HTMLInputElement>) => {
+                  editQuestion.mutate({
+                    isRequired: e.currentTarget.checked,
+                  });
+                }}
+              />
+              <TextInput
+                label='Question'
+                required
+                placeholder='Your question text'
+                value={questionText}
+                onChange={handleEditQuestionName}
+              />
+              <TextInput
+                label='Details'
+                placeholder='(optional)'
+                value={questionDetails}
+                onChange={handleEditQuestionDetails}
+              />
+              <NativeSelect
+                label='Question Type'
+                data={Object.values(QuestionTypeString)}
+                // The 'value' and 'onChange' are like this due to limitations in Prisma's enums
+                // we're mapping the values to a separate object which contains the 'nice' string names
+                value={QuestionTypeString[props.question.questionType]}
+                onChange={(e: React.FormEvent<HTMLSelectElement>) => {
+                  editQuestion.mutate({
+                    questionType: (
+                      Object.keys(
+                        QuestionTypeString
+                      ) as (keyof typeof QuestionTypeString)[]
+                    ).find(
+                      (key) => QuestionTypeString[key] === e.currentTarget.value
+                    ),
+                  });
+                }}
+              />
+            </Stack>
+          </motion.div>
           {props.question.questionType === 'multipleChoiceMultiple' ||
           props.question.questionType === 'multipleChoiceSingle' ? (
             <>
-              <Title order={4}>Answer Options</Title>
-              <Reorder.Group
-                as='div'
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '8px',
-                }}
-                axis='y'
-                values={props.question.multipleChoiceOptions}
-                onReorder={(data) =>
-                  reorderAllMultipleChoiceOptionsMutation.mutate(data)
-                }
-              >
-                {props.question.multipleChoiceOptions.map((mcOption, index) => (
-                  <EditSurveyMultipleChoiceOption
-                    key={mcOption.id}
-                    index={index}
-                    questionIndex={props.index}
-                    questionId={props.question.id}
-                    questionType={props.question.questionType}
-                    surveyId={props.surveyId}
-                    option={mcOption}
-                    optionCount={props.question.multipleChoiceOptions.length}
-                  />
-                ))}
-              </Reorder.Group>
+              <motion.div key='answer-options-title' layout>
+                <Title order={4}>Answer Options</Title>
+              </motion.div>
+              <motion.div key='reorder-group' layout>
+                <Reorder.Group
+                  as='div'
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '8px',
+                  }}
+                  axis='y'
+                  values={props.question.multipleChoiceOptions}
+                  onReorder={(data) =>
+                    reorderAllMultipleChoiceOptionsMutation.mutate(data)
+                  }
+                >
+                  {props.question.multipleChoiceOptions.map(
+                    (mcOption, index) => (
+                      <EditSurveyMultipleChoiceOption
+                        key={mcOption.id}
+                        index={index}
+                        questionIndex={props.index}
+                        questionId={props.question.id}
+                        questionType={props.question.questionType}
+                        surveyId={props.surveyId}
+                        option={mcOption}
+                        optionCount={
+                          props.question.multipleChoiceOptions.length
+                        }
+                      />
+                    )
+                  )}
+                </Reorder.Group>
+              </motion.div>
               <Button
                 component={motion.button}
+                key='add-answer-option'
+                layout
                 onClick={() => createMultipleChoiceOption.mutate()}
                 fullWidth
               >
