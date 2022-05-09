@@ -63,8 +63,9 @@ const TakeSurvey = (props: Props) => {
           <Badge
             size='lg'
             variant='filled'
+            sx={{ paddingLeft: 8 }}
             leftSection={
-              <Eye size={22} style={{ position: 'relative', top: '4px' }} />
+              <Eye size={20} style={{ position: 'relative', top: '4px' }} />
             }
           >
             Public
