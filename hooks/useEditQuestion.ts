@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { EditQuestionData, QuestionFE } from '../api/question/question.schema';
 import { SurveyFE } from '../api/survey/survey.schema';
+import { QueryKeys } from '../types/queryKeys';
 
 const useEditQuestion = ({
   questionId,
@@ -15,18 +16,20 @@ const useEditQuestion = ({
   const queryClient = useQueryClient();
 
   return useMutation(
-    ['survey', surveyId],
+    [QueryKeys.survey, surveyId],
     (data: EditQuestionData) => {
       return axios.patch(`/api/question/${questionId}`, data);
     },
     {
       onError: (e: any) => window.alert(e),
       onMutate: (data) => {
-        queryClient.cancelQueries(['survey', surveyId]);
-        const oldSurvey: SurveyFE | undefined =
-          queryClient.getQueryData(['survey', surveyId]);
+        queryClient.cancelQueries([QueryKeys.survey, surveyId]);
+        const oldSurvey: SurveyFE | undefined = queryClient.getQueryData([
+          QueryKeys.survey,
+          surveyId,
+        ]);
         if (oldSurvey) {
-          queryClient.setQueryData(['survey', surveyId], {
+          queryClient.setQueryData([QueryKeys.survey, surveyId], {
             ...oldSurvey,
             questions: ([] as QuestionFE[]).concat(
               oldSurvey.questions.slice(0, questionIndex),
@@ -37,7 +40,7 @@ const useEditQuestion = ({
         }
       },
       onSettled: () => {
-        queryClient.invalidateQueries(['survey', surveyId]);
+        queryClient.invalidateQueries([QueryKeys.survey, surveyId]);
       },
     }
   );

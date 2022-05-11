@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useMutation } from 'react-query';
+import { QueryKeys } from '../types/queryKeys';
 
 const useDeleteSurvey = ({
   setDeleteModalOpen,
@@ -12,7 +13,7 @@ const useDeleteSurvey = ({
   const router = useRouter();
 
   return useMutation(
-    ['survey', surveyId],
+    [QueryKeys.survey, surveyId],
     () => {
       return axios.delete(`/api/survey/${surveyId}`).then((res) => res.data);
     },

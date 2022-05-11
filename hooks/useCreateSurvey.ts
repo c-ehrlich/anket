@@ -5,7 +5,6 @@ export const createSurvey = async () => {
   const survey: SurveyFE = await axios
     .put('/api/survey')
     .then((res) => res.data);
-  console.log(survey);
   return survey;
 };
 

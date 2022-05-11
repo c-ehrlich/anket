@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { MultipleChoiceOptionFE } from '../api/multipleChoiceOption/multipleChoiceOption.schema';
 import { QuestionFE } from '../api/question/question.schema';
 import { SurveyFE } from '../api/survey/survey.schema';
+import { QueryKeys } from '../types/queryKeys';
 
 const useDeleteMultipleChoiceOption = ({
   optionId,
@@ -18,16 +19,18 @@ const useDeleteMultipleChoiceOption = ({
   const queryClient = useQueryClient();
 
   return useMutation(
-    ['survey', surveyId],
+    [QueryKeys.survey, surveyId],
     () => {
       return axios.delete(`/api/multiplechoiceoption/${optionId}`);
     },
     {
       onError: (e: any) => window.alert(e),
       onMutate: () => {
-        queryClient.cancelQueries(['survey', surveyId]);
-        const oldSurvey: SurveyFE | undefined =
-          queryClient.getQueryData(['survey', surveyId]);
+        queryClient.cancelQueries([QueryKeys.survey, surveyId]);
+        const oldSurvey: SurveyFE | undefined = queryClient.getQueryData([
+          QueryKeys.survey,
+          surveyId,
+        ]);
         if (oldSurvey) {
           const optimisticUpdate = {
             ...oldSurvey,
@@ -35,9 +38,7 @@ const useDeleteMultipleChoiceOption = ({
               oldSurvey.questions.slice(0, questionIndex),
               {
                 ...oldSurvey.questions[questionIndex],
-                multipleChoiceOptions: (
-                  [] as MultipleChoiceOptionFE[]
-                ).concat(
+                multipleChoiceOptions: ([] as MultipleChoiceOptionFE[]).concat(
                   oldSurvey.questions[
                     questionIndex
                   ].multipleChoiceOptions.slice(0, optionIndex),
@@ -49,11 +50,14 @@ const useDeleteMultipleChoiceOption = ({
               oldSurvey.questions.slice(questionIndex + 1)
             ),
           };
-          queryClient.setQueryData(['survey', surveyId], optimisticUpdate);
+          queryClient.setQueryData(
+            [QueryKeys.survey, surveyId],
+            optimisticUpdate
+          );
         }
       },
       onSettled: () => {
-        queryClient.invalidateQueries(['survey', surveyId]);
+        queryClient.invalidateQueries([QueryKeys.survey, surveyId]);
       },
     }
   );

@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { ReorderAllMultipleChoiceOptionsData } from '../api/multipleChoiceOption/multipleChoiceOption.schema';
 import { QuestionFE } from '../api/question/question.schema';
 import { SurveyFE } from '../api/survey/survey.schema';
+import { QueryKeys } from '../types/queryKeys';
 
 const useReorderAllMultipleChoiceOptions = ({
   questionId,
@@ -16,7 +17,7 @@ const useReorderAllMultipleChoiceOptions = ({
   const queryClient = useQueryClient();
 
   return useMutation(
-    ['survey', surveyId],
+    [QueryKeys.survey, surveyId],
     async (data: ReorderAllMultipleChoiceOptionsData) => {
       await new Promise((res) => setTimeout(res, 1000));
       return axios.patch(
@@ -28,13 +29,13 @@ const useReorderAllMultipleChoiceOptions = ({
       onError: (e: any) => window.alert(e),
       onMutate: (data) => {
         console.log(data);
-        queryClient.cancelQueries(['survey', surveyId]);
+        queryClient.cancelQueries([QueryKeys.survey, surveyId]);
         const oldSurvey: SurveyFE | undefined = queryClient.getQueryData([
-          'survey',
+          QueryKeys.survey,
           surveyId,
         ]);
         if (oldSurvey) {
-          queryClient.setQueryData(['survey', surveyId], {
+          queryClient.setQueryData([QueryKeys.survey, surveyId], {
             ...oldSurvey,
             questions: ([] as QuestionFE[]).concat(
               oldSurvey.questions.slice(0, questionIndex),
@@ -47,7 +48,7 @@ const useReorderAllMultipleChoiceOptions = ({
           });
         }
       },
-      onSettled: () => queryClient.invalidateQueries(['survey', surveyId]),
+      onSettled: () => queryClient.invalidateQueries([QueryKeys.survey, surveyId]),
     }
   );
 };

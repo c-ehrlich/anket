@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
 import axios from 'axios';
-import { SurveyFE } from '../api/survey/survey.schema';
 import { UserWithSurveysFE } from '../api/user/user.schema';
+import { QueryKeys } from '../types/queryKeys';
 
 export const getUserProfileWithSurveys = async (id: string) => {
   const user: UserWithSurveysFE = await axios
@@ -12,7 +12,7 @@ export const getUserProfileWithSurveys = async (id: string) => {
 
 export default function useGetUserProfileWithSurveys(id: string) {
   return useQuery<UserWithSurveysFE>(
-    ['user', id],
+    [QueryKeys.user, id],
     () => getUserProfileWithSurveys(id),
     {
       staleTime: 1000 * 60 * 1, // 1 minute

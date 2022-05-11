@@ -1,12 +1,13 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { CreateQuestionData } from '../api/question/question.schema';
+import { QueryKeys } from '../types/queryKeys';
 
 const useCreateQuestion = (data: CreateQuestionData) => {
   const queryClient = useQueryClient();
 
   return useMutation(
-    ['survey', data.surveyId],
+    [QueryKeys.survey, data.surveyId],
     () => {
       return axios.post('/api/question', data);
     },
@@ -18,7 +19,7 @@ const useCreateQuestion = (data: CreateQuestionData) => {
         // question, and that's used the ref that framer motion uses
       },
       onSettled: () => {
-        queryClient.invalidateQueries(['survey', data.surveyId]);
+        queryClient.invalidateQueries([QueryKeys.survey, data.surveyId]);
       },
     }
   );

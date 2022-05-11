@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { QuestionFE, ReorderQuestionData } from '../api/question/question.schema';
 import { SurveyFE } from '../api/survey/survey.schema';
+import { QueryKeys } from '../types/queryKeys';
 
 const useReorderQuestion = ({
   surveyId,
@@ -24,9 +25,9 @@ const useReorderQuestion = ({
     {
       onError: (e: any) => window.alert(e),
       onMutate: (data) => {
-        queryClient.cancelQueries(['survey', surveyId]);
+        queryClient.cancelQueries([QueryKeys.survey, surveyId]);
         const oldSurvey: SurveyFE | undefined =
-          queryClient.getQueryData(['survey', surveyId]);
+          queryClient.getQueryData([QueryKeys.survey, surveyId]);
         if (oldSurvey) {
           const oldOrder = oldSurvey.questions[questionIndex].order;
           if (data.order > oldOrder) {
@@ -45,7 +46,7 @@ const useReorderQuestion = ({
               order: data.order,
             };
             // rebuild survey object with new questions
-            queryClient.setQueryData(['survey', oldSurvey.id], {
+            queryClient.setQueryData([QueryKeys.survey, oldSurvey.id], {
               ...oldSurvey,
               questions: ([] as QuestionFE[]).concat(
                 // the lower stuff
@@ -74,7 +75,7 @@ const useReorderQuestion = ({
               order: data.order,
             };
             // rebuild survey object with new questions
-            queryClient.setQueryData(['survey', oldSurvey.id], {
+            queryClient.setQueryData([QueryKeys.survey, oldSurvey.id], {
               ...oldSurvey,
               questions: ([] as QuestionFE[]).concat(
                 // the lower stuff
@@ -91,7 +92,7 @@ const useReorderQuestion = ({
         }
       },
       onSettled: () => {
-        queryClient.invalidateQueries(['survey', surveyId]);
+        queryClient.invalidateQueries([QueryKeys.survey, surveyId]);
       },
     }
   );

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
+import { QueryKeys } from '../types/queryKeys';
 
 const useCreateMultipleChoiceOption = ({
   surveyId,
@@ -12,7 +13,7 @@ const useCreateMultipleChoiceOption = ({
   const queryClient = useQueryClient();
 
   return useMutation(
-    ['survey', surveyId],
+    [QueryKeys.survey, surveyId],
     () => {
       return axios.post('/api/multiplechoiceoption', { questionId });
     },
@@ -26,7 +27,7 @@ const useCreateMultipleChoiceOption = ({
         // (or maybe we can? see if there is a way...)
       },
       onSettled: () => {
-        queryClient.invalidateQueries(['survey', surveyId]);
+        queryClient.invalidateQueries([QueryKeys.survey, surveyId]);
       },
     }
   );

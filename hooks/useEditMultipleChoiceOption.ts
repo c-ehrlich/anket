@@ -1,8 +1,12 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
-import { EditMultipleChoiceOptionData, MultipleChoiceOptionFE } from '../api/multipleChoiceOption/multipleChoiceOption.schema';
+import {
+  EditMultipleChoiceOptionData,
+  MultipleChoiceOptionFE,
+} from '../api/multipleChoiceOption/multipleChoiceOption.schema';
 import { QuestionFE } from '../api/question/question.schema';
 import { SurveyFE } from '../api/survey/survey.schema';
+import { QueryKeys } from '../types/queryKeys';
 
 const useEditMultipleChoiceOption = ({
   optionIndex,
@@ -18,26 +22,26 @@ const useEditMultipleChoiceOption = ({
   const queryClient = useQueryClient();
 
   return useMutation(
-    ['survey', surveyId],
+    [QueryKeys.survey, surveyId],
     (data: EditMultipleChoiceOptionData) => {
       return axios.patch(`/api/multiplechoiceoption/${optionId}`, data);
     },
     {
       onError: (e: any) => window.alert(e),
       onMutate: (data) => {
-        queryClient.cancelQueries(['survey', surveyId]);
-        const oldSurvey: SurveyFE | undefined =
-          queryClient.getQueryData(['survey', surveyId]);
+        queryClient.cancelQueries([QueryKeys.survey, surveyId]);
+        const oldSurvey: SurveyFE | undefined = queryClient.getQueryData([
+          QueryKeys.survey,
+          surveyId,
+        ]);
         if (oldSurvey) {
-          queryClient.setQueryData(['survey', surveyId], {
+          queryClient.setQueryData([QueryKeys.survey, surveyId], {
             ...oldSurvey,
             questions: ([] as QuestionFE[]).concat(
               oldSurvey.questions.slice(0, questionIndex),
               {
                 ...oldSurvey.questions[questionIndex],
-                multipleChoiceOptions: (
-                  [] as MultipleChoiceOptionFE[]
-                ).concat(
+                multipleChoiceOptions: ([] as MultipleChoiceOptionFE[]).concat(
                   oldSurvey.questions[
                     questionIndex
                   ].multipleChoiceOptions.slice(0, optionIndex),
@@ -57,7 +61,8 @@ const useEditMultipleChoiceOption = ({
           });
         }
       },
-      onSettled: () => queryClient.invalidateQueries(['survey', surveyId]),
+      onSettled: () =>
+        queryClient.invalidateQueries([QueryKeys.survey, surveyId]),
     }
   );
 };

@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from 'react-query';
 import { ReorderMultipleChoiceOptionType } from '../api/multipleChoiceOption/multipleChoiceOption.schema';
 import { QuestionFE } from '../api/question/question.schema';
 import { SurveyFE } from '../api/survey/survey.schema';
+import { QueryKeys } from '../types/queryKeys';
 
 const useReorderMultipleChoiceOption = ({
   optionId,
@@ -18,16 +19,18 @@ const useReorderMultipleChoiceOption = ({
   const queryClient = useQueryClient();
 
   return useMutation(
-    ['survey', surveyId],
+    [QueryKeys.survey, surveyId],
     (data: ReorderMultipleChoiceOptionType) => {
       return axios.patch(`/api/multiplechoiceoption/reorder/${optionId}`, data);
     },
     {
       onError: (e: any) => window.alert(e),
       onMutate: (data) => {
-        queryClient.cancelQueries(['survey', surveyId]);
-        const oldSurvey: SurveyFE | undefined =
-          queryClient.getQueryData(['survey', surveyId]);
+        queryClient.cancelQueries([QueryKeys.survey, surveyId]);
+        const oldSurvey: SurveyFE | undefined = queryClient.getQueryData([
+          QueryKeys.survey,
+          surveyId,
+        ]);
         if (oldSurvey) {
           const oldOrder =
             oldSurvey.questions[questionIndex].multipleChoiceOptions[
@@ -39,7 +42,8 @@ const useReorderMultipleChoiceOption = ({
               questionIndex
             ].multipleChoiceOptions
               .filter(
-                (mcItem) => mcItem.order > oldOrder && mcItem.order <= data.order
+                (mcItem) =>
+                  mcItem.order > oldOrder && mcItem.order <= data.order
               )
               .map((mcItem) => {
                 return { ...mcItem, order: mcItem.order - 1 };
@@ -52,7 +56,7 @@ const useReorderMultipleChoiceOption = ({
               order: data.order,
             };
             // rebuild survey object with new answerOptions
-            queryClient.setQueryData(['survey', oldSurvey.id], {
+            queryClient.setQueryData([QueryKeys.survey, oldSurvey.id], {
               ...oldSurvey,
               questions: ([] as QuestionFE[]).concat(
                 oldSurvey.questions.slice(0, questionIndex),
@@ -79,7 +83,8 @@ const useReorderMultipleChoiceOption = ({
               questionIndex
             ].multipleChoiceOptions
               .filter(
-                (mcItem) => mcItem.order < oldOrder && mcItem.order >= data.order
+                (mcItem) =>
+                  mcItem.order < oldOrder && mcItem.order >= data.order
               )
               .map((mcItem) => {
                 return { ...mcItem, order: mcItem.order + 1 };
@@ -92,7 +97,7 @@ const useReorderMultipleChoiceOption = ({
               order: data.order,
             };
             // rebuild survey object with new questions
-            queryClient.setQueryData(['survey', oldSurvey.id], {
+            queryClient.setQueryData([QueryKeys.survey, oldSurvey.id], {
               ...oldSurvey,
               questions: ([] as QuestionFE[]).concat(
                 oldSurvey.questions.slice(0, questionIndex),
@@ -117,7 +122,7 @@ const useReorderMultipleChoiceOption = ({
         }
       },
       onSettled: () => {
-        queryClient.invalidateQueries(['survey', surveyId]);
+        queryClient.invalidateQueries([QueryKeys.survey, surveyId]);
       },
     }
   );

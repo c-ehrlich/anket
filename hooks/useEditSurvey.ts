@@ -1,12 +1,13 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
 import { EditSurveyData, SurveyFE } from '../api/survey/survey.schema';
+import { QueryKeys } from '../types/queryKeys';
 
 const useEditSurvey = ({ surveyId }: { surveyId: string }) => {
   const queryClient = useQueryClient();
 
   return useMutation(
-    ['survey', surveyId],
+    [QueryKeys.survey, surveyId],
     (
       data: EditSurveyData
     ) => {
@@ -19,18 +20,18 @@ const useEditSurvey = ({ surveyId }: { surveyId: string }) => {
       onMutate: (
         values
       ) => {
-        queryClient.cancelQueries(['survey', surveyId]);
+        queryClient.cancelQueries([QueryKeys.survey, surveyId]);
         const oldSurvey: SurveyFE | undefined =
-          queryClient.getQueryData(['survey', surveyId]);
+          queryClient.getQueryData([QueryKeys.survey, surveyId]);
         if (oldSurvey)
-          queryClient.setQueryData(['survey', surveyId], () => {
+          queryClient.setQueryData([QueryKeys.survey, surveyId], () => {
             return {
               ...oldSurvey,
               ...values,
             };
           });
       },
-      onSettled: () => queryClient.invalidateQueries(['survey', surveyId]),
+      onSettled: () => queryClient.invalidateQueries([QueryKeys.survey, surveyId]),
     }
   );
 };
