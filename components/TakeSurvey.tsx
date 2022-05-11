@@ -137,6 +137,13 @@ const TakeSurvey = (props: Props) => {
             ) : (
               <Text>Invalid question type</Text>
             )}
+            {!question.isRequired && (
+              <div>
+                <Button size='xs' variant='outline'>
+                  Remove answer
+                </Button>
+              </div>
+            )}
           </Stack>
         </Paper>
       ))}
