@@ -129,8 +129,8 @@
 - [x] Create SurveyInteraction
 - [x] Allow responding to MCM Questions
 - [x] Allow responding to MCS Questions
-- [ ] Allow responding to text questions
-- [ ] Allow responding to Yes/No questions
+- [x] Allow responding to text questions
+- [x] Allow responding to Yes/No questions
 - [ ] Allow responding to 0-10 questions
 - [ ] Allow deleting response
 - [ ] Allow Submitting the entire interaction to make it 'done'
