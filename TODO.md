@@ -128,7 +128,7 @@
 ### Take Survey
 - [x] Create SurveyInteraction
 - [x] Allow responding to MCM Questions
-- [ ] Allow responding to MCS Questions
+- [x] Allow responding to MCS Questions
 - [ ] Allow responding to text questions
 - [ ] Allow responding to Yes/No questions
 - [ ] Allow responding to 0-10 questions

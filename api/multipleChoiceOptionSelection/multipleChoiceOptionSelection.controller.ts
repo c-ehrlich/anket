@@ -1,11 +1,16 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
+import { getQuestionTypeByMultipleChoiceOptionId } from '../multipleChoiceOption/multipleChoiceOption.service';
 import { ToggleMCMItemRequest } from '../surveyParticipation/surveyParticipation.schema';
-import { getOrCreateSurveyParticipation, getSurveyParticipationId } from '../surveyParticipation/surveyParticipation.service';
+import {
+  getSurveyParticipationId,
+} from '../surveyParticipation/surveyParticipation.service';
 import getId from '../utils/getId';
-import logger from '../utils/logger';
 import { MultipleChoiceOptionSelectionFE } from './multipleChoiceOptionSelection.schema';
-import { upsertMultipleChoiceOptionSelection } from './multipleChoiceOptionSelection.service';
+import {
+  deleteOtherMCSOptions,
+  upsertMultipleChoiceOptionSelection,
+} from './multipleChoiceOptionSelection.service';
 
 export async function upsertMultipleChoiceOptionResponseHandler(
   req: NextApiRequest,
@@ -30,6 +35,21 @@ export async function upsertMultipleChoiceOptionResponseHandler(
   });
   if (!surveyParticipation) {
     return res.status(400).send('failed to find survey participation');
+  }
+
+  const question = await getQuestionTypeByMultipleChoiceOptionId(
+    multipleChoiceOptionId
+  );
+  if (!question) {
+    return res.status(400).send('failed to determine question type');
+  }
+
+  if (question.questionType === 'multipleChoiceSingle') {
+    //delete everything else
+    const deletedOptions = await deleteOtherMCSOptions({
+      surveyParticipationId: surveyParticipation.id,
+      questionId: question.id,
+    });
   }
 
   const multipleChoiceOptionSelection:

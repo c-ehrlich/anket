@@ -287,3 +287,20 @@ export async function getMultipleChoiceOptionOwner(id: string) {
     logger.error(e);
   }
 }
+
+export async function getQuestionTypeByMultipleChoiceOptionId(id: string) {
+  try {
+    const mco = await prisma.multipleChoiceOption.findUnique({
+      where: { id },
+      select: {
+        question: {
+          select: { questionType: true, id: true },
+        },
+      },
+    });
+
+    return mco?.question;
+  } catch (e) {
+    logger.error(e);
+  }
+}

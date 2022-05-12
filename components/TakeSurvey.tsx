@@ -24,6 +24,7 @@ import { useMediaQuery } from '@mantine/hooks';
 import { Eye, EyeOff } from 'tabler-icons-react';
 import useGetOrCreateSurveyParticipation from '../hooks/surveyParticipation/useGetOrCreateSurveyParticipation';
 import useToggleMCMItem from '../hooks/surveyParticipation/useToggleMCMItem';
+import useToggleMCSItem from '../hooks/surveyParticipation/useToggleMCSItem';
 
 /**
  * TODO: error checking (eg what happens if we navigate here while not being logged in?
@@ -158,11 +159,17 @@ const TakeSurveyQuestion = ({
             ))}
           </Stack>
         ) : question.questionType === 'multipleChoiceSingle' ? (
-          <RadioGroup orientation='vertical'>
-            {question.multipleChoiceOptions.map((option) => (
-              <Radio key={option.id} value={option.name} label={option.name} />
+          <>
+            {question.multipleChoiceOptions.map((option, mcoIndex) => (
+              <MCSOption
+                option={option}
+                surveyId={surveyId}
+                index={index}
+                mcoIndex={mcoIndex}
+                key={option.id}
+              />
             ))}
-          </RadioGroup>
+          </>
         ) : question.questionType === 'textResponse' ? (
           <Textarea placeholder='Type your response here' />
         ) : question.questionType === 'yesNoBoolean' ? (
@@ -220,6 +227,39 @@ const MCOOption = ({
         });
       }}
       defaultChecked={option.multipleChoiceOptionSelections[0]?.selected}
+    />
+  );
+};
+
+const MCSOption = ({
+  surveyId,
+  option,
+  index,
+  mcoIndex,
+}: {
+  surveyId: string;
+  index: number;
+  option: MultipleChoiceOptionFE;
+  mcoIndex: number;
+}) => {
+  const toggleMCSItemMutation = useToggleMCSItem({
+    surveyId,
+    questionIndex: index,
+    mcoIndex,
+  });
+
+  return (
+    <Radio
+      key={option.id}
+      value={option.name}
+      label={option.name}
+      onClick={() => {
+        toggleMCSItemMutation.mutate({
+          selected: true,
+          optionId: option.id,
+        });
+      }}
+      checked={option.multipleChoiceOptionSelections[0]?.selected || false}
     />
   );
 };
