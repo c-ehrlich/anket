@@ -131,7 +131,9 @@
 - [x] Allow responding to MCS Questions
 - [x] Allow responding to text questions
 - [x] Allow responding to Yes/No questions
-- [ ] Allow responding to 0-10 questions
+- [x] Allow responding to 0-10 questions
+- [x] Refactor the mess I've made (separate components)
+- [ ] Create optimistic update in useUpsertQuestionResponse
 - [ ] Allow deleting response
 - [ ] Allow Submitting the entire interaction to make it 'done'
 - [ ] Use schema validation on the submission

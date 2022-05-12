@@ -1,33 +1,25 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-  MultipleChoiceOptionFE,
   SurveyQuestionWithResponses,
   SurveyWithParticipationAndUserResponses,
 } from '../api/surveyParticipation/surveyParticipation.schema';
 import {
-  Alert,
   Avatar,
   Badge,
   Button,
-  Checkbox,
   Group,
   Paper,
-  Radio,
-  RadioGroup,
-  SegmentedControl,
   Stack,
   Text,
-  Textarea,
   Title,
 } from '@mantine/core';
-import { useMediaQuery } from '@mantine/hooks';
 import { Eye, EyeOff } from 'tabler-icons-react';
 import useGetOrCreateSurveyParticipation from '../hooks/surveyParticipation/useGetOrCreateSurveyParticipation';
-import useToggleMCMItem from '../hooks/surveyParticipation/useToggleMCMItem';
-import useToggleMCSItem from '../hooks/surveyParticipation/useToggleMCSItem';
-import useUpsertQuestionResponse from '../hooks/surveyParticipation/useUpsertQuestionResponse';
-import { useDebouncedCallback } from 'use-debounce';
-import { UpdateQuestionResponseRequest } from '../api/questionResponse/questionResponse.schema';
+import TakeSurveyNumericResponse from './takeSurvey/TakeSurveyNumericResponse';
+import TakeSurveyBooleanResponse from './takeSurvey/TakeSurveyBooleanResponse';
+import TakeSurveyTextResponse from './takeSurvey/TakeSurveyTextResponse';
+import TakeSurveyMCSOption from './takeSurvey/TakeSurveyMCSOption';
+import TakeSurveyMCMOption from './takeSurvey/TakeSurveyMCMOption';
 
 /**
  * TODO: error checking (eg what happens if we navigate here while not being logged in?
@@ -132,8 +124,6 @@ const TakeSurveyQuestion = ({
   surveyId: string;
   surveyParticipationId: string;
 }) => {
-  const xs = useMediaQuery('(max-width: 576px)');
-
   return (
     <Paper key={question.id} shadow='lg' radius='md' p='md' withBorder>
       <Stack>
@@ -155,7 +145,7 @@ const TakeSurveyQuestion = ({
         {question.questionType === 'multipleChoiceMultiple' ? (
           <Stack>
             {question.multipleChoiceOptions.map((option, mcoIndex) => (
-              <MCOOption
+              <TakeSurveyMCMOption
                 option={option}
                 surveyId={surveyId}
                 index={index}
@@ -167,7 +157,7 @@ const TakeSurveyQuestion = ({
         ) : question.questionType === 'multipleChoiceSingle' ? (
           <>
             {question.multipleChoiceOptions.map((option, mcoIndex) => (
-              <MCSOption
+              <TakeSurveyMCSOption
                 option={option}
                 surveyId={surveyId}
                 index={index}
@@ -191,11 +181,11 @@ const TakeSurveyQuestion = ({
             surveyParticipationId={surveyParticipationId}
           />
         ) : question.questionType === 'zeroToTen' ? (
-          <SegmentedControl
-            fullWidth
-            defaultValue='-1'
-            orientation={xs ? 'vertical' : 'horizontal'}
-            data={['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']}
+          <TakeSurveyNumericResponse
+            surveyId={surveyId}
+            surveyParticipationId={surveyParticipationId}
+            questionId={question.id}
+            answerNumeric={question.questionResponses[0]?.answerNumeric || -1}
           />
         ) : (
           <Text>Invalid question type</Text>
@@ -211,158 +201,3 @@ const TakeSurveyQuestion = ({
     </Paper>
   );
 };
-
-const MCOOption = ({
-  surveyId,
-  option,
-  index,
-  mcoIndex,
-}: {
-  surveyId: string;
-  index: number;
-  option: MultipleChoiceOptionFE;
-  mcoIndex: number;
-}) => {
-  const toggleMCMItemMutation = useToggleMCMItem({
-    surveyId,
-    questionIndex: index,
-    mcoIndex,
-  });
-
-  return (
-    <Checkbox
-      key={option.id}
-      label={option.name}
-      onClick={() => {
-        toggleMCMItemMutation.mutate({
-          selected: !option.multipleChoiceOptionSelections[0]?.selected,
-          optionId: option.id,
-        });
-      }}
-      defaultChecked={option.multipleChoiceOptionSelections[0]?.selected}
-    />
-  );
-};
-
-const MCSOption = ({
-  surveyId,
-  option,
-  index,
-  mcoIndex,
-}: {
-  surveyId: string;
-  index: number;
-  option: MultipleChoiceOptionFE;
-  mcoIndex: number;
-}) => {
-  const toggleMCSItemMutation = useToggleMCSItem({
-    surveyId,
-    questionIndex: index,
-    mcoIndex,
-  });
-
-  return (
-    <Radio
-      key={option.id}
-      value={option.name}
-      label={option.name}
-      onClick={() => {
-        toggleMCSItemMutation.mutate({
-          selected: true,
-          optionId: option.id,
-        });
-      }}
-      checked={option.multipleChoiceOptionSelections[0]?.selected || false}
-    />
-  );
-};
-
-interface TakeSurveyTextResponseProps {
-  surveyId: string;
-  questionId: string;
-  surveyParticipationId: string;
-  answerText: string;
-}
-const TakeSurveyTextResponse = (props: TakeSurveyTextResponseProps) => {
-  const [answerText, setAnswerText] = useState<string>(props.answerText);
-  const upsertQuestionResponseMutation = useUpsertQuestionResponse({
-    surveyId: props.surveyId,
-  });
-
-  const debouncedEditResponseText = useDebouncedCallback(
-    (data: UpdateQuestionResponseRequest) =>
-      upsertQuestionResponseMutation.mutate(data),
-    1000
-  );
-
-  const handleEditResponseText = (e: React.FormEvent<HTMLTextAreaElement>) => {
-    setAnswerText(e.currentTarget.value);
-    debouncedEditResponseText({
-      questionId: props.questionId,
-      surveyParticipationId: props.surveyParticipationId,
-      answerText: e.currentTarget.value,
-    });
-  };
-
-  return (
-    <Textarea
-      placeholder='Type your response here'
-      value={answerText}
-      onChange={handleEditResponseText}
-    />
-  );
-};
-
-interface TakeSurveyBooleanResponseProps {
-  surveyId: string;
-  questionId: string;
-  surveyParticipationId: string;
-  answerBoolean: boolean | null;
-}
-const TakeSurveyBooleanResponse = (props: TakeSurveyBooleanResponseProps) => {
-  const [answerBoolean, setAnswerBoolean] = useState<boolean | null>(
-    props.answerBoolean
-  );
-  const upsertQuestionResponseMutation = useUpsertQuestionResponse({
-    surveyId: props.surveyId,
-  });
-
-  const debouncedEditResponseBoolean = useDebouncedCallback(
-    (data: UpdateQuestionResponseRequest) =>
-      upsertQuestionResponseMutation.mutate(data),
-    1000
-  );
-
-  const handleEditResponseBoolean = (value: string) => {
-    const boolValue = value === 'yes' ? true : false;
-    setAnswerBoolean(boolValue);
-    debouncedEditResponseBoolean({
-      questionId: props.questionId,
-      surveyParticipationId: props.surveyParticipationId,
-      answerBoolean: boolValue,
-    });
-  };
-
-  return (
-    <>
-      <RadioGroup
-        orientation='vertical'
-        onChange={handleEditResponseBoolean}
-        value={
-          answerBoolean === true ? 'yes' : answerBoolean === false ? 'no' : ''
-        }
-      >
-        <Radio value='yes' label='Yes' />
-        <Radio value='no' label='No' />
-      </RadioGroup>
-    </>
-  );
-};
-
-interface TakeSurveyNumericResponseProps {
-  surveyId: string;
-  questionId: string;
-  surveyParticipationId: string;
-  answerNumeric: number;
-}
-const TakeSurveyNumericResponse = (props: TakeSurveyNumericResponseProps) => {};
