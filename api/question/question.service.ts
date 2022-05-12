@@ -35,8 +35,8 @@ export async function createDefaultQuestion({
           create: {
             name: '',
             order: 0,
-          }
-        }
+          },
+        },
       },
       include: {
         multipleChoiceOptions: true,
@@ -230,12 +230,23 @@ export async function getQuestionOwner(id: string) {
       select: {
         survey: {
           select: {
-            authorId: true
-          }
-        }
-      }
-    })
+            authorId: true,
+          },
+        },
+      },
+    });
     return question?.survey.authorId;
+  } catch (e: any) {
+    logger.error(e);
+  }
+}
+
+export async function getQuestionById(id: string) {
+  try {
+    const question = await prisma.question.findUnique({
+      where: { id },
+    });
+    return question;
   } catch (e: any) {
     logger.error(e);
   }

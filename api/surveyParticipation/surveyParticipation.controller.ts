@@ -8,8 +8,7 @@ import { getSession } from 'next-auth/react';
 import getId from '../utils/getId';
 import logger from '../utils/logger';
 import {
-  GetSurveyParticipationData,
-  SurveyParticipationFE,
+  SurveyWithParticipationAndUserResponses,
 } from './surveyParticipation.schema';
 import { getOrCreateSurveyParticipation } from './surveyParticipation.service';
 
@@ -20,17 +19,19 @@ import { getOrCreateSurveyParticipation } from './surveyParticipation.service';
 
 export async function getOrCreateSurveyParticipationHandler(
   req: NextApiRequest,
-  res: NextApiResponse<SurveyParticipationFE | { message: string }>
+  res: NextApiResponse<
+    SurveyWithParticipationAndUserResponses | { message: string }
+  >
 ) {
   const session = await getSession({ req });
   const userId = session!.user!.id;
-  
+
   if (!userId) {
     logger.error('no session');
     return res.status(400).json({ message: 'No session' });
   }
 
-  const surveyId = getId(req)
+  const surveyId = getId(req);
   if (!surveyId) {
     return res.status(400).json({ message: 'failed to get ID from query' });
   }

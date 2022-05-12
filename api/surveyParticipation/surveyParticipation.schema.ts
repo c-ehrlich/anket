@@ -35,6 +35,22 @@ export type SurveyParticipationFE = z.infer<typeof surveyParticipationFESchema>;
 // schema for TakeSurvey //
 ///////////////////////////
 
+const multipleChoiceOptionSelectionSchema = z.object({
+  id: z.string().cuid(),
+  selected: z.boolean(),
+});
+export type MultipleChoiceOptionSelection = z.infer<
+  typeof multipleChoiceOptionSelectionSchema
+>;
+
+const multipleChoiceOptionSchema = z.object({
+  id: z.string().cuid(),
+  name: z.string(),
+  order: z.number().gte(0),
+  multipleChoiceOptionSelections: z.array(multipleChoiceOptionSelectionSchema),
+});
+export type MultipleChoiceOptionFE = z.infer<typeof multipleChoiceOptionSchema>;
+
 const surveyQuestionWithResponses = {
   id: z.string().cuid(),
   order: z.number().gte(0),
@@ -42,25 +58,13 @@ const surveyQuestionWithResponses = {
   questionType: z.nativeEnum(QuestionType),
   details: z.string(),
   isRequired: z.boolean(),
-  multipleChoiceOptions: z.array(
-    z.object({
-      id: z.string().cuid(),
-      name: z.string(),
-      order: z.number().gte(0),
-      multipleChoiceOptionSelections: z.array(
-        z.object({
-          id: z.string().cuid(),
-          selected: z.boolean(),
-        })
-      ),
-    })
-  ),
+  multipleChoiceOptions: z.array(multipleChoiceOptionSchema),
   questionResponses: z.array(
     z.object({
       id: z.string().cuid(),
-      answerBoolean: z.boolean().optional(),
-      answerNumeric: z.number().optional(),
-      answerText: z.string().optional(),
+      answerBoolean: z.boolean().nullable(),
+      answerNumeric: z.number().nullable(),
+      answerText: z.string().nullable(),
     })
   ),
 };
@@ -83,7 +87,7 @@ export const surveyWithParticipationAndUserResponsesSchema = z.object({
     email: z.string().nullable(),
     image: z.string().nullable(),
   }),
-  participation: z.array(
+  participations: z.array(
     z.object({
       id: z.string().cuid(),
       isComplete: z.boolean(),
@@ -94,3 +98,14 @@ export const surveyWithParticipationAndUserResponsesSchema = z.object({
 export type SurveyWithParticipationAndUserResponses = z.infer<
   typeof surveyWithParticipationAndUserResponsesSchema
 >;
+
+// TODO are we using this in the Frontend?
+export const toggleMCMItemRequestSchema = z.object({
+  body: z.object({
+    surveyId: z.string().cuid(),
+    selected: z.boolean(),
+  }),
+});
+export type ToggleMCMItemRequest = z.infer<
+  typeof toggleMCMItemRequestSchema
+>['body'];

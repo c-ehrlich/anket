@@ -11,6 +11,7 @@
 ### DB
 - [ ] Get the real DB running https://vercel.com/guides/nextjs-prisma-postgres
 ### UI
+- [ ] Background color... definitely add it on dark mode, maybe also on light
 - [ ] small screen: sidebar in/out should be animated
 - [ ] make all the disabled stuff in the anket creator not have special mouse cursors
 - [ ] Choose nicer fonts
@@ -126,6 +127,15 @@
 - [x] Create it
 ### Take Survey
 - [x] Create SurveyInteraction
+- [x] Allow responding to MCM Questions
+- [ ] Allow responding to MCS Questions
+- [ ] Allow responding to text questions
+- [ ] Allow responding to Yes/No questions
+- [ ] Allow responding to 0-10 questions
+- [ ] Allow deleting response
+- [ ] Allow Submitting the entire interaction to make it 'done'
+- [ ] Use schema validation on the submission
+- [ ] Redirect to a thank you page after submission
 ### Backend
 - [x] clone the logger from tom does tech youtube clone, and re-convert every consoleDOTlog/error to that logger
 - [x] Create schema for everything and validate every request

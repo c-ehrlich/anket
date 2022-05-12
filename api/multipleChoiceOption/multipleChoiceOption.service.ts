@@ -1,9 +1,7 @@
-import { Id } from 'tabler-icons-react';
 import logger from '../utils/logger';
 import prisma from '../utils/prisma';
 import {
   EditMultipleChoiceOptionData,
-  MultipleChoiceOptionFE,
   ReorderAllMultipleChoiceOptionsData,
 } from './multipleChoiceOption.schema';
 

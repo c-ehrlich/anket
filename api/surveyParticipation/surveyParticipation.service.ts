@@ -2,7 +2,7 @@ import prisma from '../utils/prisma';
 import logger from '../utils/logger';
 import {
   GetSurveyParticipationData,
-  SurveyParticipationCore,
+  SurveyWithParticipationAndUserResponses,
 } from './surveyParticipation.schema';
 
 export async function getOrCreateSurveyParticipation({
@@ -23,74 +23,75 @@ export async function getOrCreateSurveyParticipation({
     });
     if (!participation) throw new Error('failed to upsert surveyParticipation');
 
-    const surveyWithParticipation = await prisma.survey.findUnique({
-      where: {
-        id: surveyId,
-      },
-      select: {
-        id: true,
-        name: true,
-        description: true,
-        createdAt: true,
-        updatedAt: true,
-        isPublic: true,
-        isCompleted: true,
-        author: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            image: true,
-          },
+    const surveyWithParticipation: SurveyWithParticipationAndUserResponses | null =
+      await prisma.survey.findUnique({
+        where: {
+          id: surveyId,
         },
-        participations: {
-          where: {
-            userId,
+        select: {
+          id: true,
+          name: true,
+          description: true,
+          createdAt: true,
+          updatedAt: true,
+          isPublic: true,
+          isCompleted: true,
+          author: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              image: true,
+            },
           },
-          select: {
-            id: true,
-            isComplete: true,
+          participations: {
+            where: {
+              userId,
+            },
+            select: {
+              id: true,
+              isComplete: true,
+            },
           },
-        },
-        questions: {
-          select: {
-            id: true,
-            order: true,
-            question: true,
-            questionType: true,
-            details: true,
-            isRequired: true,
-            multipleChoiceOptions: {
-              select: {
-                id: true,
-                name: true,
-                order: true,
-                multipleChoiceOptionSelections: {
-                  where: {
-                    surveyParticipationId: participation.id,
+          questions: {
+            select: {
+              id: true,
+              order: true,
+              question: true,
+              questionType: true,
+              details: true,
+              isRequired: true,
+              multipleChoiceOptions: {
+                select: {
+                  id: true,
+                  name: true,
+                  order: true,
+                  multipleChoiceOptionSelections: {
+                    where: {
+                      surveyParticipationId: participation.id,
+                    },
+                    select: {
+                      id: true,
+                      selected: true,
+                    },
                   },
-                  select: {
-                    id: true,
-                    selected: true,
-                  }
-                }
+                },
               },
-            },
-            questionResponses: {
-              where: {
-                surveyParticipationId: participation.id,
-              },
-              select: {
-                id: true,
-                answerBoolean: true,
-                answerNumeric: true,
-                answerText: true,
+              questionResponses: {
+                where: {
+                  surveyParticipationId: participation.id,
+                },
+                select: {
+                  id: true,
+                  answerBoolean: true,
+                  answerNumeric: true,
+                  answerText: true,
+                },
               },
             },
           },
         },
-      },
-    });
+      });
 
     return surveyWithParticipation;
   } catch (e: any) {
@@ -98,12 +99,24 @@ export async function getOrCreateSurveyParticipation({
   }
 }
 
-export async function getSurveyParticipationFromId(id: string) {
+export async function getSurveyParticipationId({
+  userId,
+  surveyId,
+}: GetSurveyParticipationData) {
+  logger.info(`userId: ${userId}, surveyId: ${surveyId}`);
   try {
-    const surveyParticipation: SurveyParticipationCore | null =
-      await prisma.surveyParticipation.findUnique({
-        where: { id },
-      });
+    const surveyParticipation = await prisma.surveyParticipation.findUnique({
+      where: {
+        userId_surveyId: {
+          userId,
+          surveyId,
+        },
+      },
+      select: {
+        id: true,
+      },
+    });
+    logger.info(surveyParticipation);
     return surveyParticipation;
   } catch (e) {
     logger.error(e);

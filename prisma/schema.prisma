@@ -158,6 +158,8 @@ model MultipleChoiceOptionSelection {
   surveyParticipationId String
 
   selected Boolean @default(false)
+
+  @@unique([surveyParticipationId, multipleChoiceOptionId])
 }
 
 model SurveyParticipation {

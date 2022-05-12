@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  MultipleChoiceOptionFE,
   SurveyQuestionWithResponses,
   SurveyWithParticipationAndUserResponses,
 } from '../api/surveyParticipation/surveyParticipation.schema';
@@ -22,6 +23,7 @@ import {
 import { useMediaQuery } from '@mantine/hooks';
 import { Eye, EyeOff } from 'tabler-icons-react';
 import useGetOrCreateSurveyParticipation from '../hooks/surveyParticipation/useGetOrCreateSurveyParticipation';
+import useToggleMCMItem from '../hooks/surveyParticipation/useToggleMCMItem';
 
 /**
  * TODO: error checking (eg what happens if we navigate here while not being logged in?
@@ -99,6 +101,7 @@ const TakeSurveyInner = ({
             key={question.id}
             question={question}
             index={index}
+            surveyId={survey.id}
           />
         ))}
 
@@ -116,9 +119,11 @@ const TakeSurveyInner = ({
 const TakeSurveyQuestion = ({
   question,
   index,
+  surveyId,
 }: {
   question: SurveyQuestionWithResponses;
   index: number;
+  surveyId: string;
 }) => {
   const xs = useMediaQuery('(max-width: 576px)');
 
@@ -142,11 +147,13 @@ const TakeSurveyQuestion = ({
         {question.details !== '' && <Text>{question.details}</Text>}
         {question.questionType === 'multipleChoiceMultiple' ? (
           <Stack>
-            {question.multipleChoiceOptions.map((option) => (
-              <Checkbox
+            {question.multipleChoiceOptions.map((option, mcoIndex) => (
+              <MCOOption
+                option={option}
+                surveyId={surveyId}
+                index={index}
+                mcoIndex={mcoIndex}
                 key={option.id}
-                label={option.name}
-                onClick={() => console.log(option.id)}
               />
             ))}
           </Stack>
@@ -182,5 +189,37 @@ const TakeSurveyQuestion = ({
         )}
       </Stack>
     </Paper>
+  );
+};
+
+const MCOOption = ({
+  surveyId,
+  option,
+  index,
+  mcoIndex,
+}: {
+  surveyId: string;
+  index: number;
+  option: MultipleChoiceOptionFE;
+  mcoIndex: number;
+}) => {
+  const toggleMCMItemMutation = useToggleMCMItem({
+    surveyId,
+    questionIndex: index,
+    mcoIndex,
+  });
+
+  return (
+    <Checkbox
+      key={option.id}
+      label={option.name}
+      onClick={() => {
+        toggleMCMItemMutation.mutate({
+          selected: !option.multipleChoiceOptionSelections[0]?.selected,
+          optionId: option.id,
+        });
+      }}
+      defaultChecked={option.multipleChoiceOptionSelections[0]?.selected}
+    />
   );
 };
