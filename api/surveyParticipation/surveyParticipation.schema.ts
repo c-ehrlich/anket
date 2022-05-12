@@ -1,20 +1,96 @@
-import { boolean, string, z } from 'zod';
+import { QuestionType } from '@prisma/client';
+import { z } from 'zod';
 import { questionResponseFESchema } from '../questionResponse/questionResponse.schema';
 
 export const getSurveyParticipationDataSchema = z.object({
   body: z.object({
-    surveyId: string().cuid(),
-    userId: string().cuid(),
+    surveyId: z.string().cuid(),
+    userId: z.string().cuid(),
   }),
 });
 export type GetSurveyParticipationData = z.infer<
   typeof getSurveyParticipationDataSchema
 >['body'];
 
+const surveyParticipationCore = {
+  surveyId: z.string().cuid(),
+  userId: z.string().cuid(),
+  isComplete: z.boolean(),
+};
+
+export const surveyParticipationCoreSchema = z.object({
+  ...surveyParticipationCore,
+});
+export type SurveyParticipationCore = z.infer<
+  typeof surveyParticipationCoreSchema
+>;
+
 export const surveyParticipationFESchema = z.object({
-  surveyId: string().cuid(),
-  userId: string().cuid(),
-  isComplete: boolean(),
+  ...surveyParticipationCore,
   questionResponses: questionResponseFESchema.array(),
 });
 export type SurveyParticipationFE = z.infer<typeof surveyParticipationFESchema>;
+
+///////////////////////////
+// schema for TakeSurvey //
+///////////////////////////
+
+const surveyQuestionWithResponses = {
+  id: z.string().cuid(),
+  order: z.number().gte(0),
+  question: z.string(),
+  questionType: z.nativeEnum(QuestionType),
+  details: z.string(),
+  isRequired: z.boolean(),
+  multipleChoiceOptions: z.array(
+    z.object({
+      id: z.string().cuid(),
+      name: z.string(),
+      order: z.number().gte(0),
+      multipleChoiceOptionSelections: z.array(
+        z.object({
+          id: z.string().cuid(),
+          selected: z.boolean(),
+        })
+      ),
+    })
+  ),
+  questionResponses: z.array(
+    z.object({
+      id: z.string().cuid(),
+      answerBoolean: z.boolean().optional(),
+      answerNumeric: z.number().optional(),
+      answerText: z.string().optional(),
+    })
+  ),
+};
+const surveyQuestionWithResponsesSchema = z.object(surveyQuestionWithResponses);
+export type SurveyQuestionWithResponses = z.infer<
+  typeof surveyQuestionWithResponsesSchema
+>;
+
+export const surveyWithParticipationAndUserResponsesSchema = z.object({
+  id: z.string().cuid(),
+  name: z.string(),
+  description: z.string(),
+  createdAt: z.date(),
+  updatedAt: z.date(),
+  isPublic: z.boolean(),
+  isCompleted: z.boolean(),
+  author: z.object({
+    id: z.string().cuid(),
+    name: z.string().nullable(),
+    email: z.string().nullable(),
+    image: z.string().nullable(),
+  }),
+  participation: z.array(
+    z.object({
+      id: z.string().cuid(),
+      isComplete: z.boolean(),
+    })
+  ),
+  questions: z.array(z.object(surveyQuestionWithResponses)),
+});
+export type SurveyWithParticipationAndUserResponses = z.infer<
+  typeof surveyWithParticipationAndUserResponsesSchema
+>;

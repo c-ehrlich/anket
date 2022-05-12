@@ -126,7 +126,7 @@ model MultipleChoiceOption {
   question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
   questionId String
 
-  questionResponses QuestionResponse[]
+  multipleChoiceOptionSelections MultipleChoiceOptionSelection[]
 }
 
 model QuestionResponse {
@@ -141,13 +141,23 @@ model QuestionResponse {
   answerBoolean          Boolean?
   answerNumeric          Int?
   answerText             String?
-  multipleChoiceOption   MultipleChoiceOption? @relation(fields: [multipleChoiceOptionId], references: [id], onDelete: SetNull)
-  multipleChoiceOptionId String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
   @@unique([surveyParticipationId, questionId])
+}
+
+model MultipleChoiceOptionSelection {
+  id String @id @default(cuid())
+
+  multipleChoiceOption MultipleChoiceOption @relation(fields: [multipleChoiceOptionId], references: [id], onDelete: Cascade)
+  multipleChoiceOptionId String
+
+  surveyParticipation SurveyParticipation @relation(fields: [surveyParticipationId], references: [id], onDelete: Cascade)
+  surveyParticipationId String
+
+  selected Boolean @default(false)
 }
 
 model SurveyParticipation {
@@ -160,6 +170,7 @@ model SurveyParticipation {
   userId String
 
   questionResponses QuestionResponse[]
+  multipleChoiceOptionSelections MultipleChoiceOptionSelection[]
 
   isComplete  Boolean @default(false)
 
