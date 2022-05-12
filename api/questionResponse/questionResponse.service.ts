@@ -1,15 +1,14 @@
 import logger from '../utils/logger';
 import prisma from '../utils/prisma';
+import { UpdateQuestionResponseRequest } from './questionResponse.schema';
 
-export async function upsertTextQuestionResponse({
+export async function upsertQuestionResponse({
   questionId,
   surveyParticipationId,
   answerText,
-}: {
-  questionId: string;
-  surveyParticipationId: string;
-  answerText: string;
-}) {
+  answerBoolean,
+  answerNumeric,
+}: UpdateQuestionResponseRequest) {
   try {
     const questionResponse = prisma.questionResponse.upsert({
       where: {
@@ -21,9 +20,14 @@ export async function upsertTextQuestionResponse({
       create: {
         questionId,
         surveyParticipationId,
+        answerText,
+        answerBoolean,
+        answerNumeric,
       },
       update: {
         answerText,
+        answerBoolean,
+        answerNumeric,
       },
     });
     return questionResponse;

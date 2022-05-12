@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   MultipleChoiceOptionFE,
   SurveyQuestionWithResponses,
@@ -25,6 +25,9 @@ import { Eye, EyeOff } from 'tabler-icons-react';
 import useGetOrCreateSurveyParticipation from '../hooks/surveyParticipation/useGetOrCreateSurveyParticipation';
 import useToggleMCMItem from '../hooks/surveyParticipation/useToggleMCMItem';
 import useToggleMCSItem from '../hooks/surveyParticipation/useToggleMCSItem';
+import useUpsertQuestionResponse from '../hooks/surveyParticipation/useUpsertQuestionResponse';
+import { useDebouncedCallback } from 'use-debounce';
+import { UpdateQuestionResponseRequest } from '../api/questionResponse/questionResponse.schema';
 
 /**
  * TODO: error checking (eg what happens if we navigate here while not being logged in?
@@ -103,6 +106,7 @@ const TakeSurveyInner = ({
             question={question}
             index={index}
             surveyId={survey.id}
+            surveyParticipationId={survey.participations[0].id}
           />
         ))}
 
@@ -121,10 +125,12 @@ const TakeSurveyQuestion = ({
   question,
   index,
   surveyId,
+  surveyParticipationId,
 }: {
   question: SurveyQuestionWithResponses;
   index: number;
   surveyId: string;
+  surveyParticipationId: string;
 }) => {
   const xs = useMediaQuery('(max-width: 576px)');
 
@@ -171,7 +177,12 @@ const TakeSurveyQuestion = ({
             ))}
           </>
         ) : question.questionType === 'textResponse' ? (
-          <Textarea placeholder='Type your response here' />
+          <TakeSurveyTextResponse
+            answerText={question.questionResponses[0]?.answerText || ''}
+            questionId={question.id}
+            surveyId={surveyId}
+            surveyParticipationId={surveyParticipationId}
+          />
         ) : question.questionType === 'yesNoBoolean' ? (
           <RadioGroup orientation='vertical'>
             <Radio value='yes' label='Yes' />
@@ -260,6 +271,42 @@ const MCSOption = ({
         });
       }}
       checked={option.multipleChoiceOptionSelections[0]?.selected || false}
+    />
+  );
+};
+
+interface TakeSurveyTextResponseProps {
+  surveyId: string;
+  questionId: string;
+  surveyParticipationId: string;
+  answerText: string;
+}
+const TakeSurveyTextResponse = (props: TakeSurveyTextResponseProps) => {
+  const [answerText, setAnswerText] = useState<string>(props.answerText);
+  const upsertQuestionResponseMutation = useUpsertQuestionResponse({
+    surveyId: props.surveyId,
+  });
+
+  const debouncedEditResponseText = useDebouncedCallback(
+    (data: UpdateQuestionResponseRequest) =>
+      upsertQuestionResponseMutation.mutate(data),
+    1000
+  );
+
+  const handleEditResponseText = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    setAnswerText(e.currentTarget.value);
+    debouncedEditResponseText({
+      questionId: props.questionId,
+      surveyParticipationId: props.surveyParticipationId,
+      answerText: e.currentTarget.value,
+    });
+  };
+
+  return (
+    <Textarea
+      placeholder='Type your response here'
+      value={answerText}
+      onChange={handleEditResponseText}
     />
   );
 };
