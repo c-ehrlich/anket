@@ -133,8 +133,9 @@
 - [x] Allow responding to Yes/No questions
 - [x] Allow responding to 0-10 questions
 - [x] Refactor the mess I've made (separate components)
-- [ ] Create optimistic update in useUpsertQuestionResponse
+- [x] Create optimistic update in useUpsertQuestionResponse
 - [ ] Allow deleting response
+- [ ] optimistic updates in useDeleteQuestionResponse
 - [ ] Allow Submitting the entire interaction to make it 'done'
 - [ ] Use schema validation on the submission
 - [ ] Redirect to a thank you page after submission
