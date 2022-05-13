@@ -176,7 +176,8 @@ const TakeSurveyQuestion = ({
         ) : question.questionType === 'yesNoBoolean' ? (
           <TakeSurveyBooleanResponse
             answerBoolean={question.questionResponses[0]?.answerBoolean}
-            questionId={question.id}
+            question={question}
+            questionIndex={index}
             surveyId={surveyId}
             surveyParticipationId={surveyParticipationId}
           />
