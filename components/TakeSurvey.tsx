@@ -182,20 +182,14 @@ const TakeSurveyQuestion = ({
           />
         ) : question.questionType === 'zeroToTen' ? (
           <TakeSurveyNumericResponse
+            questionIndex={index}
             surveyId={surveyId}
             surveyParticipationId={surveyParticipationId}
-            questionId={question.id}
+            question={question}
             answerNumeric={question.questionResponses[0]?.answerNumeric || -1}
           />
         ) : (
           <Text>Invalid question type</Text>
-        )}
-        {!question.isRequired && (
-          <div>
-            <Button size='xs' variant='outline'>
-              Remove answer
-            </Button>
-          </div>
         )}
       </Stack>
     </Paper>

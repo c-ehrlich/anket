@@ -38,12 +38,34 @@ export async function upsertQuestionResponse({
 
 export async function deleteQuestionResponseById(id: string) {
   try {
-    const deletedQuestionResponse = prisma.questionResponse.delete({
+    const deletedQuestionResponse = await prisma.questionResponse.delete({
       where: {
         id,
       },
     });
     return deletedQuestionResponse;
+  } catch (e) {
+    logger.error(e);
+  }
+}
+
+export async function getQuestionResponseById(id: string) {
+  try {
+    const questionResponse = await prisma.questionResponse.findUnique({
+      where: { id },
+      include: {
+        surveyParticipation: {
+          include: {
+            user: {
+              select: {
+                id: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    return questionResponse;
   } catch (e) {
     logger.error(e);
   }

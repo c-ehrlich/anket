@@ -5,7 +5,7 @@ export const questionResponseFESchema = z.object({
   answerBoolean: z.boolean().nullable(),
   answerNumeric: z.number().int().min(0).nullable(),
   answerText: z.string().nullable(),
-  multipleChoiceOptionId: z.string().cuid().nullable(),
+  surveyParticipationId: z.string().cuid().nullable(),
 });
 export type QuestionResponseFE = z.infer<typeof questionResponseFESchema>;
 
