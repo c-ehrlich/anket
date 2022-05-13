@@ -135,6 +135,9 @@
 - [x] Refactor the mess I've made (separate components)
 - [x] Create optimistic update in useUpsertQuestionResponse
 - [ ] Allow deleting response
+  - [x] Numeric
+  - [x] Boolean
+  - [ ] MultipleChoiceSingle
 - [ ] optimistic updates in useDeleteQuestionResponse
 - [ ] Allow Submitting the entire interaction to make it 'done'
 - [ ] Use schema validation on the submission

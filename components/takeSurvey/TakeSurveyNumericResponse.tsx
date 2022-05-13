@@ -2,7 +2,10 @@ import { Button, SegmentedControl, Stack } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import { UpdateQuestionResponseRequest } from '../../api/questionResponse/questionResponse.schema';
+import {
+  questionResponseFESchema,
+  UpdateQuestionResponseRequest,
+} from '../../api/questionResponse/questionResponse.schema';
 import { SurveyQuestionWithResponses } from '../../api/surveyParticipation/surveyParticipation.schema';
 import useDeleteQuestionResponse from '../../hooks/surveyParticipation/useDeleteQuestionResponse';
 import useUpsertQuestionResponse from '../../hooks/surveyParticipation/useUpsertQuestionResponse';
@@ -71,22 +74,24 @@ const TakeSurveyNumericResponse = (props: TakeSurveyNumericResponseProps) => {
           },
         }}
       />
-      <div>
-      <Button
-          size='xs'
-          variant='outline'
-          onClick={() => {
-            setAnswerNumeric(-1);
-            deleteQuestionResponseMutation.mutate({
-              questionResponseId: props.question.questionResponses[0].id,
-              questionIndex: props.questionIndex,
-            });
-          }}
-          disabled={answerNumeric === -1}
-        >
-          Remove answer
-        </Button>
-      </div>
+      {!props.question.isRequired && (
+        <div>
+          <Button
+            size='xs'
+            variant='outline'
+            onClick={() => {
+              setAnswerNumeric(-1);
+              deleteQuestionResponseMutation.mutate({
+                questionResponseId: props.question.questionResponses[0].id,
+                questionIndex: props.questionIndex,
+              });
+            }}
+            disabled={answerNumeric === -1}
+          >
+            Remove answer
+          </Button>
+        </div>
+      )}
     </Stack>
   );
 };

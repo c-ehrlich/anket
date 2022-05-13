@@ -57,22 +57,24 @@ const TakeSurveyBooleanResponse = (props: TakeSurveyBooleanResponseProps) => {
         <Radio value='yes' label='Yes' />
         <Radio value='no' label='No' />
       </RadioGroup>
-      <div>
-      <Button
-          size='xs'
-          variant='outline'
-          onClick={() => {
-            setAnswerBoolean(null);
-            deleteQuestionResponseMutation.mutate({
-              questionResponseId: props.question.questionResponses[0].id,
-              questionIndex: props.questionIndex,
-            });
-          }}
-          disabled={answerBoolean === null || answerBoolean === undefined}
-        >
-          Remove answer
-        </Button>
-      </div>
+      {!props.question.isRequired && (
+        <div>
+          <Button
+            size='xs'
+            variant='outline'
+            onClick={() => {
+              setAnswerBoolean(null);
+              deleteQuestionResponseMutation.mutate({
+                questionResponseId: props.question.questionResponses[0].id,
+                questionIndex: props.questionIndex,
+              });
+            }}
+            disabled={answerBoolean === null || answerBoolean === undefined}
+          >
+            Remove answer
+          </Button>
+        </div>
+      )}
     </Stack>
   );
 };
