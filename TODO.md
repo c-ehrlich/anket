@@ -1,13 +1,15 @@
 # Anket Todo (current)
 ## MVP v1
 ### Want to do next
-- [ ] Create QuestionResponses
 - [ ] Try switching to Mantine-Form and use Zod validation on it
 - [ ] Think about if I need to redesign QuestionResponse schema? For a MC-Multiple should it really be several DB entries, or just one? Not sure!!
 ### Bugs
 - [!] Choppy MCO reordering - https://github.com/framer/motion/issues/1518
 - [!] Editing a survey after it has been published - Submit button doesn't work
   - [*] conditionally replace it with an update button?
+### Landing Page
+- [ ] Create it
+- [ ] It should obviously not use the AppShell
 ### DB
 - [ ] Get the real DB running https://vercel.com/guides/nextjs-prisma-postgres
 ### UI
@@ -30,9 +32,6 @@
   - [ ] Where can we store them? What about in deployment? S3?
 - [ ] Description should support line breaks
 ### Taking a survey
-- [ ] figure out how to deal with the fact that we need to CREATE a bunch of stuff while the survey is being filled out (mutations...)
-- [ ] 0-10 should have the highlighted number in a contrast color
-- [ ] Optional questions should have the possibility to cancel/remove the answer
 - [ ] Text Response input should be resizeable
 ### Survey Responses
 - [ ] Get count of responses
@@ -134,11 +133,11 @@
 - [x] Allow responding to 0-10 questions
 - [x] Refactor the mess I've made (separate components)
 - [x] Create optimistic update in useUpsertQuestionResponse
-- [ ] Allow deleting response
+- [x] Allow deleting response
   - [x] Numeric
   - [x] Boolean
-  - [ ] MultipleChoiceSingle
-- [ ] optimistic updates in useDeleteQuestionResponse
+  - [x] MultipleChoiceSingle
+- [x] optimistic updates in useDeleteQuestionResponse
 - [ ] Allow Submitting the entire interaction to make it 'done'
 - [ ] Use schema validation on the submission
 - [ ] Redirect to a thank you page after submission

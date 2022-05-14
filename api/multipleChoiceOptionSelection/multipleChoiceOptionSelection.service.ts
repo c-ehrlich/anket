@@ -39,7 +39,7 @@ export async function upsertMultipleChoiceOptionSelection({
   }
 }
 
-export async function deleteOtherMCSOptions({
+export async function deleteMCSOptionsForQuestion({
   questionId,
   surveyParticipationId,
 }: {
@@ -47,8 +47,7 @@ export async function deleteOtherMCSOptions({
   surveyParticipationId: string;
 }) {
   try {
-    // delete all
-    const deletedItems = await prisma.multipleChoiceOptionSelection.deleteMany({
+    const deletedItemsCount: { count: number } = await prisma.multipleChoiceOptionSelection.deleteMany({
       where: {
         surveyParticipationId,
         multipleChoiceOption: {
@@ -58,8 +57,8 @@ export async function deleteOtherMCSOptions({
         },
       },
     });
-    logger.info(deletedItems);
-    return deletedItems;
+    
+    return deletedItemsCount;
   } catch (e) {
     logger.error(e);
   }

@@ -27,9 +27,6 @@ const useDeleteQuestionResponse = ({ surveyId }: { surveyId: string }) => {
           queryClient.getQueryData([QueryKeys.surveyParticipation, surveyId]);
         if (draft) {
           draft.questions[data.questionIndex].questionResponses = [];
-          draft.questions[data.questionIndex].multipleChoiceOptions.forEach(
-            (option) => (option.multipleChoiceOptionSelections = [])
-          );
           queryClient.setQueryData(
             [QueryKeys.surveyParticipation, surveyId],
             draft

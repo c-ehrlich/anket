@@ -18,8 +18,8 @@ import useGetOrCreateSurveyParticipation from '../hooks/surveyParticipation/useG
 import TakeSurveyNumericResponse from './takeSurvey/TakeSurveyNumericResponse';
 import TakeSurveyBooleanResponse from './takeSurvey/TakeSurveyBooleanResponse';
 import TakeSurveyTextResponse from './takeSurvey/TakeSurveyTextResponse';
-import TakeSurveyMCSOption from './takeSurvey/TakeSurveyMCSOption';
 import TakeSurveyMCMOption from './takeSurvey/TakeSurveyMCMOption';
+import TakeSurveyMCSResponse from './takeSurvey/TakeSurveyMCSResponse';
 
 /**
  * TODO: error checking (eg what happens if we navigate here while not being logged in?
@@ -155,17 +155,11 @@ const TakeSurveyQuestion = ({
             ))}
           </Stack>
         ) : question.questionType === 'multipleChoiceSingle' ? (
-          <>
-            {question.multipleChoiceOptions.map((option, mcoIndex) => (
-              <TakeSurveyMCSOption
-                option={option}
-                surveyId={surveyId}
-                index={index}
-                mcoIndex={mcoIndex}
-                key={option.id}
-              />
-            ))}
-          </>
+          <TakeSurveyMCSResponse
+            question={question}
+            surveyId={surveyId}
+            questionIndex={index}
+          />
         ) : question.questionType === 'textResponse' ? (
           <TakeSurveyTextResponse
             answerText={question.questionResponses[0]?.answerText || ''}

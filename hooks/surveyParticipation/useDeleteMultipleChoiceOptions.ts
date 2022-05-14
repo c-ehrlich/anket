@@ -3,58 +3,53 @@ import { useMutation, useQueryClient } from 'react-query';
 import { SurveyWithParticipationAndUserResponses } from '../../api/surveyParticipation/surveyParticipation.schema';
 import { QueryKeys } from '../../types/queryKeys';
 
-const useToggleMCSItem = ({ surveyId }: { surveyId: string }) => {
+const useDeleteMultipleChoiceOptions = ({ surveyId }: { surveyId: string }) => {
   const queryClient = useQueryClient();
 
   return useMutation(
     [QueryKeys.surveyParticipation, surveyId],
     ({
-      selected,
+      questionId,
       questionIndex,
-      optionId,
-      optionIndex,
     }: {
-      selected: boolean;
+      questionId: string;
       questionIndex: number;
-      optionId: string;
-      optionIndex: number;
     }) => {
       return axios
-        .patch(`/api/multiplechoiceoptionselection/${optionId}`, {
-          surveyId,
-          selected,
+        .delete(`/api/multiplechoiceoptionselection/all/${questionId}`, {
+          // axios delete requests need to send body in this format
+          data: { questionId },
         })
         .then((res) => res.data);
     },
     {
       onError: (e: any) => window.alert(e),
-      onMutate: (values) => {
+      onMutate: (data) => {
         queryClient.cancelQueries([QueryKeys.surveyParticipation, surveyId]);
         let draft: SurveyWithParticipationAndUserResponses | undefined =
           queryClient.getQueryData([QueryKeys.surveyParticipation, surveyId]);
-        if (draft?.questions[values.questionIndex].multipleChoiceOptions[values.optionIndex]) {
-          draft.questions[values.questionIndex].multipleChoiceOptions.forEach(
-            (option) => {
-              option.multipleChoiceOptionSelections = [];
+        if (draft) {
+          draft.questions[data.questionIndex].multipleChoiceOptions.forEach(
+            (_, index) => {
+              draft!.questions[data.questionIndex].multipleChoiceOptions[
+                index
+              ].multipleChoiceOptionSelections = [];
             }
           );
-          draft.questions[values.questionIndex].multipleChoiceOptions[
-            values.optionIndex
-          ].multipleChoiceOptionSelections[0] = { id: 'temp', selected: true };
-          console.log(draft);
           queryClient.setQueryData(
             [QueryKeys.surveyParticipation, surveyId],
             draft
           );
         }
       },
-      onSettled: () =>
+      onSettled: () => {
         queryClient.invalidateQueries([
           QueryKeys.surveyParticipation,
           surveyId,
-        ]),
+        ]);
+      },
     }
   );
 };
 
-export default useToggleMCSItem;
+export default useDeleteMultipleChoiceOptions;

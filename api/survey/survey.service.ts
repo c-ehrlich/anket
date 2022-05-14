@@ -229,3 +229,18 @@ export async function getSurveyOwner(id: string) {
     logger.error(e);
   }
 }
+
+export async function getSurveyIdFromQuestionId(questionId: string) {
+  try {
+    const questionWithSurveyId = await prisma.question.findUnique({
+      where: { id: questionId },
+      select: {
+        surveyId: true,
+      },
+    });
+    
+    return questionWithSurveyId?.surveyId;
+  } catch (e) {
+    logger.error(e);
+  }
+}

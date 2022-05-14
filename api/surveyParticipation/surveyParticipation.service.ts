@@ -116,8 +116,10 @@ export async function getSurveyParticipationId({
         id: true,
       },
     });
-    logger.info(surveyParticipation);
-    return surveyParticipation;
+    const surveyParticipationId = surveyParticipation
+      ? surveyParticipation.id
+      : null;
+    return surveyParticipationId;
   } catch (e) {
     logger.error(e);
   }
