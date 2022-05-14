@@ -34,6 +34,8 @@
 ### Taking a survey
 - [ ] Text Response input should be resizeable
 ### Survey Responses
+- [ ] Make a button that creates three dummy responses
+  - [ ] Seed the database with three fake users (check how fcc seeds the database)
 - [ ] Get count of responses
 - [ ] For multiple choice, see what percentage of people chose each
 - [ ] For text, maybe IF it has 3 or more responses, find the 3 most popular words, and list those along with sample responses that use them
