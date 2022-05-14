@@ -1,8 +1,15 @@
 import { Box } from '@mantine/core';
 import type { NextPage } from 'next';
+import { useSession } from 'next-auth/react';
 import Head from 'next/head';
+import LandingPage from '../components/LandingPage';
+
 
 const Home: NextPage = () => {
+  const { data: session } = useSession();
+
+  if (!session) return <LandingPage />
+
   return (
     <Box>
       <Head>

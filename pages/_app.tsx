@@ -1,30 +1,19 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { SessionProvider } from 'next-auth/react';
-import Login from '../components/Login';
-import ThemeSwitcher from '../components/ThemeSwitcher';
 import {
-  AppShell,
-  Burger,
   ColorScheme,
   ColorSchemeProvider,
-  Group,
-  Header,
-  Image,
   MantineProvider,
-  MediaQuery,
-  Navbar,
 } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
-import AppNavbar from '../components/AppNavbar';
-import ContentMaxWidth from '../components/ContentMaxWidth';
 import Head from 'next/head';
 import { useLocalStorage } from '@mantine/hooks';
+import AppShellWrapper from '../components/AppShellWrapper';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
-  const [navbarIsOpen, setNavbarIsOpen] = useState(false);
   const queryClient = new QueryClient();
 
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
@@ -56,61 +45,13 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
             withNormalizeCSS
             theme={{ colorScheme, primaryColor: 'green' }}
           >
-            <AppShell
-              navbarOffsetBreakpoint='sm'
-              asideOffsetBreakpoint='sm'
-              fixed
-              navbar={
-                <Navbar
-                  p='md'
-                  hiddenBreakpoint='sm'
-                  hidden={!navbarIsOpen}
-                  width={{ sm: 200, lg: 300 }}
-                >
-                  <Navbar.Section grow mt='xs'>
-                    <AppNavbar closeNavbar={() => setNavbarIsOpen(false)} />
-                  </Navbar.Section>
-                  <Navbar.Section>
-                    <Login />
-                  </Navbar.Section>
-                </Navbar>
-              }
-              header={
-                <Header height={70} p='md'>
-                  <Group
-                    align='center'
-                    sx={{ justifyContent: 'space-between' }}
-                  >
-                    <MediaQuery largerThan='sm' styles={{ display: 'none' }}>
-                      <Burger
-                        opened={navbarIsOpen}
-                        onClick={() => setNavbarIsOpen((o) => !o)}
-                        size='sm'
-                        mr='xl'
-                      />
-                    </MediaQuery>
-                    <Image
-                      src={
-                        colorScheme === 'dark'
-                          ? '/logo/logo-v01.png'
-                          : '/logo/logo-v01-black.png'
-                      }
-                      height='32px'
-                      alt='Anket Logo'
-                    />
-                    <ThemeSwitcher />
-                  </Group>
-                </Header>
-              }
-            >
-              <ContentMaxWidth>
-                <Component {...pageProps} />
-              </ContentMaxWidth>
-            </AppShell>
+            <AppShellWrapper>
+              <Component {...pageProps} />
+            </AppShellWrapper>
           </MantineProvider>
         </ColorSchemeProvider>
       </SessionProvider>
-      <ReactQueryDevtools />
+      <ReactQueryDevtools position='bottom-right' />
     </QueryClientProvider>
   );
 }
