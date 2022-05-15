@@ -1,0 +1,130 @@
+/* Shared */
+.container {
+  max-width: 900px;
+  margin: 0 16px;
+}
+
+/* Header */
+.headerWrapper {
+  padding: 16px 16px 32px 16px;
+}
+.loginButton {
+  cursor: pointer;
+}
+.loginButton:hover {
+  text-decoration: underline;
+}
+/* Hero */
+.heroGrid {
+  display: grid;
+  margin-bottom: 64px;
+  grid-template-columns: 6fr 4fr;
+  column-gap: 64px;
+  row-gap: 16px;
+  grid-template-rows: auto auto auto auto;
+  align-content: space-around;
+  grid-template-areas: 
+    ".      image"
+    "title  image"
+    "desc   image"
+    "list   image"
+    "button image"
+    ".      image";
+  justify-items: center;
+}
+@media(max-width: 719px) {
+  .heroGrid {
+    grid-template-columns: auto;
+    grid-template-rows: auto auto auto auto auto;
+    grid-template-areas:
+      "title"
+      "image"
+      "desc"
+      "list"
+      "button"
+  }
+}
+
+.heroImage {
+  grid-area: image;
+  align-self: center;
+  width: 100%
+}
+@media(max-width: 719px) {
+  .heroImage {
+    max-width: 50%;
+  }
+}
+.heroHeader {
+  font-family: 'Source Serif Pro', serif;
+  text-align: center;
+  grid-area: title;
+}
+.heroText {
+  font-family: 'Open Sans', sans-serif;
+  text-align: center;
+  grid-area: desc;
+}
+.heroList {
+  grid-area: list;
+  padding-left: 0;
+  margin: 0;
+}
+.heroList li {
+  font-family: 'Open Sans', sans-serif;
+  list-style: none;
+}
+.heroList li:before {
+  content: '✓ ';
+}
+.heroButton {
+  grid-area: button;
+}
+/* Cards */
+.cardGroup {
+  margin-bottom: 64px;
+}
+.card {
+  text-align: center;
+}
+@media(max-width: 719px) {
+  .card {
+    padding: 48px;
+  }
+}
+.cardImageWrapper {
+  padding: 16px;
+}
+.card h3 {
+  font-family: 'Source Serif Pro', serif;
+  text-align: center;
+}
+.card span {
+  font-family: 'Open Sans', sans-serif;
+  text-align: center;
+}
+/* ComparisonSection */
+.comparisonHeader {
+  font-family: 'Source Serif Pro', serif;
+  text-align: center;
+}
+.comparisonText {
+  font-family: 'Open Sans', sans-serif;
+  text-align: center;
+}
+/* Last Call To Action */
+.lastCta {
+  font-family: 'Source Serif Pro', serif;
+  text-align: center;
+}
+.lastCtaBg {
+  padding: 64px 16px;
+  background-color: rgb(255, 224, 27);
+}
+/* Footer */
+.footerText {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 12px;
+  text-align: center;
+  margin-bottom: 16px;
+}
