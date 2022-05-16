@@ -2,6 +2,7 @@
 ## MVP v1
 ### Want to do next
 - [ ] Try switching to Mantine-Form and use Zod validation on it
+- [ ] Turn useGetMySurveys and useGetAllSurveys into real queries
 ### Bugs
 - [!] Choppy MCO reordering - https://github.com/framer/motion/issues/1518
 - [!] Editing a survey after it has been published - Submit button doesn't work
@@ -19,6 +20,7 @@
 - [ ] Modal styling... they look a bit sad
 - [ ] Landing page: reduce spacing between sections on phones
 - [ ] Make login page a modal instead (https://github.com/nextauthjs/next-auth/issues/178)
+- [ ] AppShell: on phone screens, scrolling the menu should scroll the menu, not the content underneath it!
 ### Taking a survey
 - [ ] Text Response input should be resizeable
 - [ ] Allow Submitting the entire interaction to make it 'done'
@@ -45,7 +47,6 @@
   - [ ] Where can we store them? What about in deployment? S3?
 - [ ] Description should support line breaks
 ### Maybe / Todos
-- [x] Make type names shorter
 - [ ] Type React Query errors (is it just the type of { message: string? }) probably not...look at one and figure it out
 - [ ] See where we can reduce the number of props (for example in EditSurveyMultipleChoiceAnswer by passing an object instead of multiple parts of that object)
 - [ ] User profiles ... users can have settings, nicknames, etc
@@ -153,6 +154,7 @@
 - [x] DRY: make getting the ID in controllers a middleware? Then we can just assume that it's on the request
   - [x] ...or at least a function
 - [x] Delete all references to Product
+- [x] Make type names shorter
 ### Landing Page
 - [x] Write copy
 - [x] Create good styling
@@ -172,3 +174,7 @@
 - [x] Redirect to home if we're already logged in
 - [x] Either make theme switcher work on login page or hide it
 - [x] Hide the sidebar opener thing on small screens
+### Survey Browser
+- [x] Add filtering
+- [ ] Make it generic so that 'all surveys' can use the same thing
+- [ ] If there are 0 results, display different things depending on if it's from the filter removing everything or there not being any in first place

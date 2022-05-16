@@ -21,7 +21,7 @@ const useDeleteSurvey = ({
       onError: (e: any) => window.alert(e),
       onSuccess: () => {
         setDeleteModalOpen(false);
-        router.push('/');
+        router.push('/survey/mine');
       },
     }
   );
