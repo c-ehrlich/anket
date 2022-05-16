@@ -17,40 +17,40 @@
 /* Hero */
 .heroGrid {
   display: grid;
-  margin-bottom: 64px;
+  margin-top: 128px;
+  margin-bottom: 128px;
   grid-template-columns: 6fr 4fr;
   column-gap: 64px;
   row-gap: 16px;
   grid-template-rows: auto auto auto auto;
   align-content: space-around;
-  grid-template-areas: 
-    ".      image"
-    "title  image"
-    "desc   image"
-    "list   image"
-    "button image"
-    ".      image";
+  grid-template-areas:
+    'title  title'
+    '.      image'
+    'desc   image'
+    'list   image'
+    'button image'
+    '.      image';
   justify-items: center;
 }
-@media(max-width: 719px) {
+@media (max-width: 719px) {
   .heroGrid {
     grid-template-columns: auto;
     grid-template-rows: auto auto auto auto auto;
     grid-template-areas:
-      "title"
-      "image"
-      "desc"
-      "list"
-      "button"
+      'title'
+      'image'
+      'desc'
+      'list'
+      'button';
   }
 }
-
 .heroImage {
   grid-area: image;
   align-self: center;
-  width: 100%
+  width: 100%;
 }
-@media(max-width: 719px) {
+@media (max-width: 719px) {
   .heroImage {
     max-width: 50%;
   }
@@ -59,6 +59,11 @@
   font-family: 'Source Serif Pro', serif;
   text-align: center;
   grid-area: title;
+}
+@media (min-width: 720px) {
+  .heroHeader {
+    font-size: 58px;
+  }
 }
 .heroText {
   font-family: 'Open Sans', sans-serif;
@@ -79,15 +84,54 @@
 }
 .heroButton {
   grid-area: button;
+  transition: all 0.2s
 }
+.heroButton:hover {
+  transform: scale(1.03);
+}
+
+/* Down Button */
+.downButtonBG {
+  background-color: gray;
+  opacity: 80%;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+}
+
+/* Why Anket */
+.whyAnketBG {
+  padding-top: 128px;
+  padding-bottom: 128px;
+  background-color: #EBFBEE;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 32px;
+}
+.whyAnketHeader {
+  font-family: 'Source Serif Pro', serif;
+  text-align: center;
+}
+.whyAnketText {
+  font-family: 'Open Sans', sans-serif;
+  text-align: 'center';
+}
+
 /* Cards */
 .cardGroup {
   margin-bottom: 64px;
 }
+.cardOuter {
+  transition: all 0.2s;
+}
+.cardOuter:hover {
+  transform: scale(1.03);
+}
 .card {
   text-align: center;
 }
-@media(max-width: 719px) {
+@media (max-width: 719px) {
   .card {
     padding: 48px;
   }
@@ -104,13 +148,69 @@
   text-align: center;
 }
 /* ComparisonSection */
+.comparisonGrid {
+  display: grid;
+  margin-bottom: 64px;
+  grid-template-columns: 4fr 6fr;
+  column-gap: 64px;
+  row-gap: 16px;
+  grid-template-rows: auto auto auto auto;
+  align-content: space-around;
+  grid-template-areas:
+    'image .     '
+    'image title '
+    'image desc  '
+    'image list  '
+    'image button'
+    'image .     ';
+  justify-items: center;
+}
+@media (max-width: 719px) {
+  .comparisonGrid {
+    grid-template-columns: auto;
+    grid-template-rows: auto auto auto auto auto;
+    grid-template-areas:
+      'title'
+      'image'
+      'desc'
+      'list'
+      'button';
+  }
+}
 .comparisonHeader {
+  grid-area: title;
   font-family: 'Source Serif Pro', serif;
   text-align: center;
 }
 .comparisonText {
+  grid-area: desc;
   font-family: 'Open Sans', sans-serif;
   text-align: center;
+}
+.comparisonImage {
+  grid-area: image;
+  align-self: center;
+  width: 100%;
+}
+@media (max-width: 719px) {
+  .comparisonImage {
+    max-width: 50%;
+  }
+}
+.comparisonList {
+  grid-area: list;
+  padding-left: 0;
+  margin: 0;
+}
+.comparisonList li {
+  font-family: 'Open Sans', sans-serif;
+  list-style: none;
+}
+.comparisonList li:before {
+  content: '✓ ';
+}
+.comparisonButton {
+  grid-area: button;
 }
 /* Last Call To Action */
 .lastCta {
