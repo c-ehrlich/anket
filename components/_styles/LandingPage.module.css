@@ -14,6 +14,20 @@
 .loginButton:hover {
   text-decoration: underline;
 }
+
+/* Down Button */
+.downButtonBG {
+  background-color: gray;
+  opacity: 80%;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  transition: transform 0.2s;
+}
+.downButtonBG:hover {
+  transform: scale(1.08);
+}
+
 /* Hero */
 .heroGrid {
   display: grid;
@@ -90,15 +104,6 @@
   transform: scale(1.03);
 }
 
-/* Down Button */
-.downButtonBG {
-  background-color: gray;
-  opacity: 80%;
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-}
-
 /* Why Anket */
 .whyAnketBG {
   padding-top: 128px;
@@ -112,6 +117,8 @@
 .whyAnketHeader {
   font-family: 'Source Serif Pro', serif;
   text-align: center;
+  font-size: 40px;
+  margin-bottom: 16px;
 }
 .whyAnketText {
   font-family: 'Open Sans', sans-serif;
@@ -148,9 +155,13 @@
   text-align: center;
 }
 /* ComparisonSection */
+.comparisonBg {
+  padding-top: 128px;
+  padding-bottom: 128px;
+}
 .comparisonGrid {
   display: grid;
-  margin-bottom: 64px;
+  /* margin-bottom: 64px; */
   grid-template-columns: 4fr 6fr;
   column-gap: 64px;
   row-gap: 16px;
@@ -181,6 +192,7 @@
   grid-area: title;
   font-family: 'Source Serif Pro', serif;
   text-align: center;
+  font-size: 36px;
 }
 .comparisonText {
   grid-area: desc;
@@ -211,20 +223,61 @@
 }
 .comparisonButton {
   grid-area: button;
+  transition: transform 0.2s;
+}
+.comparisonButton:hover {
+  transform: scale(1.03);
 }
 /* Last Call To Action */
+.lastCtaBg {
+  padding: 128px 16px;
+  background-color: rgb(255, 224, 27);
+}
+.lastCtaGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 64px;
+  row-gap: 32px;
+  align-items: center;
+  align-content: space-around;
+  grid-template-areas:
+    ".      image"
+    "title  image"
+    "button image"
+    ".      image";
+}
+@media (max-width: 719px) {
+  .lastCtaGrid {
+    grid-template-columns: auto;
+    grid-template-areas:
+      "title"
+      "image"
+      "button";
+  }
+}
 .lastCta {
   font-family: 'Source Serif Pro', serif;
   text-align: center;
+  grid-area: title;
+  font-size: 48px;
 }
-.lastCtaBg {
-  padding: 64px 16px;
-  background-color: rgb(255, 224, 27);
+.lastCtaButton {
+  grid-area: button;
+  transition: transform 0.2s;
+}
+.lastCtaButton:hover {
+  transform: scale(1.05);
+}
+.lastCtaImage {
+  grid-area: image;
+  align-self: center;
+  width: 100%;
 }
 /* Footer */
 .footerText {
   font-family: 'Open Sans', sans-serif;
   font-size: 12px;
   text-align: center;
-  margin-bottom: 16px;
+  padding-top: 8px;
+  padding-bottom: 16px;
 }

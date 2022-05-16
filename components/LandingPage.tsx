@@ -50,6 +50,21 @@ const LandingPage = () => {
 
   return (
     <Stack spacing={0}>
+      {/* KEEP SCROLLING */}
+      {viewport.height < 1040 && scroll.y === 0 && (
+        <Center
+          style={{ width: '100vw', position: 'absolute', bottom: '32px' }}
+        >
+          <UnstyledButton
+            onClick={() => scrollTo({ y: Math.min(900, viewport.height) })}
+          >
+            <Center className={styles.downButtonBG}>
+              <ArrowDown color='white' />
+            </Center>
+          </UnstyledButton>
+        </Center>
+      )}
+
       <Box style={{ height: Math.min(viewport.height, 900) }}>
         {/* NAVBAR */}
         <Group position='apart' className={styles.headerWrapper}>
@@ -103,25 +118,6 @@ const LandingPage = () => {
           </div>
         </Center>
       </Box>
-
-      {/* KEEP SCROLLING */}
-      {/* TODO position this relative to the entire window
-          and make it scroll to the top of the next section */}
-      <div style={{ width: '0', height: '0', position: 'relative' }}>
-        {scroll.y === 0 && (
-          <Center
-            style={{ width: '100vw', position: 'absolute', bottom: '32px' }}
-          >
-            <UnstyledButton
-              onClick={() => scrollTo({ y: Math.min(900, viewport.height) })}
-            >
-              <Center className={styles.downButtonBG}>
-                <ArrowDown color='white' />
-              </Center>
-            </UnstyledButton>
-          </Center>
-        )}
-      </div>
 
       {/* WHY ANKET */}
       <Center className={styles.whyAnketBG}>
@@ -182,7 +178,7 @@ const LandingPage = () => {
       </Center>
 
       {/* COMPARISON */}
-      <Center>
+      <Center className={styles.comparisonBg}>
         <div className={styles.container}>
           <div className={styles.comparisonGrid}>
             <Box className={styles.comparisonImage}>
@@ -219,16 +215,18 @@ const LandingPage = () => {
       </Center>
       <Center className={styles.lastCtaBg}>
         <div className={styles.container}>
-          <Group grow={true}>
-            <Stack align='center'>
-              <Title order={1} className={styles.lastCta}>
-                Create your first survey now
-              </Title>
-              <Button size='xl' onClick={() => signIn()}>
-                Let&apos;s do this
-              </Button>
-            </Stack>
-            <Box>
+          <div className={styles.lastCtaGrid}>
+            <Title order={1} className={styles.lastCta}>
+              Create your first survey now!
+            </Title>
+            <Button
+              className={styles.lastCtaButton}
+              size='xl'
+              onClick={() => signIn()}
+            >
+              Let&apos;s do this
+            </Button>
+            <Box className={styles.lastCtaImage}>
               <Image
                 src='/img/landing/irasutoya_genki1.png'
                 alt='genki'
@@ -237,16 +235,14 @@ const LandingPage = () => {
                 layout='responsive'
               />
             </Box>
-          </Group>
+          </div>
         </div>
       </Center>
 
       {/* FOOTER */}
-      <Stack>
-        <div className={styles.footerText}>
-          Anket - Copyright {new Date().getFullYear()}
-        </div>
-      </Stack>
+      <div className={styles.footerText}>
+        Anket - Copyright {new Date().getFullYear()}
+      </div>
     </Stack>
   );
 };
