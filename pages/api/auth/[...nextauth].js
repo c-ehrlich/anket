@@ -23,6 +23,9 @@ export default NextAuth({
     })
     // ...add more providers here
   ],
+  pages: {
+    signIn: '/signin',
+  },
   callbacks: {
     async session({ session, user }) {
       if (session?.user) {

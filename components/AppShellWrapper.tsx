@@ -26,10 +26,10 @@ const AppShellWrapper = (props: Props) => {
   const router = useRouter();
   const { data: session } = useSession();
 
-  if (!session) toggleColorScheme('light')
+  if (!session) toggleColorScheme('light');
 
   // Hide AppShell on pages where we don't want it
-  if (['/'].includes(router.pathname) && !session) return (<>{props.children}</>)
+  if (['/'].includes(router.pathname) && !session) return <>{props.children}</>;
 
   return (
     <AppShell
@@ -37,19 +37,21 @@ const AppShellWrapper = (props: Props) => {
       asideOffsetBreakpoint='sm'
       fixed
       navbar={
-        <Navbar
-          p='md'
-          hiddenBreakpoint='sm'
-          hidden={!navbarIsOpen}
-          width={{ sm: 200, lg: 300 }}
-        >
-          <Navbar.Section grow mt='xs'>
-            <AppNavbar closeNavbar={() => setNavbarIsOpen(false)} />
-          </Navbar.Section>
-          <Navbar.Section>
-            <Login />
-          </Navbar.Section>
-        </Navbar>
+        ['/signin'].includes(router.pathname) ? undefined : (
+          <Navbar
+            p='md'
+            hiddenBreakpoint='sm'
+            hidden={!navbarIsOpen}
+            width={{ sm: 200, lg: 300 }}
+          >
+            <Navbar.Section grow mt='xs'>
+              <AppNavbar closeNavbar={() => setNavbarIsOpen(false)} />
+            </Navbar.Section>
+            <Navbar.Section>
+              <Login />
+            </Navbar.Section>
+          </Navbar>
+        )
       }
       header={
         <Header height={70} p='md'>

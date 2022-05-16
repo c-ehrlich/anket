@@ -2,11 +2,18 @@
 ## MVP v1
 ### Want to do next
 - [ ] Try switching to Mantine-Form and use Zod validation on it
-- [ ] Think about if I need to redesign QuestionResponse schema? For a MC-Multiple should it really be several DB entries, or just one? Not sure!!
 ### Bugs
 - [!] Choppy MCO reordering - https://github.com/framer/motion/issues/1518
 - [!] Editing a survey after it has been published - Submit button doesn't work
   - [*] conditionally replace it with an update button?
+
+### Custom Signup
+- [x] Hide sidebar
+- [x] Nice buttons with logos
+- [ ] Look ok on desktop and mobile
+- [ ] Redirect to home if we're already logged in
+- [ ] Either make theme switcher work on login page or hide it
+- [ ] Make it a modal instead (https://github.com/nextauthjs/next-auth/issues/178)
 
 ### DB
 - [ ] Get the real DB running https://vercel.com/guides/nextjs-prisma-postgres
@@ -19,6 +26,19 @@
 - [ ] Transition to styles api (there should be no `style={{}}` in the app)
 - [ ] Modal styling... they look a bit sad
 - [ ] Landing page: reduce spacing between sections on phones
+### Taking a survey
+- [ ] Text Response input should be resizeable
+- [ ] Allow Submitting the entire interaction to make it 'done'
+- [ ] Use schema validation on the submission
+- [ ] Redirect to a thank you page after submission
+### Survey Responses
+- [ ] Make a button that creates three dummy responses
+  - [ ] Seed the database with three fake users (check how fcc seeds the database)
+- [ ] Get count of responses
+- [ ] For multiple choice, see what percentage of people chose each
+- [ ] For text, maybe IF it has 3 or more responses, find the 3 most popular words, and list those along with sample responses that use them
+  - [ ] Exclude common words?
+  - [ ] Or just open a modal that contains all the responses?
 ### Create/Edit Survey
 - [ ] Submitting / error checking... what do we want to make sure of before submitting a survey?
   - [ ] No empty questions (last question can be empty, just trim it)
@@ -30,16 +50,6 @@
   - [ ] Figure out how image upload works
   - [ ] Where can we store them? What about in deployment? S3?
 - [ ] Description should support line breaks
-### Taking a survey
-- [ ] Text Response input should be resizeable
-### Survey Responses
-- [ ] Make a button that creates three dummy responses
-  - [ ] Seed the database with three fake users (check how fcc seeds the database)
-- [ ] Get count of responses
-- [ ] For multiple choice, see what percentage of people chose each
-- [ ] For text, maybe IF it has 3 or more responses, find the 3 most popular words, and list those along with sample responses that use them
-  - [ ] Exclude common words?
-  - [ ] Or just open a modal that contains all the responses?
 ### Queries
 ### Maybe / Todos
 - [x] Make type names shorter
@@ -139,9 +149,6 @@
   - [x] Boolean
   - [x] MultipleChoiceSingle
 - [x] optimistic updates in useDeleteQuestionResponse
-- [ ] Allow Submitting the entire interaction to make it 'done'
-- [ ] Use schema validation on the submission
-- [ ] Redirect to a thank you page after submission
 ### Backend
 - [x] clone the logger from tom does tech youtube clone, and re-convert every consoleDOTlog/error to that logger
 - [x] Create schema for everything and validate every request
