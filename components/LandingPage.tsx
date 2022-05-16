@@ -18,7 +18,7 @@ import Image from 'next/image';
 import { signIn } from 'next-auth/react';
 import React from 'react';
 import styles from './_styles/LandingPage.module.css';
-import { ArrowDown } from 'tabler-icons-react';
+import { ArrowDown, ViewportWide } from 'tabler-icons-react';
 
 const features = [
   {
@@ -51,21 +51,23 @@ const LandingPage = () => {
   return (
     <Stack spacing={0}>
       {/* KEEP SCROLLING */}
-      {viewport.height < 1040 && scroll.y === 0 && (
-        <Center
-          style={{ width: '100vw', position: 'absolute', bottom: '32px' }}
-        >
-          <UnstyledButton
-            onClick={() => scrollTo({ y: Math.min(900, viewport.height) })}
+      {!(viewport.width < 500 && viewport.height < 800) &&
+        viewport.height < 1040 &&
+        scroll.y === 0 && (
+          <Center
+            style={{ width: '100vw', position: 'absolute', bottom: '32px' }}
           >
-            <Center className={styles.downButtonBG}>
-              <ArrowDown color='white' />
-            </Center>
-          </UnstyledButton>
-        </Center>
-      )}
+            <UnstyledButton
+              onClick={() => scrollTo({ y: Math.min(900, viewport.height) })}
+            >
+              <Center className={styles.downButtonBG}>
+                <ArrowDown color='white' />
+              </Center>
+            </UnstyledButton>
+          </Center>
+        )}
 
-      <Box style={{ height: Math.min(viewport.height, 900) }}>
+      <Box style={viewport.height > 500 ? { height: Math.min(viewport.height, 900) } : {}}>
         {/* NAVBAR */}
         <Group position='apart' className={styles.headerWrapper}>
           <Image
@@ -74,6 +76,7 @@ const LandingPage = () => {
             height='32px'
             width='100%'
             objectFit='contain'
+            priority
           />
           <Group>
             <div onClick={() => signIn()} className={styles.loginButton}>

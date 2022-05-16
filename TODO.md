@@ -7,9 +7,7 @@
 - [!] Choppy MCO reordering - https://github.com/framer/motion/issues/1518
 - [!] Editing a survey after it has been published - Submit button doesn't work
   - [*] conditionally replace it with an update button?
-### Landing Page
-- [ ] Create it
-- [ ] It should obviously not use the AppShell
+
 ### DB
 - [ ] Get the real DB running https://vercel.com/guides/nextjs-prisma-postgres
 ### UI
@@ -20,6 +18,7 @@
 - [ ] Make side margins about 1/2 of what they currently are on XS screens
 - [ ] Transition to styles api (there should be no `style={{}}` in the app)
 - [ ] Modal styling... they look a bit sad
+- [ ] Landing page: reduce spacing between sections on phones
 ### Create/Edit Survey
 - [ ] Submitting / error checking... what do we want to make sure of before submitting a survey?
   - [ ] No empty questions (last question can be empty, just trim it)
@@ -154,3 +153,13 @@
 - [x] DRY: make getting the ID in controllers a middleware? Then we can just assume that it's on the request
   - [x] ...or at least a function
 - [x] Delete all references to Product
+### Landing Page
+- [x] Write copy
+- [x] Create good styling
+- [x] find images
+- [x] Create good layout for desktop
+- [x] Create scroll down button
+- [x] Create transforms on hover
+- [x] Create good layout for iPad
+- [x] Create good layout for iPhone 13
+- [x] Create good layout for iPhone 6

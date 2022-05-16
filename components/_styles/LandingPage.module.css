@@ -17,6 +17,7 @@
 
 /* Down Button */
 .downButtonBG {
+  z-index: 9;
   background-color: gray;
   opacity: 80%;
   border-radius: 50%;
@@ -57,6 +58,11 @@
       'desc'
       'list'
       'button';
+  }
+}
+@media (max-height: 499px) {
+  .heroGrid {
+    margin-top: 32px;
   }
 }
 .heroImage {
@@ -140,7 +146,7 @@
 }
 @media (max-width: 719px) {
   .card {
-    padding: 48px;
+    padding: 16px;
   }
 }
 .cardImageWrapper {
@@ -279,5 +285,5 @@
   font-size: 12px;
   text-align: center;
   padding-top: 8px;
-  padding-bottom: 16px;
+  padding-bottom: 8px;
 }
