@@ -73,6 +73,7 @@ const LandingPage = () => {
             alt='anket-logo'
             height='32px'
             width='100%'
+            objectFit='contain'
           />
           <Group>
             <div onClick={() => signIn()} className={styles.loginButton}>
@@ -162,6 +163,7 @@ const LandingPage = () => {
                       height='100%'
                       width='100%'
                       layout='responsive'
+                      objectFit='contain'
                     />
                   </div>
                   <Title order={3} align='center'>
@@ -188,6 +190,7 @@ const LandingPage = () => {
                 width='100%'
                 height='100%'
                 layout='responsive'
+                objectFit='contain'
               />
             </Box>
             <Title className={styles.comparisonHeader} order={2}>
@@ -233,6 +236,7 @@ const LandingPage = () => {
                 width='100%'
                 height='100%'
                 layout='responsive'
+                objectFit='contain'
               />
             </Box>
           </div>
