@@ -99,6 +99,7 @@ function GetProviderLogo({ id }: { id: string }) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
+      session: await getSession(context),
       providers: await getProviders(),
     },
   };
