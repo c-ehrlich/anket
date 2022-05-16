@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Center,
   Paper,
@@ -9,7 +8,6 @@ import {
   Title,
 } from '@mantine/core';
 import { GetServerSideProps } from 'next';
-import { Session } from 'next-auth';
 import { BuiltInProviderType } from 'next-auth/providers';
 import {
   getProviders,

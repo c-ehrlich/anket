@@ -1,6 +1,7 @@
 import {
   AppShell,
   Burger,
+  Center,
   Group,
   Header,
   MediaQuery,
@@ -9,6 +10,7 @@ import {
 } from '@mantine/core';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import AppNavbar from './AppNavbar';
@@ -22,7 +24,7 @@ interface Props {
 
 const AppShellWrapper = (props: Props) => {
   const [navbarIsOpen, setNavbarIsOpen] = useState(false);
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const { toggleColorScheme } = useMantineColorScheme();
   const router = useRouter();
   const { data: session } = useSession();
 
@@ -55,27 +57,24 @@ const AppShellWrapper = (props: Props) => {
       }
       header={
         <Header height={70} p='md'>
-          <Group align='center' sx={{ justifyContent: 'space-between' }}>
-            <MediaQuery largerThan='sm' styles={{ display: 'none' }}>
-              <Burger
-                opened={navbarIsOpen}
-                onClick={() => setNavbarIsOpen((o) => !o)}
-                size='sm'
-                mr='xl'
-              />
-            </MediaQuery>
-            <Image
-              src={
-                colorScheme === 'dark'
-                  ? '/logo/logo-v01.png'
-                  : '/logo/logo-v01-black.png'
-              }
-              height='32px'
-              width='100%'
-              alt='Anket Logo'
-            />
-            <ThemeSwitcher />
-          </Group>
+          {['/signin'].includes(router.pathname) ? (
+            <Center>
+              <AnketLogoWithLink />
+            </Center>
+          ) : (
+            <Group align='center' sx={{ justifyContent: 'space-between' }}>
+              <MediaQuery largerThan='sm' styles={{ display: 'none' }}>
+                <Burger
+                  opened={navbarIsOpen}
+                  onClick={() => setNavbarIsOpen((o) => !o)}
+                  size='sm'
+                  // mr='xl'
+                />
+              </MediaQuery>
+              <AnketLogoWithLink />
+              <ThemeSwitcher />
+            </Group>
+          )}
         </Header>
       }
     >
@@ -83,5 +82,26 @@ const AppShellWrapper = (props: Props) => {
     </AppShell>
   );
 };
+
+function AnketLogoWithLink() {
+  const { colorScheme } = useMantineColorScheme();
+
+  return (
+    <Link href='/' passHref>
+      <a>
+        <Image
+          src={
+            colorScheme === 'dark'
+              ? '/logo/logo-v01.png'
+              : '/logo/logo-v01-black.png'
+          }
+          height='32px'
+          width='100%'
+          alt='Anket Logo'
+        />
+      </a>
+    </Link>
+  );
+}
 
 export default AppShellWrapper;

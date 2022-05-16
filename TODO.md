@@ -7,14 +7,6 @@
 - [!] Editing a survey after it has been published - Submit button doesn't work
   - [*] conditionally replace it with an update button?
 
-### Custom Signup
-- [x] Hide sidebar
-- [x] Nice buttons with logos
-- [ ] Look ok on desktop and mobile
-- [ ] Redirect to home if we're already logged in
-- [ ] Either make theme switcher work on login page or hide it
-- [ ] Make it a modal instead (https://github.com/nextauthjs/next-auth/issues/178)
-
 ### DB
 - [ ] Get the real DB running https://vercel.com/guides/nextjs-prisma-postgres
 ### UI
@@ -26,6 +18,7 @@
 - [ ] Transition to styles api (there should be no `style={{}}` in the app)
 - [ ] Modal styling... they look a bit sad
 - [ ] Landing page: reduce spacing between sections on phones
+- [ ] Make login page a modal instead (https://github.com/nextauthjs/next-auth/issues/178)
 ### Taking a survey
 - [ ] Text Response input should be resizeable
 - [ ] Allow Submitting the entire interaction to make it 'done'
@@ -34,6 +27,7 @@
 ### Survey Responses
 - [ ] Make a button that creates three dummy responses
   - [ ] Seed the database with three fake users (check how fcc seeds the database)
+  - [ ] dummy responses have an additional isDummyResponse field so we can easily delete them in the future?
 - [ ] Get count of responses
 - [ ] For multiple choice, see what percentage of people chose each
 - [ ] For text, maybe IF it has 3 or more responses, find the 3 most popular words, and list those along with sample responses that use them
@@ -50,7 +44,6 @@
   - [ ] Figure out how image upload works
   - [ ] Where can we store them? What about in deployment? S3?
 - [ ] Description should support line breaks
-### Queries
 ### Maybe / Todos
 - [x] Make type names shorter
 - [ ] Type React Query errors (is it just the type of { message: string? }) probably not...look at one and figure it out
@@ -170,3 +163,12 @@
 - [x] Create good layout for iPad
 - [x] Create good layout for iPhone 13
 - [x] Create good layout for iPhone 6
+### Custom /signin
+- [x] Hide sidebar
+- [x] Nice buttons with logos
+- [x] Look good on phone
+- [x] Look good on iPad
+- [x] Look good on computer
+- [x] Redirect to home if we're already logged in
+- [x] Either make theme switcher work on login page or hide it
+- [x] Hide the sidebar opener thing on small screens
