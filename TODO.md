@@ -5,11 +5,18 @@
 - [ ] Turn useGetMySurveys and useGetAllSurveys into real queries
 ### Bugs
 - [!] Choppy MCO reordering - https://github.com/framer/motion/issues/1518
-- [!] Editing a survey after it has been published - Submit button doesn't work
-  - [*] conditionally replace it with an update button?
+- [!] Survey Submit button doesn't work
+- [!] Create Survey creates 2 surveys
+- [!] Create Survey also creates a survey if we just created an empty one a second ago
+  - [?] is it because we're checking for it not having any questions
+    - [?] if so, check that there is exactly one question and it doesn't have any text or answer options
 
-### DB
+### Deployment
+- [ ] Figure out how to deploy it
+- [ ] To a VPS? Hetzner?
 - [ ] Get the real DB running https://vercel.com/guides/nextjs-prisma-postgres
+  - [ ] Can test this even before deploying
+- [ ] Figure out how to set up GitHub Actions
 ### UI
 - [ ] Background color... definitely add it on dark mode, maybe also on light
 - [ ] small screen: sidebar in/out should be animated
@@ -176,8 +183,8 @@
 - [x] Hide the sidebar opener thing on small screens
 ### Survey Browser
 - [x] Add filtering
-- [ ] Make it generic so that 'all surveys' can use the same thing
-- [ ] If there are 0 results, display different things depending on if it's from the filter removing everything or there not being any in first place
+- [x] Make it generic so that 'all surveys' can use the same thing
+- [x] If there are 0 results, display different things depending on if it's from the filter removing everything or there not being any in first place
 
 
 ## MVP 2
