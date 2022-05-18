@@ -178,3 +178,13 @@
 - [x] Add filtering
 - [ ] Make it generic so that 'all surveys' can use the same thing
 - [ ] If there are 0 results, display different things depending on if it's from the filter removing everything or there not being any in first place
+
+
+## MVP 2
+### Surveys
+- [ ] Multiple Choice Options should have 'other' option
+  - [ ] This should be optional (decided by survey author whether to include it?)
+  - [ ] Create DB Model
+  - [ ] Create Backend implementation
+  - [ ] Create Implementation during survey creation
+  - [ ] Create Implementation during survey taking
