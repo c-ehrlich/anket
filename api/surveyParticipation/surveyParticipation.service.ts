@@ -89,6 +89,9 @@ export async function getOrCreateSurveyParticipation({
                 },
               },
             },
+            orderBy: {
+              order: 'asc',
+            },
           },
         },
       });
