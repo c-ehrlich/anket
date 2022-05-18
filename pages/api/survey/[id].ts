@@ -8,8 +8,11 @@ import {
 } from '../../../api/survey/survey.controller';
 import validateResource from '../../../api/middleware/validateResource.middleware';
 import { editSurveySchema } from '../../../api/survey/survey.schema';
+import { nextConnectOptions } from '../../../api/utils/nextConnect';
 
-const handler = NextConnectHandler<NextApiRequest, NextApiResponse>()
+const handler = NextConnectHandler<NextApiRequest, NextApiResponse>(
+  nextConnectOptions
+)
   .get(requireSession, getSingleSurveyHandler)
   .patch(
     validateResource(editSurveySchema),

@@ -1,7 +1,13 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from 'next';
+import Error from 'next/error';
+
+type NextConnectError = Error & {
+  status: number;
+  message: Text;
+};
 
 export const nextConnectOptions = {
-  onError(err: Error, req: NextApiRequest, res: NextApiResponse) {
+  onError(err: NextConnectError, req: NextApiRequest, res: NextApiResponse) {
     console.error(err);
     res.statusCode =
       err.status && err.status >= 100 && err.status < 600 ? err.status : 500;
