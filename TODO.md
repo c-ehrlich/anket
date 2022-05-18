@@ -6,10 +6,6 @@
 ### Bugs
 - [!] Choppy MCO reordering - https://github.com/framer/motion/issues/1518
 - [!] Survey Submit button doesn't work
-- [!] Create Survey creates 2 surveys
-- [!] Create Survey also creates a survey if we just created an empty one a second ago
-  - [?] is it because we're checking for it not having any questions
-    - [?] if so, check that there is exactly one question and it doesn't have any text or answer options
 
 ### Deployment
 - [ ] Figure out how to deploy it
@@ -18,10 +14,10 @@
   - [ ] Can test this even before deploying
 - [ ] Figure out how to set up GitHub Actions
 ### UI
-- [ ] Background color... definitely add it on dark mode, maybe also on light
+- [ ] Background color?
 - [ ] small screen: sidebar in/out should be animated
 - [ ] make all the disabled stuff in the anket creator not have special mouse cursors
-- [ ] Choose nicer fonts
+- [ ] Choose nicer fonts (use the themeing in Mantine - and use same fonts as landing page?)
 - [ ] Make side margins about 1/2 of what they currently are on XS screens
 - [ ] Transition to styles api (there should be no `style={{}}` in the app)
 - [ ] Modal styling... they look a bit sad
@@ -71,6 +67,9 @@
 - [x] Fix answer option reorder not working
 - [x] AddQuestion mutation briefly adds TWO questions (until we get back the server response?)
 - [x] useDebouncedCallback doesn't save data if we type, hit tab, type again very fast => because the previous requests get cancelled
+- [x] Create Survey creates 2 surveys (strict mode issue)
+- [x] Create Survey also creates a survey if we just created an empty one a second ago
+  - [x] because we're checking for it not having any questions, which it does now
   - [*] solution: use separate debounces for each field
 - [x] Adding and removing answer options: sometimes stuff collapses into each other
 - [x] Answer Option Creation causes the container to bounce around - not making the question itself a motion.div fixes it - ask in framer motion discord

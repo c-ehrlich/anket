@@ -87,7 +87,6 @@ const EditSurveyHaveData = memo(({ survey }: { survey: SurveyFE }) => {
         onClickDelete={() => deleteSurvey.mutate()}
       />
       <Stack style={{ marginBottom: '64px' }}>
-        {/* <Title order={2}>Creating survey</Title> */}
         <TextInput
           label='Survey Name'
           placeholder='The name for your survey'
@@ -115,7 +114,7 @@ const EditSurveyHaveData = memo(({ survey }: { survey: SurveyFE }) => {
           <Title order={3}>Questions</Title>
           {/* TODO remove once this gets merged or there is another fix
               https://github.com/framer/motion/pull/1507 
-              @ts-expect-error TODO */}
+              @ts-expect-error */}
           <AnimatePresence>
             {survey.questions.map((question, index) => (
               <motion.div key={question.id} layout {...animations}>

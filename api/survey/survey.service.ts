@@ -20,9 +20,6 @@ export async function createDefaultSurvey(data: CreateDefaultSurveyInput) {
         name: '',
         description: '',
         authorId: data.authorId,
-        questions: {
-          none: {},
-        },
       },
       include: {
         questions: {
@@ -40,7 +37,9 @@ export async function createDefaultSurvey(data: CreateDefaultSurveyInput) {
       },
     });
 
-    if (existingSurvey) return existingSurvey;
+    if (existingSurvey) {
+      return existingSurvey;
+    }
   } catch (e: any) {
     logger.error(e);
   }
@@ -238,7 +237,7 @@ export async function getSurveyIdFromQuestionId(questionId: string) {
         surveyId: true,
       },
     });
-    
+
     return questionWithSurveyId?.surveyId;
   } catch (e) {
     logger.error(e);
