@@ -7,6 +7,7 @@ import {
   SurveyFE,
   SurveyFEWithAuthor,
   SurveyPreviewWithAuthor,
+  SurveyPreviewWithAuthorAndInteraction,
 } from './survey.schema';
 import {
   createDefaultSurvey,
@@ -76,9 +77,9 @@ export async function getSingleSurveyHandler(
 
 export async function getAllPublicSurveysHandler(
   req: NextApiRequest,
-  res: NextApiResponse<{ message: string } | SurveyPreviewWithAuthor[]>
+  res: NextApiResponse<string | SurveyPreviewWithAuthorAndInteraction[]>
 ) {
-  const surveys = await getAllPublicSurveyPreviews();
+  const surveys: SurveyPreviewWithAuthorAndInteraction[] = await getAllPublicSurveyPreviews();
 
   return res.status(200).json(surveys);
 }

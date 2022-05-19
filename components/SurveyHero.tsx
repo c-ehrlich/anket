@@ -2,6 +2,7 @@ import {
   ActionIcon,
   Avatar,
   Badge,
+  Button,
   Card,
   Group,
   Image,
@@ -12,12 +13,12 @@ import {
 } from '@mantine/core';
 import { useSession } from 'next-auth/react';
 import React from 'react';
-import { AlertTriangle, Check, Edit } from 'tabler-icons-react';
+import { AlertTriangle, Check, Dots, Edit, Square } from 'tabler-icons-react';
 import Link from 'next/link';
-import { SurveyPreviewWithAuthor } from '../api/survey/survey.schema';
+import { SurveyPreviewWithAuthorAndInteraction } from '../api/survey/survey.schema';
 
 type Props = {
-  survey: SurveyPreviewWithAuthor;
+  survey: SurveyPreviewWithAuthorAndInteraction;
 };
 
 const SurveyHero = (props: Props) => {
@@ -37,14 +38,15 @@ const SurveyHero = (props: Props) => {
           alt='Survey Header Image'
         />
       </Card.Section>
-      <Stack style={{ marginTop: theme.spacing.sm }}>
+      <Stack spacing='sm' style={{ marginTop: theme.spacing.sm }}>
         <Group style={{ justifyContent: 'space-between' }}>
           <Title order={3}>
             <Group>
               <div>
                 {props.survey.name !== '' ? props.survey.name : '(no name)'}
               </div>
-              {props.survey.author.id === session?.user?.id ? (
+              {props.survey.author.id === session?.user?.id && (
+                // author owns survey
                 <>
                   {props.survey.isCompleted ? (
                     <Badge
@@ -75,44 +77,75 @@ const SurveyHero = (props: Props) => {
                     </Badge>
                   )}
                 </>
-              ) : (
-                <div>
-                  TODO check if user has taken this{' '}
-                  <Link href={`/survey/take/${props.survey.id}`}>Take</Link>
-                </div>
               )}
             </Group>
           </Title>
-          {props.survey.author.id === session?.user?.id && (
+          {props.survey.author.id === session?.user?.id ? (
             <Link href={`/survey/edit/${props.survey.id}`} passHref>
               <ActionIcon>
                 <Edit />
               </ActionIcon>
             </Link>
+          ) : props.survey.participations?.length !== 0 ? (
+            <>
+              {props.survey.participations[0]?.isComplete ? (
+                <Group spacing='xs'>
+                  <Check />
+                  <Text>Completed</Text>
+                </Group>
+              ) : (
+                <Group spacing='xs'>
+                  <Dots />
+                  <Text>In Progress</Text>
+                </Group>
+              )}
+            </>
+          ) : (
+            // survey not started
+            null
           )}
         </Group>
+        <div>
+          <Link passHref href={`/user/${props.survey.author.id}`}>
+            <Badge
+              color='gray'
+              size='lg'
+              variant='outline'
+              leftSection={
+                <Avatar
+                  src={props.survey.author.image}
+                  radius='xl'
+                  size={25}
+                  mr={5}
+                />
+              }
+              sx={{ paddingLeft: 0, cursor: 'pointer' }}
+              styles={{ inner: { textTransform: 'none' } }}
+            >
+              {props.survey.author.name}
+            </Badge>
+          </Link>
+        </div>
         <Text>
           {props.survey.description !== ''
             ? props.survey.description
             : '(no description)'}
         </Text>
-        <div>
-          {/* TODO base color on theme */}
-          <Link passHref href={`/user/${props.survey.author.id}`}>
-            <Badge
-              color='gray'
-              size='xl'
-              variant='outline'
-              leftSection={
-                <Avatar src={props.survey.author.image} radius='xl' size={32} mr={5} />
-              }
-              sx={{ paddingLeft: 0 }}
-              styles={{ inner: { textTransform: 'none' } }}
-            >
-              {props.survey.author!.name}
-            </Badge>
-          </Link>
-        </div>
+        {props.survey.author.id === session?.user?.id ? null : props.survey
+            .participations && props.survey.participations[0] ? (
+          <div>
+            {props.survey.participations[0].isComplete ? (
+              <Button variant='outline'>Modify Response</Button>
+            ) : (
+              <Button>Resume Survey</Button>
+            )}
+          </div>
+        ) : (
+          // survey not started
+          <div>
+            <Button variant='outline'>Take Survey</Button>
+          </div>
+        )}
       </Stack>
     </Card>
   );

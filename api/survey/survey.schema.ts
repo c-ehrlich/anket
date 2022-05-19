@@ -81,3 +81,14 @@ const surveyWithAuthorSchema = z.object({
   author: userWithoutEmail,
 });
 export type SurveyPreviewWithAuthor = z.infer<typeof surveyWithAuthorSchema>;
+
+const surveyWithAuthorAndInteractionSchema = surveyWithAuthorSchema.extend({
+  participations: z.array(
+    z.object({
+      isComplete: z.boolean(),
+    })
+  ),
+});
+export type SurveyPreviewWithAuthorAndInteraction = z.infer<
+  typeof surveyWithAuthorAndInteractionSchema
+>;

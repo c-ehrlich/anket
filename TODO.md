@@ -184,6 +184,20 @@
 - [x] Add filtering
 - [x] Make it generic so that 'all surveys' can use the same thing
 - [x] If there are 0 results, display different things depending on if it's from the filter removing everything or there not being any in first place
+### Survey Hero
+- [x] Improve styling
+- [x] On other user's surveys, distinguished between:
+  - [x] Not started: no interaction, or the interaction has nothing in it
+    - [x] Button regular (border?), some kind of icon
+  - [x] Started: interaction, but not finished
+    - [x] Button loud (filled?), icon: Square
+  - [x] Finished: interaction marked finished
+    - [x] Button disabled?, icon: Checkbox
+- [x] Controller / Service
+  - [x] We need the interaction
+  - [x] We need to know what's inside the interaction (maybe just the COUNT of QuestionResponses and MCOSelections?)
+    - [x] Can we 'reduce' / 'aggregate'?
+  - [x] Might need to change the types for this to work
 
 
 ## MVP 2

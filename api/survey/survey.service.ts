@@ -4,6 +4,7 @@ import {
   SurveyFE,
   SurveyFEWithAuthor,
   SurveyPreviewWithAuthor,
+  SurveyPreviewWithAuthorAndInteraction,
 } from './survey.schema';
 import prisma from '../utils/prisma';
 import logger from '../utils/logger';
@@ -88,24 +89,35 @@ export async function createDefaultSurvey(data: CreateDefaultSurveyInput) {
   }
 }
 
-export async function getAllPublicSurveyPreviews() {
-  const surveys: SurveyPreviewWithAuthor[] = await prisma.survey.findMany({
-    where: {
-      isCompleted: true,
-      isPublic: true,
-    },
-    select: {
-      author: { select: { id: true, name: true, image: true, email: true } },
-      id: true,
-      name: true,
-      description: true,
-      isCompleted: true,
-      isPublic: true,
-    },
-    orderBy: {
-      updatedAt: 'desc',
-    },
-  });
+export async function getAllPublicSurveyPreviews(
+  userId: string | undefined = undefined
+): Promise<SurveyPreviewWithAuthorAndInteraction[]> {
+  const surveys: SurveyPreviewWithAuthorAndInteraction[] =
+    await prisma.survey.findMany({
+      where: {
+        isCompleted: true,
+        isPublic: true,
+      },
+      select: {
+        author: { select: { id: true, name: true, image: true, email: true } },
+        id: true,
+        name: true,
+        description: true,
+        isCompleted: true,
+        isPublic: true,
+        participations: {
+          where: {
+            userId: userId,
+          },
+          select: {
+            isComplete: true,
+          },
+        },
+      },
+      orderBy: {
+        updatedAt: 'desc',
+      },
+    });
 
   return surveys;
 }
