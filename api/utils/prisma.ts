@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-import logger from './logger';
 
 // https://www.prisma.io/docs/support/help-articles/nextjs-prisma-client-dev-practices
 

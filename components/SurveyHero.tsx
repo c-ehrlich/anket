@@ -100,10 +100,8 @@ const SurveyHero = (props: Props) => {
                 </Group>
               )}
             </>
-          ) : (
-            // survey not started
-            null
-          )}
+          ) : // survey not started
+          null}
         </Group>
         <div>
           <Link passHref href={`/user/${props.survey.author.id}`}>
@@ -135,15 +133,21 @@ const SurveyHero = (props: Props) => {
             .participations && props.survey.participations[0] ? (
           <div>
             {props.survey.participations[0].isComplete ? (
-              <Button variant='outline'>Modify Response</Button>
+              <Link href={`/survey/take/${props.survey.id}`} passHref>
+                <Button variant='outline'>Modify Response</Button>
+              </Link>
             ) : (
-              <Button>Resume Survey</Button>
+              <Link href={`/survey/take/${props.survey.id}`} passHref>
+                <Button>Resume Survey</Button>
+              </Link>
             )}
           </div>
         ) : (
           // survey not started
           <div>
-            <Button variant='outline'>Take Survey</Button>
+            <Link href={`/survey/take/${props.survey.id}`} passHref>
+              <Button variant='outline'>Take Survey</Button>
+            </Link>
           </div>
         )}
       </Stack>
