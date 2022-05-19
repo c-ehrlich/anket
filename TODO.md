@@ -25,7 +25,6 @@
 - [ ] Make login page a modal instead (https://github.com/nextauthjs/next-auth/issues/178)
 - [ ] AppShell: on phone screens, scrolling the menu should scroll the menu, not the content underneath it!
 ### Taking a survey
-- [ ] Text Response input should be resizeable
 - [ ] Allow Submitting the entire interaction to make it 'done'
 - [ ] Use schema validation on the submission
 - [ ] Redirect to a thank you page after submission
@@ -149,6 +148,7 @@
   - [x] Boolean
   - [x] MultipleChoiceSingle
 - [x] optimistic updates in useDeleteQuestionResponse
+- [x] Text Response input should be resizeable
 ### Backend
 - [x] clone the logger from tom does tech youtube clone, and re-convert every consoleDOTlog/error to that logger
 - [x] Create schema for everything and validate every request

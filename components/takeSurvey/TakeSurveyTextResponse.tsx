@@ -33,6 +33,8 @@ const TakeSurveyTextResponse = (props: TakeSurveyTextResponseProps) => {
 
   return (
     <Textarea
+      autosize
+      minRows={3}
       placeholder='Type your response here'
       value={answerText}
       onChange={handleEditResponseText}
