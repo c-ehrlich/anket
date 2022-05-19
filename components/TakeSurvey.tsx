@@ -65,33 +65,6 @@ const TakeSurveyInner = ({
           </Badge>
         </div>
         {survey.description !== '' && <Text>{survey.description}</Text>}
-        <div>
-          {survey.isPublic ? (
-            <Badge
-              size='lg'
-              variant='filled'
-              sx={{ paddingLeft: 8 }}
-              leftSection={
-                <Eye size={20} style={{ position: 'relative', top: '4px' }} />
-              }
-            >
-              Public
-            </Badge>
-          ) : (
-            <Badge
-              size='lg'
-              variant='outline'
-              leftSection={
-                <EyeOff
-                  size={22}
-                  style={{ position: 'relative', top: '4px' }}
-                />
-              }
-            >
-              Private
-            </Badge>
-          )}
-        </div>
         {survey.questions.map((question, index) => (
           <TakeSurveyQuestion
             key={question.id}
