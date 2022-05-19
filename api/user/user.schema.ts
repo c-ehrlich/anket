@@ -12,6 +12,11 @@ const userWithSurveysSchema = z.object({
       description: z.string(),
       isCompleted: z.boolean(),
       isPublic: z.boolean(),
+      participations: z.array(
+        z.object({
+          isComplete: z.boolean(),
+        })
+      ),
     })
   ),
 });

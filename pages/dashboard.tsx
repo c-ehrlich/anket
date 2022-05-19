@@ -1,9 +1,10 @@
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
 import React from 'react';
+import Dashboard from '../components/Dashboard';
 
 const AllSurveys = () => {
-    return <div>dash</div>
+    return <Dashboard />
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {

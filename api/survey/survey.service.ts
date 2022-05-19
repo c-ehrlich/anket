@@ -3,7 +3,6 @@ import {
   EditSurveyData,
   SurveyFE,
   SurveyFEWithAuthor,
-  SurveyPreviewWithAuthor,
   SurveyPreviewWithAuthorAndInteraction,
 } from './survey.schema';
 import prisma from '../utils/prisma';

@@ -109,3 +109,19 @@ export const toggleMCMItemRequestSchema = z.object({
 export type ToggleMCMItemRequest = z.infer<
   typeof toggleMCMItemRequestSchema
 >['body'];
+
+const dashboardSurveyParticipationSchema = z.object({
+  id: z.string().cuid(),
+  isComplete: z.boolean(),
+  survey: z.object({
+    name: z.string(),
+    description: z.string(),
+    author: z.object({
+      name: z.string().nullable(),
+      image: z.string().nullable(),
+    }),
+  }),
+});
+export type DashboardSurveyParticipation = z.infer<
+  typeof dashboardSurveyParticipationSchema
+>;

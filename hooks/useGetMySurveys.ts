@@ -1,10 +1,10 @@
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
-import { SurveyPreviewWithAuthor } from '../api/survey/survey.schema';
+import { SurveyPreviewWithAuthor, SurveyPreviewWithAuthorAndInteraction } from '../api/survey/survey.schema';
 
 const getMySurveys = async (userId: string) => {
-  const surveys: SurveyPreviewWithAuthor[] = await axios
+  const surveys: SurveyPreviewWithAuthorAndInteraction[] = await axios
     .get(`/api/survey/user?id=${userId}`)
     .then((res) => res.data);
   return surveys;
@@ -19,7 +19,7 @@ export default function useGetMySurveys() {
     console.error('no userId');
   }
 
-  return useQuery<SurveyPreviewWithAuthor[], Error>(['my-surveys'], () =>
+  return useQuery<SurveyPreviewWithAuthorAndInteraction[], Error>(['my-surveys'], () =>
     getMySurveys(userId)
   );
 }

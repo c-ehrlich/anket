@@ -14,15 +14,16 @@
   - [ ] Can test this even before deploying
 - [ ] Figure out how to set up GitHub Actions
 ### Home
-- [ ] Put stuff there
-- [ ] My Surveys
-  - [ ] if none: You have not created any surveys yet. Why not (link: create one now)?
-  - [ ] Finish creating this survey / these surveys!
-  - [ ] There were ${num} respones to your surveys in the past 24 hours 
-- [ ] Participations
-  - [ ] You have {num} uncompleted survey responses!
-    - (list)
-    - (else: You are currently not taking any surveys. Why not (link: find one to take)?
+- [x] Get data into frontend
+- [ ] Display it
+  - [ ] My Surveys
+    - [ ] if none: You have not created any surveys yet. Why not (link: create one now)?
+    - [ ] Finish creating this survey / these surveys!
+    - [ ] There were ${num} new or modified respones to your surveys in the past 24 hours - view data
+  - [ ] Participations
+    - [ ] You have {num} uncompleted survey responses!
+      - (list)
+      - (else: You are currently not taking any surveys. Why not (link: find one to take)?
 ### UI
 - [ ] Background color?
 - [ ] small screen: sidebar in/out should be animated
@@ -63,6 +64,8 @@
 - [ ] See where we can reduce the number of props (for example in EditSurveyMultipleChoiceAnswer by passing an object instead of multiple parts of that object)
 - [ ] User profiles ... users can have settings, nicknames, etc
   - [ ] When logging in with a user that doesn't exist in the db yet, force them to create a user profile
+### Refactor
+- [ ] Modify all services to return promises instead of the actual objects
 
 # Anket Done
 ## MVP v1

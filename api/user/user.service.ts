@@ -22,6 +22,14 @@ export async function getUserWithSurveys(id: string) {
             updatedAt: true,
             isCompleted: true,
             isPublic: true,
+            participations: {
+              where: {
+                userId: id
+              },
+              select: {
+                isComplete: true
+              }
+            }
           },
         },
       },

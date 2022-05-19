@@ -2,8 +2,15 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
 import getId from '../utils/getId';
 import logger from '../utils/logger';
-import { SurveyWithParticipationAndUserResponses } from './surveyParticipation.schema';
-import { getOrCreateSurveyParticipation } from './surveyParticipation.service';
+import {
+  DashboardSurveyParticipation,
+  SurveyWithParticipationAndUserResponses,
+} from './surveyParticipation.schema';
+import {
+  getMySurveysParticipationSinceCount,
+  getOrCreateSurveyParticipation,
+  getSurveyParticipationPreviews,
+} from './surveyParticipation.service';
 
 export async function getOrCreateSurveyParticipationHandler(
   req: NextApiRequest,
@@ -36,4 +43,54 @@ export async function getOrCreateSurveyParticipationHandler(
   }
 
   return res.status(200).json(surveyParticipation);
+}
+
+export async function getMySurveyParticipationsHandler(
+  req: NextApiRequest,
+  res: NextApiResponse<DashboardSurveyParticipation[] | string>
+) {
+  const session = await getSession({ req });
+  const userId = session!.user!.id;
+  if (!userId) {
+    return res.status(400).json('no session');
+  }
+
+  const isComplete = req.query.unfinished === 'true' ? false : undefined;
+
+  const mySurveyParticipations: DashboardSurveyParticipation[] | undefined =
+    await getSurveyParticipationPreviews({
+      userId,
+      isComplete,
+    });
+  if (mySurveyParticipations === undefined) {
+    return res.status(400).send('failed to get surveyParticipations');
+  }
+
+  return res.status(200).send(mySurveyParticipations);
+}
+
+export async function getNewParticipationsHandler(
+  req: NextApiRequest,
+  res: NextApiResponse<number | string>
+) {
+  const session = await getSession({ req });
+  const userId = session!.user!.id;
+  if (!userId) {
+    return res.status(400).json('no session');
+  }
+
+  const sinceArg = Array.isArray(req.query.since)
+    ? Number(req.query.since[0])
+    : Number(req.query.since);
+  const since = new Date(Date.now() - (sinceArg ? sinceArg : 0));
+
+  const participations = await getMySurveysParticipationSinceCount({
+    userId,
+    since,
+  });
+  if (participations === undefined) {
+    return res.status(400).send('failed to get participations');
+  }
+
+  return res.status(200).send(participations)
 }

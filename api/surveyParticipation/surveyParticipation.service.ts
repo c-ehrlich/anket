@@ -1,6 +1,7 @@
 import prisma from '../utils/prisma';
 import logger from '../utils/logger';
 import {
+  DashboardSurveyParticipation,
   GetSurveyParticipationData,
   SurveyWithParticipationAndUserResponses,
 } from './surveyParticipation.schema';
@@ -78,7 +79,7 @@ export async function getOrCreateSurveyParticipation({
                 },
                 orderBy: {
                   order: 'asc',
-                }
+                },
               },
               questionResponses: {
                 where: {
@@ -109,7 +110,6 @@ export async function getSurveyParticipationId({
   userId,
   surveyId,
 }: GetSurveyParticipationData) {
-  logger.info(`userId: ${userId}, surveyId: ${surveyId}`);
   try {
     const surveyParticipation = await prisma.surveyParticipation.findUnique({
       where: {
@@ -126,6 +126,72 @@ export async function getSurveyParticipationId({
       ? surveyParticipation.id
       : null;
     return surveyParticipationId;
+  } catch (e) {
+    logger.error(e);
+  }
+}
+
+// TODO create schema/type
+export async function getSurveyParticipationPreviews({
+  userId,
+  isComplete = undefined,
+}: {
+  userId: string;
+  isComplete: boolean | undefined;
+}): Promise<DashboardSurveyParticipation[] | undefined> {
+  try {
+    return prisma.surveyParticipation.findMany({
+      where: {
+        userId,
+        survey: {
+          isPublic: true,
+          isCompleted: true,
+        },
+        isComplete,
+      },
+      select: {
+        id: true,
+        isComplete: true,
+        survey: {
+          select: {
+            author: {
+              select: {
+                name: true,
+                image: true,
+              },
+            },
+            name: true,
+            description: true,
+          },
+        },
+      },
+      orderBy: {
+        updatedAt: 'desc',
+      },
+    });
+  } catch (e) {
+    logger.error(e);
+  }
+}
+
+export async function getMySurveysParticipationSinceCount({
+  userId,
+  since,
+}: {
+  userId: string;
+  since: Date;
+}) {
+  try {
+    return prisma.surveyParticipation.count({
+      where: {
+        survey: {
+          authorId: userId,
+        },
+        updatedAt: {
+          gte: since,
+        },
+      },
+    });
   } catch (e) {
     logger.error(e);
   }
