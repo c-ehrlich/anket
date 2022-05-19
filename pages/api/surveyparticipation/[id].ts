@@ -6,6 +6,6 @@ import { nextConnectOptions } from '../../../api/utils/nextConnect';
 
 const handler = NextConnectHandler<NextApiRequest, NextApiResponse>(
   nextConnectOptions
-).get(requireSession, getOrCreateSurveyParticipationHandler);
+).put(requireSession, getOrCreateSurveyParticipationHandler);
 
 export default handler;

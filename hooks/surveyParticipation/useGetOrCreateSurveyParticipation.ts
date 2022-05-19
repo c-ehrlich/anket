@@ -7,7 +7,7 @@ import { QueryKeys } from '../../types/queryKeys';
 
 export const getOrCreateSurveyParticipation = async (surveyId: string) => {
   const participation: SurveyWithParticipationAndUserResponses = await axios
-    .get(`/api/surveyparticipation/${surveyId}`)
+    .put(`/api/surveyparticipation/${surveyId}`)
     .then((res) => res.data);
   return participation;
 };
