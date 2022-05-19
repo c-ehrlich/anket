@@ -13,7 +13,6 @@ import {
   Text,
   Title,
 } from '@mantine/core';
-import { Eye, EyeOff } from 'tabler-icons-react';
 import useGetOrCreateSurveyParticipation from '../hooks/surveyParticipation/useGetOrCreateSurveyParticipation';
 import TakeSurveyNumericResponse from './takeSurvey/TakeSurveyNumericResponse';
 import TakeSurveyBooleanResponse from './takeSurvey/TakeSurveyBooleanResponse';
