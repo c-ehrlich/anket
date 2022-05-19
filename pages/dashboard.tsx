@@ -1,18 +1,18 @@
-import type { GetServerSideProps, NextPage } from 'next';
+import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
-import LandingPage from '../components/LandingPage';
+import React from 'react';
 
-const Home: NextPage = () => {
-  return <LandingPage />;
+const AllSurveys = () => {
+    return <div>dash</div>
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
 
-  if (session) {
+  if (!session) {
     return {
       redirect: {
-        destination: '/dashboard',
+        destination: '/signin',
         permanent: false,
       },
     };
@@ -23,4 +23,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-export default Home;
+export default AllSurveys;
