@@ -13,11 +13,9 @@ import {
   getProviders,
   ClientSafeProvider,
   LiteralUnion,
-  useSession,
   signIn,
   getSession,
 } from 'next-auth/react';
-import { useRouter } from 'next/router';
 import {
   BrandDiscord,
   BrandGithub,
@@ -31,15 +29,6 @@ function SignInPage(props: {
     ClientSafeProvider
   > | null;
 }) {
-  const router = useRouter();
-  const { data: session } = useSession();
-
-  if (session?.user) {
-    router.push('/');
-
-    return <></>;
-  }
-
   if (!props.providers) return <div>no providers</div>;
 
   return (
@@ -95,9 +84,19 @@ function GetProviderLogo({ id }: { id: string }) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context);
+
+  if (session) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      }
+    }
+  }
+
   return {
     props: {
-      session: await getSession(context),
       providers: await getProviders(),
     },
   };
