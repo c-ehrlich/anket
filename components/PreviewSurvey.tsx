@@ -127,7 +127,15 @@ const PreviewSurvey = (props: Props) => {
             </Button>
           </Link>
         </div>
-        <Button>Submit</Button>
+        <Button
+          onClick={() =>
+            window.alert(
+              'this button will do something once i implement zod schema validation'
+            )
+          }
+        >
+          Submit
+        </Button>
       </Group>
     </Stack>
   );
