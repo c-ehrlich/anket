@@ -13,17 +13,6 @@
 - [ ] Get the real DB running https://vercel.com/guides/nextjs-prisma-postgres
   - [ ] Can test this even before deploying
 - [ ] Figure out how to set up GitHub Actions
-### Home
-- [x] Get data into frontend
-- [ ] Display it
-  - [ ] My Surveys
-    - [ ] if none: You have not created any surveys yet. Why not (link: create one now)?
-    - [ ] Finish creating this survey / these surveys!
-    - [ ] There were ${num} new or modified respones to your surveys in the past 24 hours - view data
-  - [ ] Participations
-    - [ ] You have {num} uncompleted survey responses!
-      - (list)
-      - (else: You are currently not taking any surveys. Why not (link: find one to take)?
 ### UI
 - [ ] Background color?
 - [ ] small screen: sidebar in/out should be animated
@@ -211,6 +200,17 @@
   - [x] We need to know what's inside the interaction (maybe just the COUNT of QuestionResponses and MCOSelections?)
     - [x] Can we 'reduce' / 'aggregate'?
   - [x] Might need to change the types for this to work
+  ### Dashboard
+- [x] Get data into frontend
+- [x] Display it
+  - [x] My Surveys
+    - [x] if none: You have not created any surveys yet. Why not (link: create one now)?
+    - [x] Finish creating this survey / these surveys!
+    - [x] There were ${num} new or modified respones to your surveys in the past 24 hours - view data
+  - [x] Participations
+    - [x] You have {num} uncompleted survey responses!
+      - (list)
+      - (else: You are currently not taking any surveys. Why not (link: find one to take)?
 
 
 ## MVP 2

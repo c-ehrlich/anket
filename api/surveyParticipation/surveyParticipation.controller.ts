@@ -55,12 +55,9 @@ export async function getMySurveyParticipationsHandler(
     return res.status(400).json('no session');
   }
 
-  const isComplete = req.query.unfinished === 'true' ? false : undefined;
-
   const mySurveyParticipations: DashboardSurveyParticipation[] | undefined =
     await getSurveyParticipationPreviews({
       userId,
-      isComplete,
     });
   if (mySurveyParticipations === undefined) {
     return res.status(400).send('failed to get surveyParticipations');
@@ -92,5 +89,5 @@ export async function getNewParticipationsHandler(
     return res.status(400).send('failed to get participations');
   }
 
-  return res.status(200).send(participations)
+  return res.status(200).send(participations);
 }

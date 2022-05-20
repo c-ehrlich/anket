@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
-import { SurveyPreviewWithAuthor, SurveyPreviewWithAuthorAndInteraction } from '../api/survey/survey.schema';
+import {  SurveyPreviewWithAuthorAndInteraction } from '../api/survey/survey.schema';
 
 const getMySurveys = async (userId: string) => {
   const surveys: SurveyPreviewWithAuthorAndInteraction[] = await axios

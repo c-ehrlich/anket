@@ -113,7 +113,9 @@ export type ToggleMCMItemRequest = z.infer<
 const dashboardSurveyParticipationSchema = z.object({
   id: z.string().cuid(),
   isComplete: z.boolean(),
+  updatedAt: z.date(),
   survey: z.object({
+    id: z.string().cuid(),
     name: z.string(),
     description: z.string(),
     author: z.object({

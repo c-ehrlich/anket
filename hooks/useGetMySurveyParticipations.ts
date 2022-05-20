@@ -2,16 +2,16 @@ import { useQuery } from 'react-query';
 import axios from 'axios';
 import { DashboardSurveyParticipation } from '../api/surveyParticipation/surveyParticipation.schema';
 
-const getMyUnfinishedSurveyParticipations = async () => {
+const getMySurveyParticipations = async () => {
   const surveys: DashboardSurveyParticipation[] = await axios
-    .get(`/api/surveyparticipation?unfinished=true`)
+    .get(`/api/surveyparticipation`)
     .then((res) => res.data);
   return surveys;
 };
 
-export default function useGetMyUnfinshedSurveyParticipations() {
+export default function useGetMySurveyParticipations() {
   return useQuery<DashboardSurveyParticipation[], Error>(
     ['dashboard', 'participations'],
-    () => getMyUnfinishedSurveyParticipations()
+    () => getMySurveyParticipations()
   );
 }

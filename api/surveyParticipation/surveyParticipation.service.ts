@@ -134,10 +134,8 @@ export async function getSurveyParticipationId({
 // TODO create schema/type
 export async function getSurveyParticipationPreviews({
   userId,
-  isComplete = undefined,
 }: {
   userId: string;
-  isComplete: boolean | undefined;
 }): Promise<DashboardSurveyParticipation[] | undefined> {
   try {
     return prisma.surveyParticipation.findMany({
@@ -147,11 +145,11 @@ export async function getSurveyParticipationPreviews({
           isPublic: true,
           isCompleted: true,
         },
-        isComplete,
       },
       select: {
         id: true,
         isComplete: true,
+        updatedAt: true,
         survey: {
           select: {
             author: {
@@ -162,6 +160,7 @@ export async function getSurveyParticipationPreviews({
             },
             name: true,
             description: true,
+            id: true,
           },
         },
       },
