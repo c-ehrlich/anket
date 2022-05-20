@@ -75,7 +75,15 @@ function MySurveys() {
             </>
           ) : null}
           {finishedSurveys.length > 0 ? (
-            <div>a</div>
+            <>
+              <Text>
+                You have created {finishedSurveys.length} surveys. Here are the
+                most recent {Math.min(3, finishedSurveys.length)}.
+              </Text>
+              {finishedSurveys.slice(0, 3).map((s) => (
+                <CreatedSurveyCard key={s.id} survey={s} />
+              ))}
+            </>
           ) : (
             <Stack>
               <Text>
