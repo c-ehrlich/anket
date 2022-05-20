@@ -1,4 +1,4 @@
-import { Box, Button, Center, Stack, Text, Title } from '@mantine/core';
+import { Box, Button, Center, Stack, Title } from '@mantine/core';
 import { useViewportSize } from '@mantine/hooks';
 import useGetOrCreateSurveyParticipation from '../hooks/surveyParticipation/useGetOrCreateSurveyParticipation';
 import Confetti from 'react-confetti';
@@ -13,7 +13,7 @@ const ThanksForTakingSurvey = ({ surveyId }: { surveyId: string }) => {
     return <div>{JSON.stringify(interaction.error)}</div>;
   if (!interaction.data) return <div>Loading...</div>;
 
-  // if (!interaction.data.participations[0].isComplete) router.push('/');
+  if (!interaction.data.participations[0].isComplete) router.push('/');
 
   return (
     <Center>
