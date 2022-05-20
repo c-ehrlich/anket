@@ -2,6 +2,7 @@ import React from 'react';
 import {
   SurveyQuestionWithResponses,
   SurveyWithParticipationAndUserResponses,
+  UpdateSurveyParticipationResponse,
 } from '../api/surveyParticipation/surveyParticipation.schema';
 import {
   Avatar,
@@ -19,6 +20,8 @@ import TakeSurveyBooleanResponse from './takeSurvey/TakeSurveyBooleanResponse';
 import TakeSurveyTextResponse from './takeSurvey/TakeSurveyTextResponse';
 import TakeSurveyMCMOption from './takeSurvey/TakeSurveyMCMOption';
 import TakeSurveyMCSResponse from './takeSurvey/TakeSurveyMCSResponse';
+import axios from 'axios';
+import { useRouter } from 'next/router';
 
 /**
  * TODO: error checking (eg what happens if we navigate here while not being logged in?
@@ -45,6 +48,19 @@ const TakeSurveyInner = ({
 }: {
   survey: SurveyWithParticipationAndUserResponses;
 }) => {
+  const router = useRouter();
+
+  async function setComplete() {
+    const updatedParticipation: UpdateSurveyParticipationResponse = await axios.patch(`/api/surveyparticipation/${survey.participations[0].id}`, {
+      isComplete: true,
+    }).then(res => res.data);
+    if (updatedParticipation.isComplete) {
+      router.push(`/survey/submitted/${survey.id}`)  
+    } else {
+      window.alert(JSON.stringify(updatedParticipation))
+    }
+  }
+
   return (
     <>
       <Stack style={{ marginBottom: '64px' }}>
@@ -78,7 +94,7 @@ const TakeSurveyInner = ({
           <Button style={{ width: '100%' }} variant='outline' color='red'>
             Cancel
           </Button>
-          <Button onClick={() => window.alert('todo')}>Submit</Button>
+          <Button onClick={setComplete}>Submit</Button>
         </Group>
       </Stack>
     </>

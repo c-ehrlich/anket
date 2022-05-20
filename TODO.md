@@ -12,7 +12,6 @@
   - [ ] Can test this even before deploying
 - [ ] Figure out how to set up GitHub Actions
 ### UI
-- [ ] Background color?
 - [ ] small screen: sidebar in/out should be animated
 - [ ] make all the disabled stuff in the anket creator not have special mouse cursors
 - [ ] Choose nicer fonts (use the themeing in Mantine - and use same fonts as landing page?)
@@ -22,10 +21,8 @@
 - [ ] Landing page: reduce spacing between sections on phones
 - [ ] Make login page a modal instead (https://github.com/nextauthjs/next-auth/issues/178)
 - [ ] AppShell: on phone screens, scrolling the menu should scroll the menu, not the content underneath it!
+- [ ] Dashboard: make strings better... single/plural etc
 ### Taking a survey
-- [!] Allow Submitting the entire interaction to make it 'done'
-  - [x] Create thank you page
-  - [ ] Redirect to a thank you page after submission
 - [ ] Use schema validation on the submission
 ### Survey Responses
 - [ ] Make a button that creates three dummy responses
@@ -155,6 +152,9 @@
   - [x] MultipleChoiceSingle
 - [x] optimistic updates in useDeleteQuestionResponse
 - [x] Text Response input should be resizeable
+- [x] Allow Submitting the entire interaction to make it 'done'
+  - [x] Create thank you page
+  - [x] Redirect to a thank you page after submission
 ### Backend
 - [x] clone the logger from tom does tech youtube clone, and re-convert every consoleDOTlog/error to that logger
 - [x] Create schema for everything and validate every request
