@@ -119,11 +119,11 @@ function MySurveys() {
 function TakenSurveys() {
   const { data: myParticipations } = useGetMySurveyParticipations();
 
-  const myUnfinishedParticipations = useMemo(() => {
+  const myFinishedParticipations = useMemo(() => {
     return myParticipations?.filter((p) => p.isComplete);
   }, [myParticipations]);
 
-  const myFinishedParticipations = useMemo(() => {
+  const myUnfinishedParticipations = useMemo(() => {
     return myParticipations?.filter((p) => !p.isComplete);
   }, [myParticipations]);
 
