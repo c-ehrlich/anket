@@ -195,3 +195,26 @@ export async function getMySurveysParticipationSinceCount({
     logger.error(e);
   }
 }
+
+export async function updateSurveyParticipation({
+  id,
+  data,
+}: {
+  id: string;
+  data: any;
+}) {
+  try {
+    return prisma.surveyParticipation.update({
+      where: {
+        id,
+      },
+      data,
+      select: {
+        id: true,
+        isComplete: true,
+      }
+    });
+  } catch (e) {
+    logger.error(e);
+  }
+}

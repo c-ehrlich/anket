@@ -127,3 +127,22 @@ const dashboardSurveyParticipationSchema = z.object({
 export type DashboardSurveyParticipation = z.infer<
   typeof dashboardSurveyParticipationSchema
 >;
+
+export const updateSurveyParticipationDataSchema = z.object({
+  body: z
+    .object({
+      isComplete: z.boolean(),
+    })
+    .optional(),
+});
+export type UpdateSurveyParticipationData = z.infer<
+  typeof updateSurveyParticipationDataSchema
+>['body'];
+
+const updateSurveyParticipationResponseSchema = z.object({
+  id: z.string().cuid(),
+  isComplete: z.boolean(),
+});
+export type UpdateSurveyParticipationResponse = z.infer<
+  typeof updateSurveyParticipationResponseSchema
+>;

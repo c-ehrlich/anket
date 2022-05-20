@@ -5,11 +5,13 @@ import logger from '../utils/logger';
 import {
   DashboardSurveyParticipation,
   SurveyWithParticipationAndUserResponses,
+  UpdateSurveyParticipationResponse,
 } from './surveyParticipation.schema';
 import {
   getMySurveysParticipationSinceCount,
   getOrCreateSurveyParticipation,
   getSurveyParticipationPreviews,
+  updateSurveyParticipation,
 } from './surveyParticipation.service';
 
 export async function getOrCreateSurveyParticipationHandler(
@@ -90,4 +92,29 @@ export async function getNewParticipationsHandler(
   }
 
   return res.status(200).send(participations);
+}
+
+export async function updateSurveyParticipationHandler(
+  req: NextApiRequest,
+  res: NextApiResponse<UpdateSurveyParticipationResponse | string>
+) {
+  const session = await getSession({ req });
+  const userId = session!.user!.id;
+  if (!userId) {
+    return res.status(400).json('no session');
+  }
+
+  const id = getId(req);
+
+  const data = req.body;
+
+  const updatedSurveyParticipation = await updateSurveyParticipation({
+    id,
+    data,
+  });
+
+  if (!updatedSurveyParticipation)
+    return res.status(400).send('failed to update survey participation');
+
+  return res.status(200).json(updatedSurveyParticipation);
 }
