@@ -25,11 +25,9 @@ export async function createDefaultMultipleChoiceOption({
       : 0;
 
   try {
-    const multipleChoiceOption = prisma.multipleChoiceOption.create({
+    return prisma.multipleChoiceOption.create({
       data: { name: '', questionId, order },
     });
-
-    return multipleChoiceOption;
   } catch (e) {
     logger.error(e);
   }
@@ -43,12 +41,10 @@ export async function editMultipleChoiceOption({
   data: EditMultipleChoiceOptionData;
 }) {
   try {
-    const multipleChoiceOption = await prisma.multipleChoiceOption.update({
+    return prisma.multipleChoiceOption.update({
       where: { id },
       data,
     });
-
-    return multipleChoiceOption;
   } catch (e) {
     logger.error(e);
   }
@@ -61,9 +57,9 @@ export async function deleteMultipleChoiceOption({ id }: { id: string }) {
     });
 
     // change order of all multipleChoiceOptions after this one
-    await prisma.multipleChoiceOption.updateMany({
+    return prisma.multipleChoiceOption.updateMany({
       where: {
-        questionId: (await deletedOption).questionId,
+        questionId: deletedOption.questionId,
         order: {
           gt: deletedOption.order,
         },
@@ -72,8 +68,6 @@ export async function deleteMultipleChoiceOption({ id }: { id: string }) {
         order: { decrement: 1 },
       },
     });
-
-    return deletedOption;
   } catch (e) {
     logger.error(e);
   }
@@ -85,11 +79,9 @@ export async function deleteMultipleChoiceOptionsForQuestion({
   questionId: string;
 }) {
   try {
-    const deletedOptions = prisma.multipleChoiceOption.deleteMany({
+    return prisma.multipleChoiceOption.deleteMany({
       where: { questionId },
     });
-
-    return deletedOptions;
   } catch (e) {
     logger.error(e);
   }
@@ -110,13 +102,12 @@ export async function reorderMultipleChoiceOption({
 
     // if the orders are the same, we don't need to do anything
     if (order === option.order) {
-      const unchangedOptions = await prisma.multipleChoiceOption.findMany({
+      return prisma.multipleChoiceOption.findMany({
         where: { questionId: option.questionId },
         orderBy: {
           order: 'asc',
         },
       });
-      return unchangedOptions;
     }
 
     // TODO reimplement this function without this extra db call, should be possible...
@@ -181,13 +172,12 @@ export async function reorderMultipleChoiceOption({
     if (!shiftedOption) throw new Error('failed to reorder the main option');
 
     // return _all_ options for that question
-    const allOptions = await prisma.multipleChoiceOption.findMany({
+    return prisma.multipleChoiceOption.findMany({
       where: { questionId: option.questionId },
       orderBy: {
         order: 'asc',
       },
     });
-    return allOptions;
   } catch (e: any) {
     logger.error(e);
   }
@@ -243,24 +233,16 @@ export async function reorderAllMultipleChoiceOptions(
       });
       updatedItems.concat(updatedItem);
     }
-    logger.info('updatedItems');
-    logger.info(updatedItems);
 
-    const allMultipleChoiceOptionsForQuestion =
-      await prisma.multipleChoiceOption.findMany({
-        where: { questionId },
-        orderBy: { order: 'asc' },
-        select: {
-          id: true,
-          name: true,
-          order: true,
-        },
-      });
-
-    logger.info('all options');
-    logger.info(allMultipleChoiceOptionsForQuestion);
-
-    return allMultipleChoiceOptionsForQuestion;
+    return prisma.multipleChoiceOption.findMany({
+      where: { questionId },
+      orderBy: { order: 'asc' },
+      select: {
+        id: true,
+        name: true,
+        order: true,
+      },
+    });
   } catch (e: any) {
     logger.error(e);
   }

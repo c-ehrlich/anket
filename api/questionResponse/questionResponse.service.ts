@@ -10,7 +10,7 @@ export async function upsertQuestionResponse({
   answerNumeric,
 }: UpdateQuestionResponseRequest) {
   try {
-    const questionResponse = prisma.questionResponse.upsert({
+    return prisma.questionResponse.upsert({
       where: {
         surveyParticipationId_questionId: {
           surveyParticipationId,
@@ -30,7 +30,6 @@ export async function upsertQuestionResponse({
         answerNumeric,
       },
     });
-    return questionResponse;
   } catch (e) {
     logger.error(e);
   }
@@ -38,12 +37,11 @@ export async function upsertQuestionResponse({
 
 export async function deleteQuestionResponseById(id: string) {
   try {
-    const deletedQuestionResponse = await prisma.questionResponse.delete({
+    return prisma.questionResponse.delete({
       where: {
         id,
       },
     });
-    return deletedQuestionResponse;
   } catch (e) {
     logger.error(e);
   }
@@ -51,7 +49,7 @@ export async function deleteQuestionResponseById(id: string) {
 
 export async function getQuestionResponseById(id: string) {
   try {
-    const questionResponse = await prisma.questionResponse.findUnique({
+    return prisma.questionResponse.findUnique({
       where: { id },
       include: {
         surveyParticipation: {
@@ -65,7 +63,6 @@ export async function getQuestionResponseById(id: string) {
         },
       },
     });
-    return questionResponse;
   } catch (e) {
     logger.error(e);
   }

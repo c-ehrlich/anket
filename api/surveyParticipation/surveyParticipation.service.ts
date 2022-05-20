@@ -24,83 +24,80 @@ export async function getOrCreateSurveyParticipation({
     });
     if (!participation) throw new Error('failed to upsert surveyParticipation');
 
-    const surveyWithParticipation: SurveyWithParticipationAndUserResponses | null =
-      await prisma.survey.findUnique({
-        where: {
-          id: surveyId,
+    return prisma.survey.findUnique({
+      where: {
+        id: surveyId,
+      },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        createdAt: true,
+        updatedAt: true,
+        isPublic: true,
+        isCompleted: true,
+        author: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            image: true,
+          },
         },
-        select: {
-          id: true,
-          name: true,
-          description: true,
-          createdAt: true,
-          updatedAt: true,
-          isPublic: true,
-          isCompleted: true,
-          author: {
-            select: {
-              id: true,
-              name: true,
-              email: true,
-              image: true,
-            },
+        participations: {
+          where: {
+            userId,
           },
-          participations: {
-            where: {
-              userId,
-            },
-            select: {
-              id: true,
-              isComplete: true,
-            },
+          select: {
+            id: true,
+            isComplete: true,
           },
-          questions: {
-            select: {
-              id: true,
-              order: true,
-              question: true,
-              questionType: true,
-              details: true,
-              isRequired: true,
-              multipleChoiceOptions: {
-                select: {
-                  id: true,
-                  name: true,
-                  order: true,
-                  multipleChoiceOptionSelections: {
-                    where: {
-                      surveyParticipationId: participation.id,
-                    },
-                    select: {
-                      id: true,
-                      selected: true,
-                    },
+        },
+        questions: {
+          select: {
+            id: true,
+            order: true,
+            question: true,
+            questionType: true,
+            details: true,
+            isRequired: true,
+            multipleChoiceOptions: {
+              select: {
+                id: true,
+                name: true,
+                order: true,
+                multipleChoiceOptionSelections: {
+                  where: {
+                    surveyParticipationId: participation.id,
+                  },
+                  select: {
+                    id: true,
+                    selected: true,
                   },
                 },
-                orderBy: {
-                  order: 'asc',
-                },
               },
-              questionResponses: {
-                where: {
-                  surveyParticipationId: participation.id,
-                },
-                select: {
-                  id: true,
-                  answerBoolean: true,
-                  answerNumeric: true,
-                  answerText: true,
-                },
+              orderBy: {
+                order: 'asc',
               },
             },
-            orderBy: {
-              order: 'asc',
+            questionResponses: {
+              where: {
+                surveyParticipationId: participation.id,
+              },
+              select: {
+                id: true,
+                answerBoolean: true,
+                answerNumeric: true,
+                answerText: true,
+              },
             },
           },
+          orderBy: {
+            order: 'asc',
+          },
         },
-      });
-
-    return surveyWithParticipation;
+      },
+    });
   } catch (e: any) {
     logger.error(e);
   }
@@ -212,7 +209,7 @@ export async function updateSurveyParticipation({
       select: {
         id: true,
         isComplete: true,
-      }
+      },
     });
   } catch (e) {
     logger.error(e);

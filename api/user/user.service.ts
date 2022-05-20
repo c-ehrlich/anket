@@ -3,7 +3,7 @@ import logger from '../utils/logger';
 
 export async function getUserWithSurveys(id: string) {
   try {
-    const userWithSurveys = await prisma.user.findUnique({
+    return prisma.user.findUnique({
       where: { id },
       select: {
         id: true,
@@ -24,20 +24,16 @@ export async function getUserWithSurveys(id: string) {
             isPublic: true,
             participations: {
               where: {
-                userId: id
+                userId: id,
               },
               select: {
-                isComplete: true
-              }
-            }
+                isComplete: true,
+              },
+            },
           },
         },
       },
     });
-
-    if (!userWithSurveys) throw new Error('Failed to find user');
-
-    return userWithSurveys;
   } catch (e: any) {
     logger.error(e);
   }

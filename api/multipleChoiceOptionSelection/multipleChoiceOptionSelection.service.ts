@@ -1,9 +1,6 @@
 import logger from '../utils/logger';
 import prisma from '../utils/prisma';
-import {
-  MultipleChoiceOptionSelectionFE,
-  UpsertMultipleChoiceOptionResponseServiceInput,
-} from './multipleChoiceOptionSelection.schema';
+import { UpsertMultipleChoiceOptionResponseServiceInput } from './multipleChoiceOptionSelection.schema';
 
 export async function upsertMultipleChoiceOptionSelection({
   surveyParticipationId,
@@ -11,29 +8,26 @@ export async function upsertMultipleChoiceOptionSelection({
   selected,
 }: UpsertMultipleChoiceOptionResponseServiceInput) {
   try {
-    const mcoResponse: MultipleChoiceOptionSelectionFE =
-      await prisma.multipleChoiceOptionSelection.upsert({
-        where: {
-          surveyParticipationId_multipleChoiceOptionId: {
-            surveyParticipationId,
-            multipleChoiceOptionId,
-          },
-        },
-        create: {
+    return prisma.multipleChoiceOptionSelection.upsert({
+      where: {
+        surveyParticipationId_multipleChoiceOptionId: {
           surveyParticipationId,
           multipleChoiceOptionId,
-          selected,
         },
-        update: {
-          selected,
-        },
-        select: {
-          id: true,
-          selected: true,
-        },
-      });
-
-    return mcoResponse;
+      },
+      create: {
+        surveyParticipationId,
+        multipleChoiceOptionId,
+        selected,
+      },
+      update: {
+        selected,
+      },
+      select: {
+        id: true,
+        selected: true,
+      },
+    });
   } catch (e) {
     logger.error(e);
   }
@@ -47,7 +41,7 @@ export async function deleteMCSOptionsForQuestion({
   surveyParticipationId: string;
 }) {
   try {
-    const deletedItemsCount: { count: number } = await prisma.multipleChoiceOptionSelection.deleteMany({
+    return prisma.multipleChoiceOptionSelection.deleteMany({
       where: {
         surveyParticipationId,
         multipleChoiceOption: {
@@ -57,8 +51,6 @@ export async function deleteMCSOptionsForQuestion({
         },
       },
     });
-    
-    return deletedItemsCount;
   } catch (e) {
     logger.error(e);
   }

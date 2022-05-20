@@ -24,7 +24,7 @@ export async function createDefaultQuestion({
       : 0;
 
   try {
-    const question: QuestionFE = await prisma.question.create({
+    return prisma.question.create({
       data: {
         surveyId,
         question: '',
@@ -42,7 +42,6 @@ export async function createDefaultQuestion({
         multipleChoiceOptions: true,
       },
     });
-    return question;
   } catch (e) {
     logger.error(e);
   }
@@ -97,7 +96,7 @@ export async function deleteQuestion({ id }: { id: string }) {
     });
 
     // change order of all questions after this one
-    await prisma.question.updateMany({
+    return prisma.question.updateMany({
       where: {
         surveyId: deletedQuestion.surveyId,
         order: {
@@ -108,8 +107,6 @@ export async function deleteQuestion({ id }: { id: string }) {
         order: { decrement: 1 },
       },
     });
-
-    return deletedQuestion;
   } catch (e) {
     logger.error(e);
   }
@@ -208,7 +205,7 @@ export async function reorderQuestion({
       throw new Error('failed to reorder the main question');
 
     // return _all_ questions for that survey
-    const allQuestions = await prisma.question.findMany({
+    return prisma.question.findMany({
       where: {
         surveyId: question.surveyId,
       },
@@ -216,8 +213,6 @@ export async function reorderQuestion({
         multipleChoiceOptions: true,
       },
     });
-
-    return allQuestions;
   } catch (e: any) {
     logger.error(e);
   }
@@ -225,7 +220,7 @@ export async function reorderQuestion({
 
 export async function getQuestionOwner(id: string) {
   try {
-    const question = await prisma.question.findUnique({
+    return prisma.question.findUnique({
       where: { id },
       select: {
         survey: {
@@ -235,7 +230,6 @@ export async function getQuestionOwner(id: string) {
         },
       },
     });
-    return question?.survey.authorId;
   } catch (e: any) {
     logger.error(e);
   }
@@ -243,10 +237,9 @@ export async function getQuestionOwner(id: string) {
 
 export async function getQuestionById(id: string) {
   try {
-    const question = await prisma.question.findUnique({
+    return prisma.question.findUnique({
       where: { id },
     });
-    return question;
   } catch (e: any) {
     logger.error(e);
   }

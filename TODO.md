@@ -54,8 +54,6 @@
 - [ ] See where we can reduce the number of props (for example in EditSurveyMultipleChoiceAnswer by passing an object instead of multiple parts of that object)
 - [ ] User profiles ... users can have settings, nicknames, etc
   - [ ] When logging in with a user that doesn't exist in the db yet, force them to create a user profile
-### Refactor
-- [ ] Modify all services to return promises instead of the actual objects
 
 # Anket Done
 ## MVP v1
@@ -167,6 +165,7 @@
   - [x] ...or at least a function
 - [x] Delete all references to Product
 - [x] Make type names shorter
+- [x] Modify all services to return promises instead of the actual objects
 ### Landing Page
 - [x] Write copy
 - [x] Create good styling

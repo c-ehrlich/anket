@@ -2,7 +2,6 @@ import {
   CreateDefaultSurveyInput,
   EditSurveyData,
   SurveyFE,
-  SurveyFEWithAuthor,
   SurveyPreviewWithAuthorAndInteraction,
 } from './survey.schema';
 import prisma from '../utils/prisma';
@@ -46,7 +45,7 @@ export async function createDefaultSurvey(data: CreateDefaultSurveyInput) {
 
   // ...If not, create one
   try {
-    const survey: SurveyFE = await prisma.survey.create({
+    return prisma.survey.create({
       data: {
         ...data,
         name: '',
@@ -82,7 +81,6 @@ export async function createDefaultSurvey(data: CreateDefaultSurveyInput) {
         },
       },
     });
-    return survey;
   } catch (e) {
     logger.error(e);
   }
@@ -91,38 +89,35 @@ export async function createDefaultSurvey(data: CreateDefaultSurveyInput) {
 export async function getAllPublicSurveyPreviews(
   userId: string | undefined = undefined
 ): Promise<SurveyPreviewWithAuthorAndInteraction[]> {
-  const surveys: SurveyPreviewWithAuthorAndInteraction[] =
-    await prisma.survey.findMany({
-      where: {
-        isCompleted: true,
-        isPublic: true,
-      },
-      select: {
-        author: { select: { id: true, name: true, image: true, email: true } },
-        id: true,
-        name: true,
-        description: true,
-        isCompleted: true,
-        isPublic: true,
-        participations: {
-          where: {
-            userId: userId,
-          },
-          select: {
-            isComplete: true,
-          },
+  return prisma.survey.findMany({
+    where: {
+      isCompleted: true,
+      isPublic: true,
+    },
+    select: {
+      author: { select: { id: true, name: true, image: true, email: true } },
+      id: true,
+      name: true,
+      description: true,
+      isCompleted: true,
+      isPublic: true,
+      participations: {
+        where: {
+          userId: userId,
+        },
+        select: {
+          isComplete: true,
         },
       },
-      orderBy: {
-        updatedAt: 'desc',
-      },
-    });
-
-  return surveys;
+    },
+    orderBy: {
+      updatedAt: 'desc',
+    },
+  });
 }
 
 export async function getUserSurveyPreviews(authorId: string) {
-  const surveys = await prisma.survey.findMany({
+  return prisma.survey.findMany({
     where: {
       authorId,
     },
@@ -138,13 +133,11 @@ export async function getUserSurveyPreviews(authorId: string) {
       updatedAt: 'desc',
     },
   });
-
-  return surveys;
 }
 
 export async function getSingleSurvey(id: string) {
   try {
-    const survey: SurveyFEWithAuthor | null = await prisma.survey.findUnique({
+    return prisma.survey.findUnique({
       where: { id },
       include: {
         questions: {
@@ -169,7 +162,6 @@ export async function getSingleSurvey(id: string) {
         },
       },
     });
-    return survey;
   } catch (e: any) {
     logger.error(e);
   }
@@ -183,7 +175,7 @@ export async function updateSurvey({
   data: EditSurveyData;
 }) {
   try {
-    const updatedSurvey = await prisma.survey.update({
+    return prisma.survey.update({
       where: { id },
       data,
       include: {
@@ -201,7 +193,6 @@ export async function updateSurvey({
         },
       },
     });
-    return updatedSurvey;
   } catch (e: any) {
     logger.error(e);
   }
@@ -209,7 +200,7 @@ export async function updateSurvey({
 
 export async function deleteSurvey({ id }: { id: string }) {
   try {
-    const deletedSurvey = await prisma.survey.delete({
+    return prisma.survey.delete({
       where: { id },
       // TODO do we really need this whole object? Maybe only send the basic data
       include: {
@@ -220,7 +211,6 @@ export async function deleteSurvey({ id }: { id: string }) {
         },
       },
     });
-    return deletedSurvey;
   } catch (e) {
     logger.error(e);
   }
@@ -228,13 +218,12 @@ export async function deleteSurvey({ id }: { id: string }) {
 
 export async function getSurveyOwner(id: string) {
   try {
-    const survey = await prisma.survey.findUnique({
+    return prisma.survey.findUnique({
       where: { id },
       select: {
         authorId: true,
       },
     });
-    return survey?.authorId;
   } catch (e) {
     logger.error(e);
   }
