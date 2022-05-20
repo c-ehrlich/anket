@@ -2,10 +2,8 @@
 ## MVP v1
 ### Want to do next
 - [ ] Try switching to Mantine-Form and use Zod validation on it
-- [ ] Turn useGetMySurveys and useGetAllSurveys into real queries
 ### Bugs
 - [!] Choppy MCO reordering - https://github.com/framer/motion/issues/1518
-- [!] Survey Submit button doesn't work
 
 ### Deployment
 - [ ] Figure out how to deploy it
@@ -25,9 +23,10 @@
 - [ ] Make login page a modal instead (https://github.com/nextauthjs/next-auth/issues/178)
 - [ ] AppShell: on phone screens, scrolling the menu should scroll the menu, not the content underneath it!
 ### Taking a survey
-- [ ] Allow Submitting the entire interaction to make it 'done'
+- [!] Allow Submitting the entire interaction to make it 'done'
+  - [x] Create thank you page
+  - [ ] Redirect to a thank you page after submission
 - [ ] Use schema validation on the submission
-- [ ] Redirect to a thank you page after submission
 ### Survey Responses
 - [ ] Make a button that creates three dummy responses
   - [ ] Seed the database with three fake users (check how fcc seeds the database)
@@ -37,6 +36,11 @@
 - [ ] For text, maybe IF it has 3 or more responses, find the 3 most popular words, and list those along with sample responses that use them
   - [ ] Exclude common words?
   - [ ] Or just open a modal that contains all the responses?
+### Survey Stats
+- [!] Get all completed SurveyResponses for this survey (backend ... how to do? see below)
+- [ ] How to aggregate it? By SurveyResponse? By Question? On the server? On the client?
+- [ ] Can we just get QuestionResponses and MCOResponses? And then filter on each question/MCO?
+- [ ] Step 1: List of questions, JSON of responses for each one
 ### Create/Edit Survey
 - [ ] Submitting / error checking... what do we want to make sure of before submitting a survey?
   - [ ] No empty questions (last question can be empty, just trim it)

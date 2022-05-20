@@ -26,6 +26,7 @@
     "next-connect": "^0.12.2",
     "pino": "^7.10.0",
     "react": "^18.1.0",
+    "react-confetti": "^6.0.1",
     "react-dom": "^18.1.0",
     "react-query": "^4.0.0-beta.3",
     "react-spinners": "^0.12.0",
