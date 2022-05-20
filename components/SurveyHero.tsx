@@ -13,7 +13,7 @@ import {
 } from '@mantine/core';
 import { useSession } from 'next-auth/react';
 import React from 'react';
-import { AlertTriangle, Check, Dots, Edit } from 'tabler-icons-react';
+import { AlertTriangle, ChartBar, Check, Dots, Edit } from 'tabler-icons-react';
 import Link from 'next/link';
 import { SurveyPreviewWithAuthorAndInteraction } from '../api/survey/survey.schema';
 
@@ -81,11 +81,18 @@ const SurveyHero = (props: Props) => {
             </Group>
           </Title>
           {props.survey.author.id === session?.user?.id ? (
-            <Link href={`/survey/edit/${props.survey.id}`} passHref>
-              <ActionIcon>
-                <Edit />
-              </ActionIcon>
-            </Link>
+            <Group>
+              {props.survey.isCompleted && <Link href={`/survey/stats/${props.survey.id}`} passHref>
+                <ActionIcon>
+                  <ChartBar />
+                </ActionIcon>
+              </Link>}
+              <Link href={`/survey/edit/${props.survey.id}`} passHref>
+                <ActionIcon>
+                  <Edit />
+                </ActionIcon>
+              </Link>
+            </Group>
           ) : props.survey.participations?.length !== 0 ? (
             <>
               {props.survey.participations[0]?.isComplete ? (
