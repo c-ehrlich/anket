@@ -96,7 +96,7 @@ export async function deleteQuestion({ id }: { id: string }) {
     });
 
     // change order of all questions after this one
-    return prisma.question.updateMany({
+    await prisma.question.updateMany({
       where: {
         surveyId: deletedQuestion.surveyId,
         order: {
@@ -107,6 +107,8 @@ export async function deleteQuestion({ id }: { id: string }) {
         order: { decrement: 1 },
       },
     });
+
+    return deletedQuestion;
   } catch (e) {
     logger.error(e);
   }

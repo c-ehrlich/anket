@@ -20,7 +20,7 @@ export async function addDefaultQuestionToSurvey(
   // make sure the user is allowed to modify that question/survey
   const surveyOwner = await getSurveyOwner(surveyId);
   const session = await getSession({ req });
-  if (!session?.user || surveyOwner !== session.user.id) {
+  if (!session?.user || surveyOwner?.authorId !== session.user.id) {
     return res
       .status(400)
       .send({ message: 'Invalid user. Permission denied.' });
@@ -50,7 +50,7 @@ export async function editQuestionHandler(
   // make sure the user is allowed to modify that question/survey
   const questionOwner = await getQuestionOwner(id);
   const session = await getSession({ req });
-  if (!session?.user || questionOwner !== session.user.id) {
+  if (!session?.user || questionOwner?.survey.authorId !== session.user.id) {
     return res
       .status(400)
       .send({ message: 'Invalid user. Permission denied.' });
@@ -81,7 +81,7 @@ export async function deleteQuestionHandler(
   // make sure the user is allowed to modify that question/survey
   const questionOwner = await getQuestionOwner(id);
   const session = await getSession({ req });
-  if (!session?.user || questionOwner !== session.user.id) {
+  if (!session?.user || questionOwner?.survey.authorId !== session.user.id) {
     return res
       .status(400)
       .send({ message: 'Invalid user. Permission denied.' });
@@ -111,7 +111,7 @@ export async function reorderQuestionHandler(
   // make sure the user is allowed to modify that question/survey
   const questionOwner = await getQuestionOwner(id);
   const session = await getSession({ req });
-  if (!session?.user || questionOwner !== session.user.id) {
+  if (!session?.user || questionOwner?.survey.authorId !== session.user.id) {
     return res
       .status(400)
       .send({ message: 'Invalid user. Permission denied.' });

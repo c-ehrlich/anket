@@ -14,9 +14,8 @@ export async function getUserProfileWithSurveysHandler(
   }
 
   // try to get it
-  const userProfile: UserWithSurveysFE | undefined = await getUserWithSurveys(
-    id
-  );
+  const userProfile: UserWithSurveysFE | null | undefined =
+    await getUserWithSurveys(id);
   if (!userProfile) {
     return res.status(400).json({ message: 'failed to get User profile' });
   }

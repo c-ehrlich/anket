@@ -30,7 +30,7 @@ export async function createMultipleChoiceOptionHandler(
   // make sure the user is allowed to modify that question
   const optionOwner = await getQuestionOwner(questionId);
   const session = await getSession({ req });
-  if (!session?.user || optionOwner !== session.user.id) {
+  if (!session?.user || optionOwner?.survey.authorId !== session.user.id) {
     return res
       .status(400)
       .send({ message: 'Invalid user. Permission denied.' });

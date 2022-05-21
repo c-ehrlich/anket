@@ -57,7 +57,7 @@ export async function deleteMultipleChoiceOption({ id }: { id: string }) {
     });
 
     // change order of all multipleChoiceOptions after this one
-    return prisma.multipleChoiceOption.updateMany({
+    await prisma.multipleChoiceOption.updateMany({
       where: {
         questionId: deletedOption.questionId,
         order: {
@@ -68,6 +68,8 @@ export async function deleteMultipleChoiceOption({ id }: { id: string }) {
         order: { decrement: 1 },
       },
     });
+
+    return deletedOption;
   } catch (e) {
     logger.error(e);
   }
