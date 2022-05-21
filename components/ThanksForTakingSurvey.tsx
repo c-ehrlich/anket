@@ -26,7 +26,7 @@ const ThanksForTakingSurvey = ({ surveyId }: { surveyId: string }) => {
           You completed the survey &quot;<strong>{interaction.data.name}</strong>&quot;.
         </Title>
         <Box>
-          <Button>Go to Dashboard</Button>
+          <Button onClick={() => router.push('/')}>Go to Dashboard</Button>
         </Box>
       </Stack>
     </Center>
