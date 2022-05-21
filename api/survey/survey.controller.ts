@@ -79,7 +79,8 @@ export async function getAllPublicSurveysHandler(
   req: NextApiRequest,
   res: NextApiResponse<string | SurveyPreviewWithAuthorAndInteraction[]>
 ) {
-  const surveys: SurveyPreviewWithAuthorAndInteraction[] = await getAllPublicSurveyPreviews();
+  const surveys: SurveyPreviewWithAuthorAndInteraction[] =
+    await getAllPublicSurveyPreviews();
 
   return res.status(200).json(surveys);
 }
@@ -88,10 +89,18 @@ export async function getUserSurveysHandler(
   req: NextApiRequest,
   res: NextApiResponse<{ message: string } | SurveyPreviewWithAuthor[]>
 ) {
-  const userId = getId(req);
+  let userId = getId(req);
   if (!userId) {
-    return res.status(400).json({ message: 'failed to get ID from query ' });
+    const session = await getSession({ req });
+    userId = session!.user!.id;
+
+    if (!userId) {
+      logger.error('no session');
+      return res.status(400).json({ message: 'No session' });
+    }
   }
+
+  console.log("user id: " + userId);
 
   const surveys = await getUserSurveyPreviews(userId);
   return res.status(200).json(surveys);
