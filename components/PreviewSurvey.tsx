@@ -15,8 +15,10 @@ import {
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { AlertCircle, Eye, EyeOff } from 'tabler-icons-react';
+import useEditSurvey from '../hooks/useEditSurvey';
 import useGetSingleSurvey from '../hooks/useGetSingleSurvey';
 
 type Props = {
@@ -24,7 +26,9 @@ type Props = {
 };
 
 const PreviewSurvey = (props: Props) => {
+  const router = useRouter();
   const survey = useGetSingleSurvey(props.surveyId);
+  const editSurveyMutation = useEditSurvey({ surveyId: props.surveyId });
   const xs = useMediaQuery('(max-width: 576px)');
 
   return survey.isLoading ? (
@@ -128,11 +132,10 @@ const PreviewSurvey = (props: Props) => {
           </Link>
         </div>
         <Button
-          onClick={() =>
-            window.alert(
-              'this button will do something once i implement zod schema validation'
-            )
-          }
+          onClick={() => {
+            editSurveyMutation.mutate({ isCompleted: true });
+            router.push(`/survey/created/${survey.data.id}`);
+          }}
         >
           Submit
         </Button>

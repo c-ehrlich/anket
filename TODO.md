@@ -78,6 +78,7 @@
 - [x] Answer Option Creation causes the container to bounce around - not making the question itself a motion.div fixes it - ask in framer motion discord
 - [x] Question container height: make transitions take time so container doesn't shrink faster than the contents
 - [x] Adding an MCO is skippy again... make sure everything else on the same level is motion, key, layout
+- [x] 'My Surveys' fails to load on dashboard refresh because we don't have the session yet
 ## DB
 - [x] Implement order on questions
 - [x] send questions and answeroptions ordered on DB level
@@ -136,6 +137,7 @@
 - [x] Build backend stuff for reordering of all MCOs
 - [x] Reorder MCOs by dragging
 - [x] Creating a survey also creates the first question, creating a question also creates the first answer option
+- [x] Implement submitting survey (without validation for now)
 ### User Profile Page
 - [x] Create it
 ### Take Survey

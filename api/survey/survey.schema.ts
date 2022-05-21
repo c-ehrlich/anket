@@ -61,6 +61,7 @@ export const editSurveySchema = z.object({
       name: z.string(),
       description: z.string(),
       isPublic: z.boolean(),
+      isCompleted: z.boolean(),
     })
     .partial()
     .strict()
