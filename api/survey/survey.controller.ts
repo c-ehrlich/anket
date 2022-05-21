@@ -120,7 +120,7 @@ export async function updateSurveyBasicInfoHandler(
   // make sure the user is allowed to modify that survey
   const surveyOwner = await getSurveyOwner(id);
   const session = await getSession({ req });
-  if (!session?.user || surveyOwner !== session.user.id) {
+  if (!session?.user || surveyOwner?.authorId !== session.user.id) {
     return res
       .status(400)
       .send({ message: 'Invalid user. Permission denied.' });
@@ -145,7 +145,7 @@ export async function deleteSurveyHandler(
   // make sure the user is allowed to modify that survey
   const surveyOwner = await getSurveyOwner(id);
   const session = await getSession({ req });
-  if (!session?.user || surveyOwner !== session.user.id) {
+  if (!session?.user || surveyOwner?.authorId !== session.user.id) {
     return res
       .status(400)
       .send({ message: 'Invalid user. Permission denied.' });

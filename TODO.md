@@ -14,6 +14,9 @@
 ### UI
 - [ ] Dashboard: make strings better... single/plural etc
 - [ ] small screen: sidebar in/out should be animated
+- [ ] Sidebar feels like it's the wrong size in general
+  - [ ] I made it that big so the name is readable... BUT 1. different length names will be readable or not readable anyway 2. is that REALLY important anyway?
+  - [ ] Maybe put some different text there, see how twitter etc do it,...
 - [ ] make all the disabled stuff in the anket creator not have special mouse cursors
 - [ ] Choose nicer fonts (use the themeing in Mantine - and use same fonts as landing page?)
 - [ ] Make side margins about 1/2 of what they currently are on XS screens
