@@ -36,11 +36,6 @@
 - [ ] For text, maybe IF it has 3 or more responses, find the 3 most popular words, and list those along with sample responses that use them
   - [ ] Exclude common words?
   - [ ] Or just open a modal that contains all the responses?
-### Survey Stats
-- [!] Get all completed SurveyResponses for this survey (backend ... how to do? see below)
-- [ ] How to aggregate it? By SurveyResponse? By Question? On the server? On the client?
-- [ ] Can we just get QuestionResponses and MCOResponses? And then filter on each question/MCO?
-- [ ] Step 1: List of questions, JSON of responses for each one
 ### Create/Edit Survey
 - [ ] Submitting / error checking... what do we want to make sure of before submitting a survey?
   - [ ] No empty questions (last question can be empty, just trim it)
@@ -52,11 +47,18 @@
   - [ ] Figure out how image upload works
   - [ ] Where can we store them? What about in deployment? S3?
 - [ ] Description should support line breaks
+### Survey Stats
+- [ ] Create some data to be able to test the stats page
+- [ ] Research which charts package to use
+  - [ ] d3.js + react thing?
+  - [ ] Something else?
 ### Maybe / Todos
 - [ ] Type React Query errors (is it just the type of { message: string? }) probably not...look at one and figure it out
 - [ ] See where we can reduce the number of props (for example in EditSurveyMultipleChoiceAnswer by passing an object instead of multiple parts of that object)
 - [ ] User profiles ... users can have settings, nicknames, etc
   - [ ] When logging in with a user that doesn't exist in the db yet, force them to create a user profile
+- [ ] Go through all major parts of the app in browser with console open and fix any errors
+- [ ] Go through all major parts of the app with network requests open and fix any that are red
 
 # Anket Done
 ## MVP v1
@@ -219,7 +221,9 @@
     - [x] You have {num} uncompleted survey responses!
       - (list)
       - (else: You are currently not taking any surveys. Why not (link: find one to take)?
-
+### Survey Stats
+- [x] Create backend functionality to get survey stats
+- [x] Get survey stats into frontend as JSON
 
 ## MVP 2
 ### Surveys
