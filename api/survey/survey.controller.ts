@@ -79,8 +79,22 @@ export async function getAllPublicSurveysHandler(
   req: NextApiRequest,
   res: NextApiResponse<string | SurveyPreviewWithAuthorAndInteraction[]>
 ) {
-  const surveys: SurveyPreviewWithAuthorAndInteraction[] =
-    await getAllPublicSurveyPreviews();
+  let userId = getId(req);
+  if (!userId) {
+    const session = await getSession({ req });
+    userId = session!.user!.id;
+
+    if (!userId) {
+      logger.error('no session');
+      return res.status(400).send('No session');
+    }
+  }
+
+  const surveys: SurveyPreviewWithAuthorAndInteraction[] | undefined =
+    await getAllPublicSurveyPreviews(userId);
+  if (!surveys) return res.status(400).send('error getting surveys');
+
+  console.log(surveys[0].participations[0])
 
   return res.status(200).json(surveys);
 }
@@ -100,7 +114,7 @@ export async function getUserSurveysHandler(
     }
   }
 
-  console.log("user id: " + userId);
+  console.log('user id: ' + userId);
 
   const surveys = await getUserSurveyPreviews(userId);
   return res.status(200).json(surveys);

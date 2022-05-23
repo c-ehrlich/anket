@@ -88,32 +88,41 @@ export async function createDefaultSurvey(data: CreateDefaultSurveyInput) {
 
 export async function getAllPublicSurveyPreviews(
   userId: string | undefined = undefined
-): Promise<SurveyPreviewWithAuthorAndInteraction[]> {
-  return prisma.survey.findMany({
-    where: {
-      isCompleted: true,
-      isPublic: true,
-    },
-    select: {
-      author: { select: { id: true, name: true, image: true, email: true } },
-      id: true,
-      name: true,
-      description: true,
-      isCompleted: true,
-      isPublic: true,
-      participations: {
-        where: {
-          userId: userId,
-        },
-        select: {
-          isComplete: true,
+): Promise<SurveyPreviewWithAuthorAndInteraction[] | undefined> {
+  try {
+    logger.info(`-----usedId: ${userId}`)
+    return prisma.survey.findMany({
+      where: {
+        isCompleted: true,
+        isPublic: true,
+        authorId: {
+          not: userId,
         },
       },
-    },
-    orderBy: {
-      updatedAt: 'desc',
-    },
-  });
+      select: {
+        author: { select: { id: true, name: true, image: true, email: true } },
+        id: true,
+        name: true,
+        description: true,
+        isCompleted: true,
+        isPublic: true,
+        participations: {
+          where: {
+            userId: userId,
+          },
+          select: {
+            userId: true,
+            isComplete: true,
+          },
+        },
+      },
+      orderBy: {
+        updatedAt: 'desc',
+      },
+    });
+  } catch (e) {
+    logger.error(e);
+  }
 }
 
 export async function getUserSurveyPreviews(authorId: string) {

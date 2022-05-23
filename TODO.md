@@ -3,6 +3,7 @@
 ### Want to do next
 - [ ] Try switching to Mantine-Form and use Zod validation on it
 ### Bugs
+- [ ] Framer... adding answer options can still be choppy sometimes
 - [!] Choppy MCO reordering - https://github.com/framer/motion/issues/1518
 
 ### Deployment
@@ -25,6 +26,7 @@
 - [ ] Landing page: reduce spacing between sections on phones
 - [ ] Make login page a modal instead (https://github.com/nextauthjs/next-auth/issues/178)
 - [ ] AppShell: on phone screens, scrolling the menu should scroll the menu, not the content underneath it!
+- [ ] Read all of Refactoring UI and make UI changes based on it
 ### Taking a survey
 - [ ] Use schema validation on the submission
 ### Survey Responses
@@ -37,6 +39,7 @@
   - [ ] Exclude common words?
   - [ ] Or just open a modal that contains all the responses?
 ### Create/Edit Survey
+- [ ] Changing question type ... if it's changed to MCM or MCS, also create an answer option
 - [ ] Submitting / error checking... what do we want to make sure of before submitting a survey?
   - [ ] No empty questions (last question can be empty, just trim it)
   - [ ] No empty answer options (last answer option can be empty, just trim it)
@@ -50,8 +53,10 @@
 ### Survey Stats
 - [ ] Create some data to be able to test the stats page
 - [ ] Research which charts package to use
-  - [ ] d3.js + react thing?
-  - [ ] Something else?
+  - [*] d3.js + airbnb visx https://airbnb.io/visx/gallery
+  - [*] d3.js + recharts https://recharts.org/en-US/examples/PieChartWithCustomizedLabel
+    - [*] https://medium.com/@arcthur/re-designed-chart-for-react-fbb31cf78415
+  - [*] Something else?
 ### Maybe / Todos
 - [ ] Type React Query errors (is it just the type of { message: string? }) probably not...look at one and figure it out
 - [ ] See where we can reduce the number of props (for example in EditSurveyMultipleChoiceAnswer by passing an object instead of multiple parts of that object)
@@ -81,6 +86,7 @@
 - [x] Question container height: make transitions take time so container doesn't shrink faster than the contents
 - [x] Adding an MCO is skippy again... make sure everything else on the same level is motion, key, layout
 - [x] 'My Surveys' fails to load on dashboard refresh because we don't have the session yet
+- [x] Incorrect filtering of userId in 'all surveys' handler/service
 ## DB
 - [x] Implement order on questions
 - [x] send questions and answeroptions ordered on DB level
