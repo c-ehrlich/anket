@@ -1,3 +1,4 @@
+import { QuestionType } from '@prisma/client';
 import z from 'zod';
 
 export const surveyStatsResponseSchema = z.object({
@@ -22,6 +23,7 @@ export const surveyStatsResponseSchema = z.object({
       id: z.string().cuid(),
       question: z.string(),
       details: z.string(),
+      questionType: z.nativeEnum(QuestionType),
       isRequired: z.boolean(),
       order: z.number().min(0).int(),
       questionResponses: z.array(

@@ -90,7 +90,6 @@ export async function getAllPublicSurveyPreviews(
   userId: string | undefined = undefined
 ): Promise<SurveyPreviewWithAuthorAndInteraction[] | undefined> {
   try {
-    logger.info(`-----usedId: ${userId}`)
     return prisma.survey.findMany({
       where: {
         isCompleted: true,

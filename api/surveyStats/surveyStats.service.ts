@@ -37,6 +37,7 @@ export async function getSurveyStats(surveyId: string) {
             details: true,
             isRequired: true,
             order: true,
+            questionType: true,
             questionResponses: {
               select: {
                 id: true,

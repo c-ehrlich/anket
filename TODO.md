@@ -1,69 +1,23 @@
 # Anket Todo (current)
 ## MVP v1
-### Want to do next
-- [ ] Try switching to Mantine-Form and use Zod validation on it
 ### Bugs
 - [ ] Framer... adding answer options can still be choppy sometimes
 - [!] Choppy MCO reordering - https://github.com/framer/motion/issues/1518
-
-### Deployment
-- [ ] Figure out how to deploy it
-- [ ] To a VPS? Hetzner?
-- [ ] Get the real DB running https://vercel.com/guides/nextjs-prisma-postgres
-  - [ ] Can test this even before deploying
-- [ ] Figure out how to set up GitHub Actions
 ### UI
 - [ ] Dashboard: make strings better... single/plural etc
-- [ ] small screen: sidebar in/out should be animated
 - [ ] Sidebar feels like it's the wrong size in general
   - [ ] I made it that big so the name is readable... BUT 1. different length names will be readable or not readable anyway 2. is that REALLY important anyway?
   - [ ] Maybe put some different text there, see how twitter etc do it,...
-- [ ] make all the disabled stuff in the anket creator not have special mouse cursors
-- [ ] Choose nicer fonts (use the themeing in Mantine - and use same fonts as landing page?)
-- [ ] Make side margins about 1/2 of what they currently are on XS screens
-- [ ] Transition to styles api (there should be no `style={{}}` in the app)
-- [ ] Modal styling... they look a bit sad
-- [ ] Landing page: reduce spacing between sections on phones
-- [ ] Make login page a modal instead (https://github.com/nextauthjs/next-auth/issues/178)
-- [ ] AppShell: on phone screens, scrolling the menu should scroll the menu, not the content underneath it!
-- [ ] Read all of Refactoring UI and make UI changes based on it
-### Taking a survey
-- [ ] Use schema validation on the submission
-### Survey Responses
-- [ ] Make a button that creates three dummy responses
-  - [ ] Seed the database with three fake users (check how fcc seeds the database)
-  - [ ] dummy responses have an additional isDummyResponse field so we can easily delete them in the future?
-- [ ] Get count of responses
-- [ ] For multiple choice, see what percentage of people chose each
-- [ ] For text, maybe IF it has 3 or more responses, find the 3 most popular words, and list those along with sample responses that use them
-  - [ ] Exclude common words?
-  - [ ] Or just open a modal that contains all the responses?
+  - [ ] OR should the text in it just be bigger? It's kinda small atm, icons also
 ### Create/Edit Survey
 - [ ] Changing question type ... if it's changed to MCM or MCS, also create an answer option
-- [ ] Submitting / error checking... what do we want to make sure of before submitting a survey?
-  - [ ] No empty questions (last question can be empty, just trim it)
-  - [ ] No empty answer options (last answer option can be empty, just trim it)
-  - [ ] After trimming empty stuff at the end, nothing should have a title that is equal to the empty string
-  - [ ] See how the mantine forms stuff works...
-- [ ] Keep the survey hidden ('complete' column in schema/survey?) until the user marks it as done?
 - [ ] Give surveys optional header images
-  - [ ] Figure out how image upload works
-  - [ ] Where can we store them? What about in deployment? S3?
-- [ ] Description should support line breaks
-### Survey Stats
-- [ ] Create some data to be able to test the stats page
-- [ ] Research which charts package to use
-  - [*] d3.js + airbnb visx https://airbnb.io/visx/gallery
-  - [*] d3.js + recharts https://recharts.org/en-US/examples/PieChartWithCustomizedLabel
-    - [*] https://medium.com/@arcthur/re-designed-chart-for-react-fbb31cf78415
-  - [*] Something else?
-### Maybe / Todos
-- [ ] Type React Query errors (is it just the type of { message: string? }) probably not...look at one and figure it out
-- [ ] See where we can reduce the number of props (for example in EditSurveyMultipleChoiceAnswer by passing an object instead of multiple parts of that object)
-- [ ] User profiles ... users can have settings, nicknames, etc
-  - [ ] When logging in with a user that doesn't exist in the db yet, force them to create a user profile
-- [ ] Go through all major parts of the app in browser with console open and fix any errors
-- [ ] Go through all major parts of the app with network requests open and fix any that are red
+  - [ ] Just a URL field for now...
+### Deployment
+- [ ] Figure out how to deploy it
+- [ ] To a VPS? Hetzner?
+- [ ] Get the real DB running (RDS or Heroku Postgres?)
+  - [ ] Can test this even before deploying
 
 # Anket Done
 ## MVP v1
@@ -230,8 +184,39 @@
 ### Survey Stats
 - [x] Create backend functionality to get survey stats
 - [x] Get survey stats into frontend as JSON
+- [x] Create some data to be able to test the stats page
+- [x] Create basic (ugly) graphs that show the stats
+- [x] Get count of responses
 
 ## MVP 2
+### Deployment
+- [ ] Figure out how to set up GitHub Actions
+### UI
+- [ ] Make side margins about 1/2 of what they currently are on XS screens
+- [ ] Landing page: reduce spacing between sections on phones
+- [ ] AppShell: on phone screens, scrolling the menu should scroll the menu, not the content underneath it!
+- [ ] Transition to styles api (there should be no `style={{}}` in the app)
+- [ ] Modal styling... they look a bit sad
+- [ ] Read all of Refactoring UI and make UI changes based on it
+- [ ] Make login page a modal instead (https://github.com/nextauthjs/next-auth/issues/178)
+- [ ] small screen: sidebar in/out should be animated
+- [ ] make all the disabled stuff in the anket creator not have special mouse cursors
+- [ ] Choose nicer fonts (use the themeing in Mantine - and use same fonts as landing page?)
+### Survey Creation
+- [ ] FIRST VALIDATION TEST: /create should be a form with title and optional description, clicking it creates a survey and takes us to the page to edit that survey
+  - [ ] Use either react-hook-form or mantine-form
+- [ ] Description should support line breaks
+- [ ] Submitting / error checking... what do we want to make sure of before submitting a survey?
+  - [ ] No empty questions (last question can be empty, just trim it)
+  - [ ] No empty answer options (last answer option can be empty, just trim it)
+  - [ ] After trimming empty stuff at the end, nothing should have a title that is equal to the empty string
+  - [ ] See how the mantine forms stuff works...
+- [ ] Header images... use real uploading instead
+  - [ ] Figure out how image upload works
+  - [ ] Where can we store them? What about in deployment? S3?
+  - [ ] Default image for surveys that don't have one assigned ... refresh until I find a good one and copy that
+### Taking a survey
+- [ ] Use schema validation on the submission
 ### Surveys
 - [ ] Multiple Choice Options should have 'other' option
   - [ ] This should be optional (decided by survey author whether to include it?)
@@ -239,3 +224,19 @@
   - [ ] Create Backend implementation
   - [ ] Create Implementation during survey creation
   - [ ] Create Implementation during survey taking
+### Stats
+- [ ] Rebuild in d3.js + airbnb visx https://airbnb.io/visx/gallery
+  - [ ] https://codesandbox.io/s/github/airbnb/visx/tree/master/packages/visx-demo/src/sandboxes/visx-shape-pie?file=/Example.tsx
+- [ ] For multiple choice, see what percentage of people chose each
+- [ ] Each bar is a different color
+- [ ] Bars have truncated bottom labels and full labels on hover
+- [ ] Nice % labels
+- [ ] Axes are % or absolute?
+### Users
+- [ ] User profiles ... users can have settings, nicknames, etc
+  - [ ] When logging in with a user that doesn't exist in the db yet, force them to create a user profile
+### Maybe / Todos
+- [ ] See where we can reduce the number of props (for example in EditSurveyMultipleChoiceAnswer by passing an object instead of multiple parts of that object)
+- [ ] Go through all major parts of the app in browser with console open and fix any errors
+- [ ] Go through all major parts of the app with network requests open and fix any that are red
+
