@@ -16,7 +16,7 @@ import useGetMySurveyParticipations from '../hooks/useGetMySurveyParticipations'
 import useGetNewParticipationsCount from '../hooks/useGetNewParticipationsCount';
 import { MoonLoader } from 'react-spinners';
 import { DashboardSurveyParticipation } from '../api/surveyParticipation/surveyParticipation.schema';
-import { Edit, Eye, Router } from 'tabler-icons-react';
+import { ChartBar, Edit, Eye, Tool } from 'tabler-icons-react';
 import { SurveyPreviewWithAuthorAndInteraction } from '../api/survey/survey.schema';
 import { useRouter } from 'next/router';
 import { createSurvey } from '../hooks/useCreateSurvey';
@@ -176,20 +176,29 @@ function CreatedSurveyCard({
             <Box sx={{ marginTop: '8px' }}>
               {!survey.isCompleted ? (
                 <Button
-                  onClick={() => router.push(`/survey/edit/${survey.id}`)}
+                  onClick={() => router.push(`/survey/stats/${survey.id}`)}
                   leftIcon={<Edit />}
                   variant='outline'
                 >
                   Resume
                 </Button>
               ) : (
-                <Button
-                  onClick={() => router.push(`/survey/edit/${survey.id}`)}
-                  leftIcon={<Eye />}
-                  variant='outline'
-                >
-                  View
-                </Button>
+                <Group>
+                  <Button
+                    onClick={() => router.push(`/survey/stats/${survey.id}`)}
+                    leftIcon={<ChartBar />}
+                    variant='outline'
+                  >
+                    Stats
+                  </Button>
+                  <Button
+                    onClick={() => router.push(`/survey/edit/${survey.id}`)}
+                    leftIcon={<Tool />}
+                    variant='outline'
+                  >
+                    Edit
+                  </Button>
+                </Group>
               )}
             </Box>
           </Stack>
@@ -224,20 +233,20 @@ function TakenSurveyCard({
                   onClick={() =>
                     router.push(`/survey/take/${participation.survey.id}`)
                   }
-                  leftIcon={<Edit />}
+                  leftIcon={<Eye />}
                   variant='outline'
                 >
-                  Resume
+                  View
                 </Button>
               ) : (
                 <Button
                   onClick={() =>
                     router.push(`/survey/take/${participation.survey.id}`)
                   }
-                  leftIcon={<Eye />}
+                  leftIcon={<Edit />}
                   variant='outline'
                 >
-                  View
+                  Resume
                 </Button>
               )}
             </Box>
