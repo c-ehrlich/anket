@@ -22,8 +22,25 @@ const ThanksForTakingSurvey = ({ surveyId }: { surveyId: string }) => {
         <Title align='center' order={1}>
           🎉 Thank you! 🎉
         </Title>
+        <div style={{ maxHeight: '300px' }}>
+          {/* TODO: in production, use Next Image and fix the hosts issue by using something
+           * like Cloudinary fetch: https://cloudinary.com/documentation/fetch_remote_images
+           */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={interaction.data.picture}
+            alt={`Survey Header Image: ${interaction.data.picture}`}
+            style={{
+              width: '100%',
+              maxHeight: '300px',
+              objectFit: 'cover',
+              borderRadius: '8px',
+            }}
+          />
+        </div>
         <Title order={4}>
-          You completed the survey &quot;<strong>{interaction.data.name}</strong>&quot;.
+          You completed the survey &quot;
+          <strong>{interaction.data.name}</strong>&quot;.
         </Title>
         <Box>
           <Button onClick={() => router.push('/')}>Go to Dashboard</Button>

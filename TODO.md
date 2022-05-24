@@ -13,7 +13,7 @@
   - [ ] Implement in SurveyStats
   - [ ] Implement in TakeSurvey
   - [x] Implement in ThanksForCreatingSurvey
-  - [ ] Implement in ThanksForTakingSurvey
+  - [x] Implement in ThanksForTakingSurvey
 ### Deployment
 - [ ] Figure out how to deploy it
 - [ ] To a VPS? Hetzner?

@@ -77,6 +77,7 @@ export const surveyWithParticipationAndUserResponsesSchema = z.object({
   id: z.string().cuid(),
   name: z.string(),
   description: z.string(),
+  picture: z.string(),
   createdAt: z.date(),
   updatedAt: z.date(),
   isPublic: z.boolean(),

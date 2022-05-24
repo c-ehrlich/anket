@@ -3,7 +3,6 @@ import logger from '../utils/logger';
 import {
   DashboardSurveyParticipation,
   GetSurveyParticipationData,
-  SurveyWithParticipationAndUserResponses,
 } from './surveyParticipation.schema';
 
 export async function getOrCreateSurveyParticipation({
@@ -32,6 +31,7 @@ export async function getOrCreateSurveyParticipation({
         id: true,
         name: true,
         description: true,
+        picture: true,
         createdAt: true,
         updatedAt: true,
         isPublic: true,
