@@ -3,9 +3,6 @@
 ### Bugs
 - [ ] Framer... adding answer options can still be choppy sometimes
 - [!] Choppy MCO reordering - https://github.com/framer/motion/issues/1518
-### UI
-- [ ] Make side margins about 1/2 of what they currently are on XS screens
-- [ ] Choose nicer fonts (use the themeing in Mantine - and use same fonts as landing page?)
 ### Create/Edit Survey
 - [ ] Changing question type ... if it's changed to MCM or MCS, also create an answer option
 - [ ] Give surveys optional header images
@@ -66,6 +63,7 @@
 - [x] Dashboard: make strings better... single/plural etc
 - [x] Improve the dashboard layout a bit...
   - [x] Header texts should be bigger ('You have 1 unfinished survey' etc)
+- [x] Small screen side margins
 ### Create/Edit Survey
 - [x] Use React Query to manage survey in frontend
   - [x] Make /survey/create just a dummy page that creates a survey and redirects to /survey/edit/id, that way create and edit are basically the same!
@@ -206,6 +204,7 @@
 - [ ] small screen: sidebar in/out should be animated
 - [ ] make all the disabled stuff in the anket creator not have special mouse cursors
 - [ ] Improve the Logo (choose a font that works well with the existing ones, don't make the spacing so weird)
+- [ ] Improve body text typography
 ### Survey Creation
 - [ ] FIRST VALIDATION TEST: /create should be a form with title and optional description, clicking it creates a survey and takes us to the page to edit that survey
   - [ ] Use either react-hook-form or mantine-form

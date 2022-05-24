@@ -7,8 +7,8 @@ type Props = {
 
 const ContentMaxWidth = (props: Props) => {
   return (
-    <Container px={0}>
-      <Container size='md'>{props.children}</Container>
+    <Container px={0} size='md'>
+      {props.children}
     </Container>
   );
 };
