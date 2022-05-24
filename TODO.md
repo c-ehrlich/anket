@@ -22,7 +22,6 @@
 - [ ] Improve the Logo (choose a font that works well with the existing ones, don't make the spacing so weird)
 - [ ] Improve body text typography
 ### Survey Creation
-- [ ] Description should support line breaks
 - [ ] Submitting / error checking... what do we want to make sure of before submitting a survey?
   - [ ] No empty questions (last question can be empty, just trim it)
   - [ ] No empty answer options (last answer option can be empty, just trim it)
@@ -64,6 +63,7 @@
 ## MVP 2
 ### Survey Creation / Editing
 - [x] FIRST VALIDATION TEST: /create should be a form with title and optional description, clicking it creates a survey and takes us to the page to edit that survey
+- [x] Description should support line breaks
 
 
 ## MVP 1

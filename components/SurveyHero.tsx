@@ -82,11 +82,13 @@ const SurveyHero = (props: Props) => {
           </Title>
           {props.survey.author.id === session?.user?.id ? (
             <Group>
-              {props.survey.isCompleted && <Link href={`/survey/stats/${props.survey.id}`} passHref>
-                <ActionIcon>
-                  <ChartBar />
-                </ActionIcon>
-              </Link>}
+              {props.survey.isCompleted && (
+                <Link href={`/survey/stats/${props.survey.id}`} passHref>
+                  <ActionIcon>
+                    <ChartBar />
+                  </ActionIcon>
+                </Link>
+              )}
               <Link href={`/survey/edit/${props.survey.id}`} passHref>
                 <ActionIcon>
                   <Edit />
@@ -131,7 +133,7 @@ const SurveyHero = (props: Props) => {
             </Badge>
           </Link>
         </div>
-        <Text>
+        <Text style={{ whiteSpace: 'pre-line' }}>
           {props.survey.description !== ''
             ? props.survey.description
             : '(no description)'}

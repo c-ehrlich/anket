@@ -3,6 +3,7 @@ import {
   Checkbox,
   Group,
   Stack,
+  Textarea,
   TextInput,
   Title,
 } from '@mantine/core';
@@ -64,20 +65,20 @@ const EditSurveyHaveData = memo(({ survey }: { survey: SurveyFE }) => {
   const debouncedEditSurveyPicture = useDebouncedCallback(
     (data: EditSurveyData) => editSurvey.mutate(data),
     1000
-  )
+  );
 
   const handleEditSurveyName = (e: React.FormEvent<HTMLInputElement>) => {
     setSurveyName(e.currentTarget.value);
     debouncedEditSurveyName({ name: e.currentTarget.value });
   };
-  const handleEditSurveyDesc = (e: React.FormEvent<HTMLInputElement>) => {
+  const handleEditSurveyDesc = (e: React.FormEvent<HTMLTextAreaElement>) => {
     setSurveyDescription(e.currentTarget.value);
     debouncedEditSurveyDescription({ description: e.currentTarget.value });
   };
   const handleEditSurveyPicture = (e: React.FormEvent<HTMLInputElement>) => {
     setSurveyPicture(e.currentTarget.value);
-    debouncedEditSurveyPicture({ picture: e.currentTarget.value})
-  }
+    debouncedEditSurveyPicture({ picture: e.currentTarget.value });
+  };
 
   const editSurvey = useEditSurvey({ surveyId: survey.id });
   const deleteSurvey = useDeleteSurvey({
@@ -105,11 +106,13 @@ const EditSurveyHaveData = memo(({ survey }: { survey: SurveyFE }) => {
           onChange={handleEditSurveyName}
         />
 
-        <TextInput
+        <Textarea
           label='Survey Description'
           placeholder='(optional)'
           value={surveyDescription}
           onChange={handleEditSurveyDesc}
+          autosize
+          minRows={4}
         />
 
         <TextInput

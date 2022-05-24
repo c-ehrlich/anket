@@ -32,6 +32,8 @@ const PreviewSurvey = (props: Props) => {
   const editSurveyMutation = useEditSurvey({ surveyId: props.surveyId });
   const xs = useMediaQuery('(max-width: 576px)');
 
+  console.log(survey.data?.description);
+
   return survey.isLoading ? (
     <div>Loading...</div>
   ) : survey.isError ? (
@@ -45,7 +47,7 @@ const PreviewSurvey = (props: Props) => {
         (Don&apos;t worry, you can always make changes to your survey even after
         it has been published)
       </Alert>
-      
+
       <div style={{ maxHeight: '300px' }}>
         {/* TODO: in production, use Next Image and fix the hosts issue by using something
          * like Cloudinary fetch: https://cloudinary.com/documentation/fetch_remote_images
@@ -54,11 +56,20 @@ const PreviewSurvey = (props: Props) => {
         <img
           src={survey.data.picture}
           alt={`Survey Header Image: ${survey.data.name}`}
-          style={{ width: '100%', maxHeight: '300px', objectFit: 'cover', borderRadius: '8px'}}
+          style={{
+            width: '100%',
+            maxHeight: '300px',
+            objectFit: 'cover',
+            borderRadius: '8px',
+          }}
         />
       </div>
       <Title order={2}>{survey.data.name}</Title>
-      {survey.data.description !== '' && <Text>{survey.data.description}</Text>}
+      {survey.data.description !== '' && (
+        <Text style={{ whiteSpace: 'pre-line' }}>
+          {survey.data.description}
+        </Text>
+      )}
       <div>
         {survey.data.isPublic ? (
           <Badge
@@ -82,7 +93,7 @@ const PreviewSurvey = (props: Props) => {
           </Badge>
         )}
       </div>
-      
+
       {survey.data.questions.map((question, index) => (
         <Paper key={question.id} shadow='lg' radius='md' p='md' withBorder>
           <Stack>

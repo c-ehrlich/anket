@@ -136,12 +136,12 @@ const SurveyStats = (props: PageProps) => {
         />
       </div>
       <Title order={2}>{props.survey.name}</Title>
-      <Text>{props.survey.description}</Text>
+      <Text style={{ whiteSpace: 'pre-line' }}>{props.survey.description}</Text>
       {props.survey.questions.map((q, index) => (
         <Paper withBorder p='md' shadow='md' key={q.id}>
           <Stack>
             <Title order={2}>{q.question}</Title>
-            {q.details && (<Text>{q.details}</Text>)}
+            {q.details && <Text>{q.details}</Text>}
             {q.questionType === 'multipleChoiceSingle' && (
               <ResponsiveContainer width='99%' aspect={1} maxHeight={400}>
                 <PieChart data={displayData[index]}>
