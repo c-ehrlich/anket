@@ -10,6 +10,7 @@ export async function getSurveyStats(surveyId: string) {
         name: true,
         description: true,
         updatedAt: true,
+        picture: true,
         isPublic: true,
         isCompleted: true,
         author: {

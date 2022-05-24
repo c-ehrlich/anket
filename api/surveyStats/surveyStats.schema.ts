@@ -5,6 +5,7 @@ export const surveyStatsResponseSchema = z.object({
   id: z.string().cuid(),
   name: z.string(),
   description: z.string(),
+  picture: z.string(),
   updatedAt: z.date(),
   isPublic: z.boolean(),
   isCompleted: z.boolean(),

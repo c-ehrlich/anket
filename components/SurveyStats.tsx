@@ -1,4 +1,4 @@
-import { Paper, Stack, Text, Title } from '@mantine/core';
+import { Divider, Paper, Stack, Text, Title } from '@mantine/core';
 import React from 'react';
 import { SurveyStatsResponse } from '../api/surveyStats/surveyStats.schema';
 import {
@@ -72,15 +72,14 @@ function generateDisplayData(survey: SurveyStatsResponse) {
         break;
       case 'zeroToTen':
         res = [...zeroToTenDefault];
-        q.questionResponses.forEach(
-          (qr) => {
-            console.log(res);
-            console.log(qr);
-            res[Number(qr.answerNumeric)] = {
-              ...res[Number(qr.answerNumeric)],
-              value: res[Number(qr.answerNumeric)].value + 1,
-            }}
-        );
+        q.questionResponses.forEach((qr) => {
+          console.log(res);
+          console.log(qr);
+          res[Number(qr.answerNumeric)] = {
+            ...res[Number(qr.answerNumeric)],
+            value: res[Number(qr.answerNumeric)].value + 1,
+          };
+        });
         if (!q.isRequired) {
           res.push({
             name: 'No Answer',
@@ -114,15 +113,35 @@ const SurveyStats = (props: PageProps) => {
 
   return (
     <Stack>
-      <Title order={1}>Stats</Title>
+      {/* <Title order={1}>Stats</Title> */}
       <Text>
         {props.survey.participations.length} users have responsed to your
         survey.
       </Text>
+      <Divider />
+      <div style={{ maxHeight: '300px' }}>
+        {/* TODO: in production, use Next Image and fix the hosts issue by using something
+         * like Cloudinary fetch: https://cloudinary.com/documentation/fetch_remote_images
+         */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={props.survey.picture}
+          alt={`Survey Header Image: ${props.survey.name}`}
+          style={{
+            width: '100%',
+            maxHeight: '300px',
+            objectFit: 'cover',
+            borderRadius: '8px',
+          }}
+        />
+      </div>
+      <Title order={2}>{props.survey.name}</Title>
+      <Text>{props.survey.description}</Text>
       {props.survey.questions.map((q, index) => (
         <Paper withBorder p='md' shadow='md' key={q.id}>
           <Stack>
             <Title order={2}>{q.question}</Title>
+            {q.details && (<Text>{q.details}</Text>)}
             {q.questionType === 'multipleChoiceSingle' && (
               <ResponsiveContainer width='99%' aspect={1} maxHeight={400}>
                 <PieChart data={displayData[index]}>
@@ -191,7 +210,13 @@ const SurveyStats = (props: PageProps) => {
                 </PieChart>
               </ResponsiveContainer>
             )}
-            {q.questionType === 'textResponse' && <Stack>{q.questionResponses.map(r => <Text key={r.id}>{r.answerText}</Text>)}</Stack>}
+            {q.questionType === 'textResponse' && (
+              <Stack>
+                {q.questionResponses.map((r) => (
+                  <Text key={r.id}>{r.answerText}</Text>
+                ))}
+              </Stack>
+            )}
           </Stack>
         </Paper>
       ))}

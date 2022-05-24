@@ -3,17 +3,9 @@
 ### Bugs
 - [ ] Framer... adding answer options can still be choppy sometimes
 - [!] Choppy MCO reordering - https://github.com/framer/motion/issues/1518
+  - [*] Only appears in StrictMode? Test this
 ### Create/Edit Survey
 - [ ] Changing question type ... if it's changed to MCM or MCS, also create an answer option
-- [ ] Give surveys optional header images
-  - [x] Just a URL field for now...
-  - [x] Use this header image in SurveyHero, with a fallback to some random image
-  - [x] Implement in EditSurvey
-  - [x] Implement in PreviewSurvey
-  - [ ] Implement in SurveyStats
-  - [x] Implement in TakeSurvey
-  - [x] Implement in ThanksForCreatingSurvey
-  - [x] Implement in ThanksForTakingSurvey
 ### Deployment
 - [ ] Figure out how to deploy it
 - [ ] To a VPS? Hetzner?
@@ -109,6 +101,15 @@
 - [x] Creating a survey also creates the first question, creating a question also creates the first answer option
 - [x] Implement submitting survey (without validation for now)
 - [x] Add 'Survey Info' to EditSurvey
+- [x] Give surveys optional header images
+  - [x] Just a URL field for now...
+  - [x] Use this header image in SurveyHero, with a fallback to some random image
+  - [x] Implement in EditSurvey
+  - [x] Implement in PreviewSurvey
+  - [x] Implement in SurveyStats
+  - [x] Implement in TakeSurvey
+  - [x] Implement in ThanksForCreatingSurvey
+  - [x] Implement in ThanksForTakingSurvey
 ### User Profile Page
 - [x] Create it
 ### Take Survey
