@@ -44,7 +44,7 @@ const AppShellWrapper = (props: Props) => {
             p='md'
             hiddenBreakpoint='sm'
             hidden={!navbarIsOpen}
-            width={{ sm: 200, lg: 300 }}
+            width={{ sm: 220 }}
           >
             <Navbar.Section grow mt='xs'>
               <AppNavbar closeNavbar={() => setNavbarIsOpen(false)} />

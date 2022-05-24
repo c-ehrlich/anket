@@ -94,8 +94,8 @@ const Content = () => {
                 <Avatar src={session.user.image} radius='xl' />
                 <MediaQuery smallerThan='lg' styles={{ display: 'none' }}>
                   <Box sx={{ flex: 1 }}>
-                    <Text size='sm' lineClamp={2} weight={500}>
-                      {session.user.name}
+                    <Text size='md' lineClamp={2} weight={500}>
+                      Account
                     </Text>
                   </Box>
                 </MediaQuery>

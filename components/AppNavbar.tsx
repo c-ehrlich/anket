@@ -9,25 +9,25 @@ const data: NavBarLinkProps[] = [
     label: 'Home',
     color: 'green',
     onClick: '/',
-    icon: <Home size={16} />,
+    icon: <Home  />,
   },
   {
     label: 'Create Survey',
     color: 'green',
     onClick: 'FUNC createSurvey',
-    icon: <FilePlus size={16} />,
+    icon: <FilePlus />,
   },
   {
     label: 'All Surveys',
     color: 'green',
     onClick: '/survey/all',
-    icon: <ListCheck size={16} />,
+    icon: <ListCheck />,
   },
   {
     label: 'My Surveys',
     color: 'green',
     onClick: '/survey/mine',
-    icon: <UserCheck size={16} />,
+    icon: <UserCheck />,
   },
 ];
 
@@ -66,11 +66,11 @@ export const AppNavbarLink = (props: AppNavbarLinkProps) => {
       })}
     >
       <Group>
-        <ThemeIcon color={props.link.color} variant='light'>
+        <ThemeIcon size='lg' color={props.link.color} variant='light'>
           {props.link.icon}
         </ThemeIcon>
 
-        <Text size='sm'>{props.link.label}</Text>
+        <Text size='md' weight={400}>{props.link.label}</Text>
       </Group>
     </UnstyledButton>
   );
