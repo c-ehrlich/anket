@@ -12,7 +12,7 @@
   - [x] Implement in PreviewSurvey
   - [ ] Implement in SurveyStats
   - [ ] Implement in TakeSurvey
-  - [ ] Implement in ThanksForCreatingSurvey
+  - [x] Implement in ThanksForCreatingSurvey
   - [ ] Implement in ThanksForTakingSurvey
 ### Deployment
 - [ ] Figure out how to deploy it
