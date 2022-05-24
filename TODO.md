@@ -5,14 +5,16 @@
 - [!] Choppy MCO reordering - https://github.com/framer/motion/issues/1518
 ### UI
 - [ ] Dashboard: make strings better... single/plural etc
-- [ ] Sidebar feels like it's the wrong size in general
-  - [ ] I made it that big so the name is readable... BUT 1. different length names will be readable or not readable anyway 2. is that REALLY important anyway?
-  - [ ] Maybe put some different text there, see how twitter etc do it,...
-  - [ ] OR should the text in it just be bigger? It's kinda small atm, icons also
+- [ ] Make side margins about 1/2 of what they currently are on XS screens
+- [ ] Choose nicer fonts (use the themeing in Mantine - and use same fonts as landing page?)
+- [ ] Improve the dashboard layout a bit...
+  - [ ] Header texts should be bigger ('You have 1 unfinished survey' etc)
+  - [ ] Maybe full width <hr> (use the one from Mantine) under 'My Surveys' and 'Taken Surveys'?
 ### Create/Edit Survey
 - [ ] Changing question type ... if it's changed to MCM or MCS, also create an answer option
 - [ ] Give surveys optional header images
   - [ ] Just a URL field for now...
+  - [ ] Use this header image in SurveyHero, with a fallback to some random image
 ### Deployment
 - [ ] Figure out how to deploy it
 - [ ] To a VPS? Hetzner?
@@ -62,6 +64,9 @@
 - [x] Framer motion animations: Questions
 - [x] Make Delete Question and Delete MCO buttons red
 - [x] Make Delete Question and Delete MCO modals
+- [x] Improve sidebar size and styling
+- [x] Use a good serif font for titles
+- [x] Create Mantine theme
 ### Create/Edit Survey
 - [x] Use React Query to manage survey in frontend
   - [x] Make /survey/create just a dummy page that creates a survey and redirects to /survey/edit/id, that way create and edit are basically the same!
@@ -192,7 +197,6 @@
 ### Deployment
 - [ ] Figure out how to set up GitHub Actions
 ### UI
-- [ ] Make side margins about 1/2 of what they currently are on XS screens
 - [ ] Landing page: reduce spacing between sections on phones
 - [ ] AppShell: on phone screens, scrolling the menu should scroll the menu, not the content underneath it!
 - [ ] Transition to styles api (there should be no `style={{}}` in the app)
@@ -201,7 +205,7 @@
 - [ ] Make login page a modal instead (https://github.com/nextauthjs/next-auth/issues/178)
 - [ ] small screen: sidebar in/out should be animated
 - [ ] make all the disabled stuff in the anket creator not have special mouse cursors
-- [ ] Choose nicer fonts (use the themeing in Mantine - and use same fonts as landing page?)
+- [ ] Improve the Logo (choose a font that works well with the existing ones, don't make the spacing so weird)
 ### Survey Creation
 - [ ] FIRST VALIDATION TEST: /create should be a form with title and optional description, clicking it creates a survey and takes us to the page to edit that survey
   - [ ] Use either react-hook-form or mantine-form

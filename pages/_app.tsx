@@ -12,6 +12,7 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import Head from 'next/head';
 import { useLocalStorage } from '@mantine/hooks';
 import AppShellWrapper from '../components/AppShellWrapper';
+import mantineTheme from '../styles/mantineTheme';
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   const queryClient = new QueryClient();
@@ -43,7 +44,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
           <MantineProvider
             withGlobalStyles
             withNormalizeCSS
-            theme={{ colorScheme, primaryColor: 'green' }}
+            theme={{ colorScheme, ...mantineTheme }}
           >
             <AppShellWrapper>
               <Component {...pageProps} />
