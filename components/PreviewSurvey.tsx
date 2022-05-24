@@ -14,6 +14,7 @@ import {
   Title,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -44,6 +45,18 @@ const PreviewSurvey = (props: Props) => {
         (Don&apos;t worry, you can always make changes to your survey even after
         it has been published)
       </Alert>
+      
+      <div style={{ maxHeight: '300px' }}>
+        {/* TODO: in production, use Next Image and fix the hosts issue by using something
+         * like Cloudinary fetch: https://cloudinary.com/documentation/fetch_remote_images
+         */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={survey.data.picture}
+          alt={`Survey Header Image: ${survey.data.name}`}
+          style={{ width: '100%', maxHeight: '300px', objectFit: 'cover', borderRadius: '8px'}}
+        />
+      </div>
       <Title order={2}>{survey.data.name}</Title>
       {survey.data.description !== '' && <Text>{survey.data.description}</Text>}
       <div>
@@ -69,6 +82,7 @@ const PreviewSurvey = (props: Props) => {
           </Badge>
         )}
       </div>
+      
       {survey.data.questions.map((question, index) => (
         <Paper key={question.id} shadow='lg' radius='md' p='md' withBorder>
           <Stack>

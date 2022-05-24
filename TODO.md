@@ -9,7 +9,7 @@
   - [x] Just a URL field for now...
   - [x] Use this header image in SurveyHero, with a fallback to some random image
   - [x] Implement in EditSurvey
-  - [ ] Implement in PreviewSurvey
+  - [x] Implement in PreviewSurvey
   - [ ] Implement in SurveyStats
   - [ ] Implement in TakeSurvey
   - [ ] Implement in ThanksForCreatingSurvey
