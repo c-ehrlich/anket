@@ -1,10 +1,7 @@
 # Anket Todo (current)
 ## MVP v1
 ### Bugs
-- [ ] Framer... adding answer options can still be choppy sometimes
-- [!] Choppy MCO reordering - https://github.com/framer/motion/issues/1518
-  - [*] Only appears in StrictMode? Test this
-### Deployment
+### Initial Deployment
 - [ ] Figure out how to deploy it
 - [ ] To a VPS? Hetzner?
 - [ ] Get the real DB running (RDS or Heroku Postgres?)
@@ -32,6 +29,7 @@
 - [x] Adding an MCO is skippy again... make sure everything else on the same level is motion, key, layout
 - [x] 'My Surveys' fails to load on dashboard refresh because we don't have the session yet
 - [x] Incorrect filtering of userId in 'all surveys' handler/service
+- [x] Choppy MCO reordering - https://github.com/framer/motion/issues/1518
 ## DB
 - [x] Implement order on questions
 - [x] send questions and answeroptions ordered on DB level

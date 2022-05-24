@@ -48,7 +48,9 @@ const useReorderAllMultipleChoiceOptions = ({
           });
         }
       },
-      onSettled: () => queryClient.invalidateQueries([QueryKeys.survey, surveyId]),
+      // TODO figure out how to not make reordering skippy without removing the
+      // onSettled function
+      // onSettled: () => queryClient.invalidateQueries([QueryKeys.survey, surveyId]),
     }
   );
 };
