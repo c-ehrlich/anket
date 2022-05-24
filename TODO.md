@@ -11,7 +11,7 @@
   - [x] Implement in EditSurvey
   - [x] Implement in PreviewSurvey
   - [ ] Implement in SurveyStats
-  - [ ] Implement in TakeSurvey
+  - [x] Implement in TakeSurvey
   - [x] Implement in ThanksForCreatingSurvey
   - [x] Implement in ThanksForTakingSurvey
 ### Deployment

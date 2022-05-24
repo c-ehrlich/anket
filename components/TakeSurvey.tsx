@@ -51,19 +51,37 @@ const TakeSurveyInner = ({
   const router = useRouter();
 
   async function setComplete() {
-    const updatedParticipation: UpdateSurveyParticipationResponse = await axios.patch(`/api/surveyparticipation/${survey.participations[0].id}`, {
-      isComplete: true,
-    }).then(res => res.data);
+    const updatedParticipation: UpdateSurveyParticipationResponse = await axios
+      .patch(`/api/surveyparticipation/${survey.participations[0].id}`, {
+        isComplete: true,
+      })
+      .then((res) => res.data);
     if (updatedParticipation.isComplete) {
-      router.push(`/survey/submitted/${survey.id}`)  
+      router.push(`/survey/submitted/${survey.id}`);
     } else {
-      window.alert(JSON.stringify(updatedParticipation))
+      window.alert(JSON.stringify(updatedParticipation));
     }
   }
 
   return (
     <>
       <Stack style={{ marginBottom: '64px' }}>
+        <div style={{ maxHeight: '300px' }}>
+          {/* TODO: in production, use Next Image and fix the hosts issue by using something
+           * like Cloudinary fetch: https://cloudinary.com/documentation/fetch_remote_images
+           */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={survey.picture}
+            alt={`Survey Header Image: ${survey.name}`}
+            style={{
+              width: '100%',
+              maxHeight: '300px',
+              objectFit: 'cover',
+              borderRadius: '8px',
+            }}
+          />
+        </div>
         <Title order={2}>{survey.name}</Title>
         <div>
           <Badge
