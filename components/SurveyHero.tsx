@@ -33,7 +33,7 @@ const SurveyHero = (props: Props) => {
     <Card shadow='sm' p='lg' withBorder>
       <Card.Section>
         <Image
-          src='https://picsum.photos/600/300'
+          src={props.survey.picture}
           height={160}
           alt='Survey Header Image'
         />

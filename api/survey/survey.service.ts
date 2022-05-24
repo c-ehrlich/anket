@@ -105,6 +105,7 @@ export async function getAllPublicSurveyPreviews(
         description: true,
         isCompleted: true,
         isPublic: true,
+        picture: true,
         participations: {
           where: {
             userId: userId,
@@ -133,6 +134,7 @@ export async function getUserSurveyPreviews(authorId: string) {
       author: { select: { id: true, name: true, image: true, email: true } },
       id: true,
       name: true,
+      picture: true,
       description: true,
       isCompleted: true,
       isPublic: true,

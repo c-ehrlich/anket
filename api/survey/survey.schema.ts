@@ -76,6 +76,7 @@ export type EditSurveyData = z.infer<typeof editSurveySchema>['body'];
 const surveyWithAuthorSchema = z.object({
   id: z.string().cuid(),
   name: z.string(),
+  picture: z.string(),
   description: z.string(),
   isCompleted: z.boolean(),
   isPublic: z.boolean(),

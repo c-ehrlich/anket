@@ -71,6 +71,7 @@ model Survey {
   id          String @id @default(cuid())
   name        String
   description String
+  picture     String @default("/img/survey/survey-default.jpg")
 
   isCompleted Boolean @default(false)
   isPublic    Boolean @default(true)
