@@ -4,8 +4,6 @@
 - [ ] Framer... adding answer options can still be choppy sometimes
 - [!] Choppy MCO reordering - https://github.com/framer/motion/issues/1518
   - [*] Only appears in StrictMode? Test this
-### Create/Edit Survey
-- [ ] Changing question type ... if it's changed to MCM or MCS, also create an answer option
 ### Deployment
 - [ ] Figure out how to deploy it
 - [ ] To a VPS? Hetzner?
@@ -110,6 +108,7 @@
   - [x] Implement in TakeSurvey
   - [x] Implement in ThanksForCreatingSurvey
   - [x] Implement in ThanksForTakingSurvey
+- [x] Preserve AnswerOptions when changing questionType
 ### User Profile Page
 - [x] Create it
 ### Take Survey

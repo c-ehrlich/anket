@@ -64,22 +64,6 @@ export async function editQuestion({
           multipleChoiceOptions: true,
         },
       });
-
-    // delete other multiple choice options
-    // TODO is this really necessary?
-    if (
-      !(
-        updatedQuestion.questionType === 'multipleChoiceMultiple' ||
-        updatedQuestion.questionType === 'multipleChoiceSingle'
-      )
-    ) {
-      await prisma.multipleChoiceOption.deleteMany({
-        where: {
-          questionId: id,
-        },
-      });
-    }
-
     return updatedQuestion;
   } catch (e) {
     logger.error(e);
