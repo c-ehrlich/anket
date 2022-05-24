@@ -105,6 +105,7 @@
 - [x] Reorder MCOs by dragging
 - [x] Creating a survey also creates the first question, creating a question also creates the first answer option
 - [x] Implement submitting survey (without validation for now)
+- [x] Add 'Survey Info' to EditSurvey
 ### User Profile Page
 - [x] Create it
 ### Take Survey

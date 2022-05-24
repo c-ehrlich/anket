@@ -87,6 +87,7 @@ const EditSurveyHaveData = memo(({ survey }: { survey: SurveyFE }) => {
         onClickDelete={() => deleteSurvey.mutate()}
       />
       <Stack style={{ marginBottom: '64px' }}>
+        <Title order={3}>Survey Info</Title>
         <TextInput
           label='Survey Name'
           placeholder='The name for your survey'
