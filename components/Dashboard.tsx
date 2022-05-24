@@ -60,12 +60,12 @@ function MySurveys() {
   return (
     // <Paper withBorder shadow='md' p='md'>
     <Stack>
-      <Title order={2}>My Surveys</Title>
+      <Title order={2}>Created Surveys</Title>
       {mySurveysData !== undefined && newParticipationsCount !== undefined ? (
         <>
           {unfinishedSurveys.length > 0 ? (
             <>
-              <Text>
+              <Text size='lg'>
                 You have {unfinishedSurveys.length} unfinished{' '}
                 {unfinishedSurveys.length === 1 ? 'survey' : 'surveys'}
               </Text>
@@ -76,9 +76,10 @@ function MySurveys() {
           ) : null}
           {finishedSurveys.length > 0 ? (
             <>
-              <Text>
-                You have created {finishedSurveys.length} surveys. Here are the
-                most recent {Math.min(3, finishedSurveys.length)}.
+              <Text size='lg'>
+                Here {finishedSurveys.length === 1 ? 'is' : 'are'} your{' '}
+                {Math.min(3, finishedSurveys.length)} most recently created{' '}
+                {finishedSurveys.length === 1 ? 'survey' : 'surveys'}
               </Text>
               {finishedSurveys.slice(0, 3).map((s) => (
                 <CreatedSurveyCard key={s.id} survey={s} />
@@ -101,10 +102,10 @@ function MySurveys() {
             New Survey
           </Button>
 
-          <div>
+          <Text size='lg'>
             There were {newParticipationsCount} new responses to your surveys in
             the last 24 hours.
-          </div>
+          </Text>
         </>
       ) : (
         <Center>
@@ -133,9 +134,11 @@ function TakenSurveys() {
       <Title order={2}>Taken Surveys</Title>
       {myUnfinishedParticipations !== undefined && (
         <>
-          <Text>
-            You have {myUnfinishedParticipations.length} unfinished
-            participations
+          <Text size='lg'>
+            You have {myUnfinishedParticipations.length} unfinished{' '}
+            {myUnfinishedParticipations.length === 1
+              ? 'participation'
+              : 'participations'}
           </Text>
           {myUnfinishedParticipations.map((p) => (
             <TakenSurveyCard key={p.id} participation={p} />
@@ -144,9 +147,12 @@ function TakenSurveys() {
       )}
       {myFinishedParticipations !== undefined && (
         <>
-          <Text>
-            Here are your {Math.min(3, myFinishedParticipations.length)} most
-            recent completed participations
+          <Text size='lg'>
+            Here {myFinishedParticipations.length === 1 ? 'is' : 'are'} your{' '}
+            {Math.min(3, myFinishedParticipations.length)} most recently completed{' '}
+            {myFinishedParticipations.length === 1
+              ? 'participation'
+              : 'participations'}
           </Text>
           {myFinishedParticipations.slice(0, 3).map((p) => (
             <TakenSurveyCard key={p.id} participation={p} />
@@ -171,7 +177,9 @@ function CreatedSurveyCard({
         <Group align='start'>
           <Avatar size='lg' radius='xl' src={survey.author.image} />
           <Stack spacing={1}>
-            <Title order={3}>{survey.name}</Title>
+            <Title order={3}>
+              {survey.name !== '' ? survey.name : '(no title)'}
+            </Title>
             <Text color='dimmed'>by {survey.author.name}</Text>
             <Box sx={{ marginTop: '8px' }}>
               {!survey.isCompleted ? (

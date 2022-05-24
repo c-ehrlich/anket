@@ -4,12 +4,8 @@
 - [ ] Framer... adding answer options can still be choppy sometimes
 - [!] Choppy MCO reordering - https://github.com/framer/motion/issues/1518
 ### UI
-- [ ] Dashboard: make strings better... single/plural etc
 - [ ] Make side margins about 1/2 of what they currently are on XS screens
 - [ ] Choose nicer fonts (use the themeing in Mantine - and use same fonts as landing page?)
-- [ ] Improve the dashboard layout a bit...
-  - [ ] Header texts should be bigger ('You have 1 unfinished survey' etc)
-  - [ ] Maybe full width <hr> (use the one from Mantine) under 'My Surveys' and 'Taken Surveys'?
 ### Create/Edit Survey
 - [ ] Changing question type ... if it's changed to MCM or MCS, also create an answer option
 - [ ] Give surveys optional header images
@@ -67,6 +63,9 @@
 - [x] Improve sidebar size and styling
 - [x] Use a good serif font for titles
 - [x] Create Mantine theme
+- [x] Dashboard: make strings better... single/plural etc
+- [x] Improve the dashboard layout a bit...
+  - [x] Header texts should be bigger ('You have 1 unfinished survey' etc)
 ### Create/Edit Survey
 - [x] Use React Query to manage survey in frontend
   - [x] Make /survey/create just a dummy page that creates a survey and redirects to /survey/edit/id, that way create and edit are basically the same!
