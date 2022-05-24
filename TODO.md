@@ -6,8 +6,14 @@
 ### Create/Edit Survey
 - [ ] Changing question type ... if it's changed to MCM or MCS, also create an answer option
 - [ ] Give surveys optional header images
-  - [ ] Just a URL field for now...
-  - [ ] Use this header image in SurveyHero, with a fallback to some random image
+  - [x] Just a URL field for now...
+  - [x] Use this header image in SurveyHero, with a fallback to some random image
+  - [x] Implement in EditSurvey
+  - [ ] Implement in PreviewSurvey
+  - [ ] Implement in SurveyStats
+  - [ ] Implement in TakeSurvey
+  - [ ] Implement in ThanksForCreatingSurvey
+  - [ ] Implement in ThanksForTakingSurvey
 ### Deployment
 - [ ] Figure out how to deploy it
 - [ ] To a VPS? Hetzner?
@@ -221,6 +227,9 @@
 ### Taking a survey
 - [ ] Use schema validation on the submission
 ### Surveys
+- [ ] Browser: More search options
+  - [ ] My Surveys: Incomplete vs Complete
+  - [ ] All Surveys: Not taken vs Started vs Complete
 - [ ] Multiple Choice Options should have 'other' option
   - [ ] This should be optional (decided by survey author whether to include it?)
   - [ ] Create DB Model

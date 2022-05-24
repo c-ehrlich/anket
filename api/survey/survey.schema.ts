@@ -35,6 +35,7 @@ const createDefaultSurveyResponseSchema = z.object({
   id: z.string({}).cuid(),
   name: z.string({}),
   description: z.string({}),
+  picture: z.string({}).url(),
   isCompleted: z.boolean({}),
   isPublic: z.boolean({}),
   questions: z.array(questionResponseSchema),
@@ -42,16 +43,9 @@ const createDefaultSurveyResponseSchema = z.object({
 
 export type SurveyFE = z.infer<typeof createDefaultSurveyResponseSchema>;
 
-const surveyFEWithAuthorSchema = z.object({
-  id: z.string({}).cuid(),
-  name: z.string({}),
-  description: z.string({}),
-  isCompleted: z.boolean({}),
-  isPublic: z.boolean({}),
-  questions: z.array(questionResponseSchema),
+const surveyFEWithAuthorSchema = createDefaultSurveyResponseSchema.extend({
   author: user,
-});
-
+})
 export type SurveyFEWithAuthor = z.infer<typeof surveyFEWithAuthorSchema>;
 
 // For route validation & according frontend types
@@ -60,6 +54,7 @@ export const editSurveySchema = z.object({
     .object({
       name: z.string(),
       description: z.string(),
+      picture: z.string(),
       isPublic: z.boolean(),
       isCompleted: z.boolean(),
     })

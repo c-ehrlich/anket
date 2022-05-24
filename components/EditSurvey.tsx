@@ -48,6 +48,7 @@ const EditSurveyHaveData = memo(({ survey }: { survey: SurveyFE }) => {
   const [surveyDescription, setSurveyDescription] = useState<string>(
     survey.description
   );
+  const [surveyPicture, setSurveyPicture] = useState<string>(survey.picture);
 
   // we need a separate debounce for each field, otherwise
   // hitting tab and continuing to type will cancel the requests
@@ -60,6 +61,10 @@ const EditSurveyHaveData = memo(({ survey }: { survey: SurveyFE }) => {
     (data: EditSurveyData) => editSurvey.mutate(data),
     1000
   );
+  const debouncedEditSurveyPicture = useDebouncedCallback(
+    (data: EditSurveyData) => editSurvey.mutate(data),
+    1000
+  )
 
   const handleEditSurveyName = (e: React.FormEvent<HTMLInputElement>) => {
     setSurveyName(e.currentTarget.value);
@@ -69,6 +74,10 @@ const EditSurveyHaveData = memo(({ survey }: { survey: SurveyFE }) => {
     setSurveyDescription(e.currentTarget.value);
     debouncedEditSurveyDescription({ description: e.currentTarget.value });
   };
+  const handleEditSurveyPicture = (e: React.FormEvent<HTMLInputElement>) => {
+    setSurveyPicture(e.currentTarget.value);
+    debouncedEditSurveyPicture({ picture: e.currentTarget.value})
+  }
 
   const editSurvey = useEditSurvey({ surveyId: survey.id });
   const deleteSurvey = useDeleteSurvey({
@@ -101,6 +110,13 @@ const EditSurveyHaveData = memo(({ survey }: { survey: SurveyFE }) => {
           placeholder='(optional)'
           value={surveyDescription}
           onChange={handleEditSurveyDesc}
+        />
+
+        <TextInput
+          label='Picture'
+          placeholder='(url)'
+          value={surveyPicture}
+          onChange={handleEditSurveyPicture}
         />
 
         <Checkbox
