@@ -113,113 +113,119 @@ const SurveyStats = (props: PageProps) => {
 
   return (
     <Stack>
-      {/* <Title order={1}>Stats</Title> */}
+      <Title order={1}>Stats</Title>
       <Text>
         {props.survey.participations.length} users have responsed to your
         survey.
       </Text>
       <Divider />
-      <div style={{ maxHeight: '300px' }}>
-        {/* TODO: in production, use Next Image and fix the hosts issue by using something
-         * like Cloudinary fetch: https://cloudinary.com/documentation/fetch_remote_images
-         */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={props.survey.picture}
-          alt={`Survey Header Image: ${props.survey.name}`}
-          style={{
-            width: '100%',
-            maxHeight: '300px',
-            objectFit: 'cover',
-            borderRadius: '8px',
-          }}
-        />
-      </div>
-      <Title order={2}>{props.survey.name}</Title>
-      <Text style={{ whiteSpace: 'pre-line' }}>{props.survey.description}</Text>
-      {props.survey.questions.map((q, index) => (
-        <Paper withBorder p='md' shadow='md' key={q.id}>
-          <Stack>
-            <Title order={2}>{q.question}</Title>
-            {q.details && <Text>{q.details}</Text>}
-            {q.questionType === 'multipleChoiceSingle' && (
-              <ResponsiveContainer width='99%' aspect={1} maxHeight={400}>
-                <PieChart data={displayData[index]}>
-                  <Pie
-                    data={displayData[index]}
-                    dataKey='value'
-                    nameKey='name'
-                    cx='50%'
-                    cy='50%'
-                    fill='#69DB7C'
-                  />
-                  <Legend />
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
-            )}
-            {q.questionType === 'multipleChoiceMultiple' && (
-              <ResponsiveContainer width='99%' aspect={3}>
-                <BarChart data={displayData[index]}>
-                  <CartesianGrid strokeDasharray='3 3' />
-                  <Bar dataKey='value' fill='#69DB7C' />
-                  <Tooltip />
-                  <YAxis />
-                  <XAxis
-                    dataKey='name'
-                    // dataKey={(x) =>
-                    //   x.name.length > 12
-                    //     ? x.name.slice(0, 12) + '...'
-                    //     : x.name.slice(0, 12)
-                    // }
-                  />
-                </BarChart>
-              </ResponsiveContainer>
-            )}
-            {q.questionType === 'yesNoBoolean' && (
-              <ResponsiveContainer width='99%' aspect={1} maxHeight={400}>
-                <PieChart data={displayData[index]}>
-                  <Pie
-                    data={displayData[index]}
-                    dataKey='value'
-                    nameKey='name'
-                    cx='50%'
-                    cy='50%'
-                    // outerRadius={100}
-                    fill='#69DB7C'
-                  />
-                  <Legend />
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
-            )}
-
-            {q.questionType === 'zeroToTen' && (
-              <ResponsiveContainer width='99%' aspect={1} maxHeight={400}>
-                <PieChart data={displayData[index]}>
-                  <Pie
-                    data={displayData[index]}
-                    dataKey='value'
-                    nameKey='name'
-                    cx='50%'
-                    cy='50%'
-                    fill='#69DB7C'
-                  />
-                  <Legend />
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
-            )}
-            {q.questionType === 'textResponse' && (
+      {props.survey.participations.length !== 0 ? (
+        <>
+          <div style={{ maxHeight: '300px' }}>
+            {/* TODO: in production, use Next Image and fix the hosts issue by using something
+             * like Cloudinary fetch: https://cloudinary.com/documentation/fetch_remote_images
+             */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={props.survey.picture}
+              alt={`Survey Header Image: ${props.survey.name}`}
+              style={{
+                width: '100%',
+                maxHeight: '300px',
+                objectFit: 'cover',
+                borderRadius: '8px',
+              }}
+            />
+          </div>
+          <Title order={2}>{props.survey.name}</Title>
+          <Text style={{ whiteSpace: 'pre-line' }}>
+            {props.survey.description}
+          </Text>
+          {props.survey.questions.map((q, index) => (
+            <Paper withBorder p='md' shadow='md' key={q.id}>
               <Stack>
-                {q.questionResponses.map((r) => (
-                  <Text key={r.id}>{r.answerText}</Text>
-                ))}
+                <Title order={2}>{q.question}</Title>
+                {q.details && <Text>{q.details}</Text>}
+                {q.questionType === 'multipleChoiceSingle' && (
+                  <ResponsiveContainer width='99%' aspect={1} maxHeight={400}>
+                    <PieChart data={displayData[index]}>
+                      <Pie
+                        data={displayData[index]}
+                        dataKey='value'
+                        nameKey='name'
+                        cx='50%'
+                        cy='50%'
+                        fill='#69DB7C'
+                      />
+                      <Legend />
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
+                )}
+                {q.questionType === 'multipleChoiceMultiple' && (
+                  <ResponsiveContainer width='99%' aspect={3}>
+                    <BarChart data={displayData[index]}>
+                      <CartesianGrid strokeDasharray='3 3' />
+                      <Bar dataKey='value' fill='#69DB7C' />
+                      <Tooltip />
+                      <YAxis />
+                      <XAxis
+                        dataKey='name'
+                        // dataKey={(x) =>
+                        //   x.name.length > 12
+                        //     ? x.name.slice(0, 12) + '...'
+                        //     : x.name.slice(0, 12)
+                        // }
+                      />
+                    </BarChart>
+                  </ResponsiveContainer>
+                )}
+                {q.questionType === 'yesNoBoolean' && (
+                  <ResponsiveContainer width='99%' aspect={1} maxHeight={400}>
+                    <PieChart data={displayData[index]}>
+                      <Pie
+                        data={displayData[index]}
+                        dataKey='value'
+                        nameKey='name'
+                        cx='50%'
+                        cy='50%'
+                        // outerRadius={100}
+                        fill='#69DB7C'
+                      />
+                      <Legend />
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
+                )}
+
+                {q.questionType === 'zeroToTen' && (
+                  <ResponsiveContainer width='99%' aspect={1} maxHeight={400}>
+                    <PieChart data={displayData[index]}>
+                      <Pie
+                        data={displayData[index]}
+                        dataKey='value'
+                        nameKey='name'
+                        cx='50%'
+                        cy='50%'
+                        fill='#69DB7C'
+                      />
+                      <Legend />
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
+                )}
+                {q.questionType === 'textResponse' && (
+                  <Stack>
+                    {q.questionResponses.map((r) => (
+                      <Text key={r.id}>{r.answerText}</Text>
+                    ))}
+                  </Stack>
+                )}
               </Stack>
-            )}
-          </Stack>
-        </Paper>
-      ))}
+            </Paper>
+          ))}
+        </>
+      ) : (<Text>Please wait until there is at least 1 response to see survey stats</Text>)}
     </Stack>
   );
 };
