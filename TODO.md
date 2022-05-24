@@ -7,8 +7,66 @@
 - [ ] Get the real DB running (RDS or Heroku Postgres?)
   - [ ] Can test this even before deploying
 
+## MVP 2
+### Deployment
+- [ ] Figure out how to set up GitHub Actions
+### UI
+- [ ] Landing page: reduce spacing between sections on phones
+- [ ] AppShell: on phone screens, scrolling the menu should scroll the menu, not the content underneath it!
+- [ ] Transition to styles api (there should be no `style={{}}` in the app)
+- [ ] Modal styling... they look a bit sad
+- [ ] Read all of Refactoring UI and make UI changes based on it
+- [ ] Make login page a modal instead (https://github.com/nextauthjs/next-auth/issues/178)
+- [ ] small screen: sidebar in/out should be animated
+- [ ] make all the disabled stuff in the anket creator not have special mouse cursors
+- [ ] Improve the Logo (choose a font that works well with the existing ones, don't make the spacing so weird)
+- [ ] Improve body text typography
+### Survey Creation
+- [ ] Description should support line breaks
+- [ ] Submitting / error checking... what do we want to make sure of before submitting a survey?
+  - [ ] No empty questions (last question can be empty, just trim it)
+  - [ ] No empty answer options (last answer option can be empty, just trim it)
+  - [ ] After trimming empty stuff at the end, nothing should have a title that is equal to the empty string
+  - [ ] See how the mantine forms stuff works...
+- [ ] Header images... use real uploading instead
+  - [ ] Figure out how image upload works
+  - [ ] Where can we store them? What about in deployment? S3?
+  - [ ] Default image for surveys that don't have one assigned ... refresh until I find a good one and copy that
+### Taking a survey
+- [ ] Use schema validation on the submission
+### Surveys
+- [ ] Browser: More search options
+  - [ ] My Surveys: Incomplete vs Complete
+  - [ ] All Surveys: Not taken vs Started vs Complete
+- [ ] Multiple Choice Options should have 'other' option
+  - [ ] This should be optional (decided by survey author whether to include it?)
+  - [ ] Create DB Model
+  - [ ] Create Backend implementation
+  - [ ] Create Implementation during survey creation
+  - [ ] Create Implementation during survey taking
+### Stats
+- [ ] Rebuild in d3.js + airbnb visx https://airbnb.io/visx/gallery
+  - [ ] https://codesandbox.io/s/github/airbnb/visx/tree/master/packages/visx-demo/src/sandboxes/visx-shape-pie?file=/Example.tsx
+- [ ] For multiple choice, see what percentage of people chose each
+- [ ] Each bar is a different color
+- [ ] Bars have truncated bottom labels and full labels on hover
+- [ ] Nice % labels
+- [ ] Axes are % or absolute?
+### Users
+- [ ] User profiles ... users can have settings, nicknames, etc
+  - [ ] When logging in with a user that doesn't exist in the db yet, force them to create a user profile
+### Maybe / Todos
+- [ ] See where we can reduce the number of props (for example in EditSurveyMultipleChoiceAnswer by passing an object instead of multiple parts of that object)
+- [ ] Go through all major parts of the app in browser with console open and fix any errors
+- [ ] Go through all major parts of the app with network requests open and fix any that are red
+
 # Anket Done
-## MVP v1
+## MVP 2
+### Survey Creation / Editing
+- [x] FIRST VALIDATION TEST: /create should be a form with title and optional description, clicking it creates a survey and takes us to the page to edit that survey
+
+
+## MVP 1
 ### Bugs
 - [x] Figure out why login is broken
   - [x] Was just something about some package
@@ -194,59 +252,3 @@
 - [x] Create some data to be able to test the stats page
 - [x] Create basic (ugly) graphs that show the stats
 - [x] Get count of responses
-
-## MVP 2
-### Deployment
-- [ ] Figure out how to set up GitHub Actions
-### UI
-- [ ] Landing page: reduce spacing between sections on phones
-- [ ] AppShell: on phone screens, scrolling the menu should scroll the menu, not the content underneath it!
-- [ ] Transition to styles api (there should be no `style={{}}` in the app)
-- [ ] Modal styling... they look a bit sad
-- [ ] Read all of Refactoring UI and make UI changes based on it
-- [ ] Make login page a modal instead (https://github.com/nextauthjs/next-auth/issues/178)
-- [ ] small screen: sidebar in/out should be animated
-- [ ] make all the disabled stuff in the anket creator not have special mouse cursors
-- [ ] Improve the Logo (choose a font that works well with the existing ones, don't make the spacing so weird)
-- [ ] Improve body text typography
-### Survey Creation
-- [ ] FIRST VALIDATION TEST: /create should be a form with title and optional description, clicking it creates a survey and takes us to the page to edit that survey
-  - [ ] Use either react-hook-form or mantine-form
-- [ ] Description should support line breaks
-- [ ] Submitting / error checking... what do we want to make sure of before submitting a survey?
-  - [ ] No empty questions (last question can be empty, just trim it)
-  - [ ] No empty answer options (last answer option can be empty, just trim it)
-  - [ ] After trimming empty stuff at the end, nothing should have a title that is equal to the empty string
-  - [ ] See how the mantine forms stuff works...
-- [ ] Header images... use real uploading instead
-  - [ ] Figure out how image upload works
-  - [ ] Where can we store them? What about in deployment? S3?
-  - [ ] Default image for surveys that don't have one assigned ... refresh until I find a good one and copy that
-### Taking a survey
-- [ ] Use schema validation on the submission
-### Surveys
-- [ ] Browser: More search options
-  - [ ] My Surveys: Incomplete vs Complete
-  - [ ] All Surveys: Not taken vs Started vs Complete
-- [ ] Multiple Choice Options should have 'other' option
-  - [ ] This should be optional (decided by survey author whether to include it?)
-  - [ ] Create DB Model
-  - [ ] Create Backend implementation
-  - [ ] Create Implementation during survey creation
-  - [ ] Create Implementation during survey taking
-### Stats
-- [ ] Rebuild in d3.js + airbnb visx https://airbnb.io/visx/gallery
-  - [ ] https://codesandbox.io/s/github/airbnb/visx/tree/master/packages/visx-demo/src/sandboxes/visx-shape-pie?file=/Example.tsx
-- [ ] For multiple choice, see what percentage of people chose each
-- [ ] Each bar is a different color
-- [ ] Bars have truncated bottom labels and full labels on hover
-- [ ] Nice % labels
-- [ ] Axes are % or absolute?
-### Users
-- [ ] User profiles ... users can have settings, nicknames, etc
-  - [ ] When logging in with a user that doesn't exist in the db yet, force them to create a user profile
-### Maybe / Todos
-- [ ] See where we can reduce the number of props (for example in EditSurveyMultipleChoiceAnswer by passing an object instead of multiple parts of that object)
-- [ ] Go through all major parts of the app in browser with console open and fix any errors
-- [ ] Go through all major parts of the app with network requests open and fix any that are red
-

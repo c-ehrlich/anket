@@ -45,7 +45,7 @@ export type SurveyFE = z.infer<typeof createDefaultSurveyResponseSchema>;
 
 const surveyFEWithAuthorSchema = createDefaultSurveyResponseSchema.extend({
   author: user,
-})
+});
 export type SurveyFEWithAuthor = z.infer<typeof surveyFEWithAuthorSchema>;
 
 // For route validation & according frontend types
@@ -89,3 +89,25 @@ const surveyWithAuthorAndInteractionSchema = surveyWithAuthorSchema.extend({
 export type SurveyPreviewWithAuthorAndInteraction = z.infer<
   typeof surveyWithAuthorAndInteractionSchema
 >;
+
+export const createSurveySchema = z.object({
+  body: z.object({
+    name: z
+      .string({
+        required_error: 'Name is required',
+        invalid_type_error: 'Name must be a string',
+      })
+      .min(6, 'Name must be at least 6 characters')
+      .max(100, 'Name can not be more than 100 characters'),
+    description: z
+      .string({
+        invalid_type_error: 'Description must be a string',
+      })
+      .max(1000, 'Description can not be longer than 1000 characters'),
+    picture: z
+      .string({ invalid_type_error: 'Image must be a URL' })
+      .url('Image must be a url or empty')
+      .or(z.literal('')),
+  }),
+});
+export type CreateSurvey = z.infer<typeof createSurveySchema>['body'];

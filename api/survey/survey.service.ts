@@ -1,12 +1,63 @@
 import {
   CreateDefaultSurveyInput,
+  CreateSurvey,
   EditSurveyData,
   SurveyFE,
   SurveyPreviewWithAuthorAndInteraction,
 } from './survey.schema';
 import prisma from '../utils/prisma';
 import logger from '../utils/logger';
+import { DEFAULT_SURVEY_PICTURE_URL } from '../../types/defaults';
 
+export async function createSurvey(data: CreateSurvey, authorId: string) {
+  try {
+    return prisma.survey.create({
+      data: {
+        ...data,
+        picture: data.picture === '' ? DEFAULT_SURVEY_PICTURE_URL : data.picture,
+        authorId,
+        questions: {
+          create: {
+            question: '',
+            details: '',
+            order: 0,
+            isRequired: true,
+            questionType: 'multipleChoiceSingle',
+            multipleChoiceOptions: {
+              create: {
+                name: '',
+                order: 0,
+              },
+            },
+          },
+        },
+      },
+      include: {
+        questions: {
+          include: {
+            multipleChoiceOptions: {
+              orderBy: {
+                order: 'asc',
+              },
+            },
+          },
+          orderBy: {
+            order: 'asc',
+          },
+        },
+      },
+    });
+  } catch (e) {
+    logger.error(e);
+  }
+}
+
+/*
+ * This function was for when the create link made a new survey as soon as we clicked it
+ * This has mostly been solved by having a small form before
+ * Will leave this function here for now
+ * TODO delete this function and associated service if we're sure we don't need it anymore
+ */
 export async function createDefaultSurvey(data: CreateDefaultSurveyInput) {
   /**
    * We don't want to inadventently create a bunch of surveys. So if there is

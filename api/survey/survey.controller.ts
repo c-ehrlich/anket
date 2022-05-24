@@ -4,12 +4,14 @@ import getId from '../utils/getId';
 import logger from '../utils/logger';
 import {
   CreateDefaultSurveyInput,
+  CreateSurvey,
   SurveyFE,
   SurveyFEWithAuthor,
   SurveyPreviewWithAuthor,
   SurveyPreviewWithAuthorAndInteraction,
 } from './survey.schema';
 import {
+  createSurvey,
   createDefaultSurvey,
   deleteSurvey,
   getAllPublicSurveyPreviews,
@@ -19,12 +21,39 @@ import {
   updateSurvey,
 } from './survey.service';
 
-export async function createNewSurveyHandler(
+export async function createSurveyHandler(
+  req: NextApiRequest,
+  res: NextApiResponse<SurveyFE | string>
+) {
+  logger.info('in createSurveyHandler');
+  
+  const session = await getSession({ req });
+  const authorId = session!.user!.id;
+
+  if (!authorId) {
+    return res.status(400).send('No session');
+  }
+
+  const data: CreateSurvey = req.body;
+
+  const survey = await createSurvey(data, authorId);
+  if (!survey) {
+    return res.status(400).send('Error creating survey')
+  }
+
+  return res.status(201).json(survey);
+}
+
+/*
+ * This function was for when the create link made a new survey as soon as we clicked it
+ * This has mostly been solved by having a small form before
+ * Will leave this function here for now
+ * TODO delete this function and associated service if we're sure we don't need it anymore
+ */
+export async function upsertEmptySurveyHandler(
   req: NextApiRequest,
   res: NextApiResponse<SurveyFE | { message: string }>
 ) {
-  logger.info('in createNewsurveyHandler');
-
   const session = await getSession({ req });
   const authorId = session!.user!.id;
 
@@ -94,7 +123,7 @@ export async function getAllPublicSurveysHandler(
     await getAllPublicSurveyPreviews(userId);
   if (!surveys) return res.status(400).send('error getting surveys');
 
-  console.log(surveys[0].participations[0])
+  console.log(surveys[0].participations[0]);
 
   return res.status(200).json(surveys);
 }

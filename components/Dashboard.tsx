@@ -92,13 +92,7 @@ function MySurveys() {
               </Text>
             </Stack>
           )}
-          <Button
-            onClick={() =>
-              createSurvey().then((survey) =>
-                router.push(`/survey/edit/${survey.id}`)
-              )
-            }
-          >
+          <Button onClick={() => router.push(`/survey/create`)}>
             New Survey
           </Button>
 
@@ -149,7 +143,8 @@ function TakenSurveys() {
         <>
           <Text size='lg'>
             Here {myFinishedParticipations.length === 1 ? 'is' : 'are'} your{' '}
-            {Math.min(3, myFinishedParticipations.length)} most recently completed{' '}
+            {Math.min(3, myFinishedParticipations.length)} most recently
+            completed{' '}
             {myFinishedParticipations.length === 1
               ? 'participation'
               : 'participations'}

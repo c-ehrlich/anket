@@ -2,19 +2,18 @@ import { Group, Text, ThemeIcon, UnstyledButton } from '@mantine/core';
 import { useRouter } from 'next/router';
 import React, { ReactNode } from 'react';
 import { FilePlus, Home, ListCheck, UserCheck } from 'tabler-icons-react';
-import { createSurvey } from '../hooks/useCreateSurvey';
 
 const data: NavBarLinkProps[] = [
   {
     label: 'Home',
     color: 'green',
     onClick: '/',
-    icon: <Home  />,
+    icon: <Home />,
   },
   {
     label: 'Create Survey',
     color: 'green',
-    onClick: 'FUNC createSurvey',
+    onClick: '/survey/create',
     icon: <FilePlus />,
   },
   {
@@ -40,11 +39,7 @@ export const AppNavbarLink = (props: AppNavbarLinkProps) => {
   const router = useRouter();
   const onLinkClick = () => {
     props.closeNavbar();
-    if (props.link.onClick === 'FUNC createSurvey') {
-      createSurvey().then((survey) => router.push(`/survey/edit/${survey.id}`));
-    } else {
-      router.push(props.link.onClick);
-    }
+    router.push(props.link.onClick);
   };
   return (
     <UnstyledButton
@@ -70,7 +65,9 @@ export const AppNavbarLink = (props: AppNavbarLinkProps) => {
           {props.link.icon}
         </ThemeIcon>
 
-        <Text size='md' weight={400}>{props.link.label}</Text>
+        <Text size='md' weight={400}>
+          {props.link.label}
+        </Text>
       </Group>
     </UnstyledButton>
   );
