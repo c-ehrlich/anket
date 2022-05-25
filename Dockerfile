@@ -1,5 +1,5 @@
 # Install dependencies only when needed
-FROM --platform=linux/amd64 node:alpine AS deps
+FROM --platform=linux/amd64 node:16.15.0-alpine AS deps
 RUN apk update && apk add --no-cache libc6-compat && apk add git
 WORKDIR /app
 COPY package.json yarn.lock ../
@@ -7,7 +7,7 @@ RUN yarn install --immutable
 
 
 # Rebuild the source code only when needed
-FROM --platform=linux/amd64 node:alpine AS builder
+FROM --platform=linux/amd64 node:16.15.0-alpine AS builder
 # add environment variables to client code
 ARG DATABASE_URL
 ARG DISCORD_ID
@@ -29,25 +29,13 @@ WORKDIR /app
 COPY . .
 ARG NODE_ENV=production
 RUN EVHO ${NODE_ENV}
-RUN NODE_ENV=${NODE_ENV} yarn builder
+RUN NODE_ENV=${NODE_ENV} yarn builder --ignore_engines
 
 # Production image, copy all the files and run as next
 FROM --platform=linux/amd64 node:alpine AS runner
 WORKDIR /app
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
-
-# Install NVM and use Node@16.15.0
-ENV NODE_VERSION=16.15.0
-RUN apt install -y curl
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-ENV NVM_DIR=/root/.nvm
-RUN . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION}
-RUN . "$NVM_DIR/nvm.sh" && nvm use v${NODE_VERSION}
-RUN . "$NVM_DIR/nvm.sh" && nvm alias default v${NODE_VERSION}
-ENV PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
-RUN node --version
-RUN npm --version
 
 # Copy needed files
 COPY --from=builder /app/next.config.js ./next.config.js
