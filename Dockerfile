@@ -2,7 +2,7 @@
 FROM --platform=linux/amd64 node:16.15.0-alpine AS deps
 RUN apk update && apk add --no-cache libc6-compat && apk add git
 WORKDIR /app
-COPY package.json yarn.lock ../
+COPY package.json yarn.lock ./
 RUN yarn install --immutable
 
 
@@ -30,7 +30,8 @@ COPY . .
 ARG NODE_ENV=production
 RUN echo ${NODE_ENV}
 # --ignore-englines
-RUN NODE_ENV=${NODE_ENV} yarn && yarn build
+# yarn &&
+RUN NODE_ENV=${NODE_ENV} yarn build
 
 # Production image, copy all the files and run as next
 FROM --platform=linux/amd64 node:alpine AS runner
