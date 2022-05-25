@@ -9,8 +9,10 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "engines": {
+    "node": "^16.15.0"
+  },
   "dependencies": {
-    "@mantine/core": "^4.2.5",
     "@mantine/form": "^4.2.5",
     "@mantine/hooks": "^4.2.5",
     "@mantine/modals": "^4.2.5",
