@@ -28,8 +28,8 @@ jobs:
           DISCORD_SECRET: ${{ secrets.APP_DISCORD_SECRET }}
           GITHUB_ID: ${{ secrets.APP_GITHUB_ID }}
           GITHUB_SECRET: ${{ secrets.APP_GITHUB_SECRET }}
-          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
-          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+          NEXTAUTH_SECRET: ${{ secrets.APP_NEXTAUTH_SECRET }}
+          NEXTAUTH_URL: ${{ secrets.APP_NEXTAUTH_URL }}
         with:
           name: c-ehrlich/anket/anket_docker_image
           registry: ghcr.io
