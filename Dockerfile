@@ -28,7 +28,6 @@ ENV NEXTAUTH_URL=$NEXTAUTH_URL
 WORKDIR /app
 COPY . .
 ARG NODE_ENV=production
-RUN EVHO ${NODE_ENV}
 RUN NODE_ENV=${NODE_ENV} yarn builder --ignore_engines
 
 # Production image, copy all the files and run as next
