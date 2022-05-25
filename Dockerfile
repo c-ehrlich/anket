@@ -30,7 +30,7 @@ COPY . .
 ARG NODE_ENV=production
 RUN echo ${NODE_ENV}
 # --ignore-englines
-RUN NODE_ENV=${NODE_ENV} yarn build
+RUN NODE_ENV=${NODE_ENV} yarn && yarn build
 
 # Production image, copy all the files and run as next
 FROM --platform=linux/amd64 node:alpine AS runner
