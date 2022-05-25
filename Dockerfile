@@ -36,7 +36,7 @@ RUN NODE_ENV=${NODE_ENV} yarn run prisma:generate
 RUN NODE_ENV=${NODE_ENV} yarn build
 
 # Production image, copy all the files and run as next
-FROM --platform=linux/amd64 node:alpine AS runner
+FROM --platform=linux/amd64 node:16.15.0-alpine AS runner
 WORKDIR /app
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
