@@ -57,4 +57,6 @@ jobs:
             docker pull ghcr.io/c-ehrlich/anket/anket_docker_image:latest
             docker stop anket
             docker system prune -f
+            echo "---before run"
             docker run --name anket -dit -p 3105:3000 ghcr.io/c-ehrlich/anket/anket_docker_image:latest
+            echo "---after run"
