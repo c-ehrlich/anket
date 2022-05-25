@@ -32,6 +32,7 @@ ARG NODE_ENV=production
 RUN echo ${NODE_ENV}
 # --ignore-englines
 # yarn &&
+RUN NODE_ENV=${NODE_ENV} yarn run prisma:generate
 RUN NODE_ENV=${NODE_ENV} yarn build
 
 # Production image, copy all the files and run as next
