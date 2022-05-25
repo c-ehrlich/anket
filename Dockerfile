@@ -28,7 +28,9 @@ ENV NEXTAUTH_URL=$NEXTAUTH_URL
 WORKDIR /app
 COPY . .
 ARG NODE_ENV=production
-RUN NODE_ENV=${NODE_ENV} yarn build --ignore_engines
+RUN echo ${NODE_ENV}
+# --ignore-englines
+RUN NODE_ENV=${NODE_ENV} yarn build
 
 # Production image, copy all the files and run as next
 FROM --platform=linux/amd64 node:alpine AS runner
