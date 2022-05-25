@@ -27,6 +27,7 @@ ENV NEXTAUTH_URL=$NEXTAUTH_URL
 
 WORKDIR /app
 COPY . .
+COPY --from=deps /app/node_modules ./node_modules
 ARG NODE_ENV=production
 RUN echo ${NODE_ENV}
 # --ignore-englines
