@@ -9,8 +9,8 @@
   - [x] GitHub
   - [x] Discord
   - [-] (can't add Google)
-- [ ] Create Docker Container
-- [ ] Create GitHub Action / yml file
+- [x] Create Docker Container
+- [x] Create GitHub Action / yml file
 - [ ] Actually Deploy and get it working
 - [ ] Add one more auth option (OAuth?)
 
