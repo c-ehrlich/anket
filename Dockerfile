@@ -8,7 +8,7 @@ RUN yarn install --immutable
 
 # Rebuild the source code only when needed
 FROM --platform=linux/amd64 node:16.15.0-alpine AS builder
-# add environment variables to client code
+# add args as environment variables
 ARG DATABASE_URL
 ARG DISCORD_ID
 ARG DISCORD_SECRET
@@ -50,7 +50,7 @@ COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/pages ./pages
 
 # TEMP run prisma generate again
-RUN NODE_ENV=${NODE_ENV} yarn run prisma:generate
+# RUN NODE_ENV=${NODE_ENV} yarn run prisma:generate
 
 USER nextjs
 
