@@ -30,7 +30,7 @@ COPY . .
 COPY --from=deps /app/node_modules ./node_modules
 ARG NODE_ENV=production
 RUN echo ${NODE_ENV}
-# --ignore-englines
+# --ignore-engines
 # yarn &&
 RUN NODE_ENV=${NODE_ENV} yarn run prisma:generate
 RUN NODE_ENV=${NODE_ENV} yarn build
@@ -48,6 +48,9 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
 COPY --from=builder /app/pages ./pages
+
+# TEMP run prisma generate again
+RUN NODE_ENV=${NODE_ENV} yarn run prisma:generate
 
 USER nextjs
 
