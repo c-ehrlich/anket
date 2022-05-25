@@ -18,6 +18,7 @@ export async function getUserWithSurveys(id: string) {
           select: {
             id: true,
             name: true,
+            picture: true,
             description: true,
             updatedAt: true,
             isCompleted: true,
