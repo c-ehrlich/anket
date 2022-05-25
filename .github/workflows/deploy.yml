@@ -54,7 +54,7 @@ jobs:
           # it manually when moving to a different server
           script: |
             docker login ghcr.io -u $GITHUB_USERNAME -p $GITHUB_TOKEN
-            docker pull ghcr.io/c-ehrlich/anket/anket_docker_image
+            docker pull ghcr.io/c-ehrlich/anket/anket_docker_image:latest
             docker stop anket
             docker system prune -f
             docker run --name anket -dit -p 3105:3000 ghcr.io/c-ehrlich/anket/anket_docker_image:latest
