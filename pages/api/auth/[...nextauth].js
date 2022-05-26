@@ -6,6 +6,7 @@ import GithubProvider from 'next-auth/providers/github';
 import prisma from '../../../api/utils/prisma';
 
 export default NextAuth({
+  secret: process.env.NEXTAUTH_SECRET || 'changeme',
   adapter: PrismaAdapter(prisma),
   // Configure one or more authentication providers
   providers: [
