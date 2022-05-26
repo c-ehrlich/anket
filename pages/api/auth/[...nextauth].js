@@ -5,7 +5,11 @@ import GithubProvider from 'next-auth/providers/github';
 import prisma from '../../../api/utils/prisma';
 import getConfig from 'next/config';
 
-const { serverRuntimeConfig = {} } = getConfig() || {}
+const { serverRuntimeConfig = {} } = getConfig() || {};
+console.log('process.env.NEXTAUTH_URL: ' + process.env.NEXTAUTH_URL);
+console.log(
+  'serverRuntimeConfig.NEXTAUTH_SECRET: ' + serverRuntimeConfig.NEXTAUTH_SECRET
+);
 
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -13,11 +17,13 @@ export default NextAuth({
   providers: [
     DiscordProvider({
       clientId: process.env.DISCORD_ID || serverRuntimeConfig.DISCORD_ID,
-      clientSecret: process.env.DISCORD_SECRET || serverRuntimeConfig.DISCORD_SECRET,
+      clientSecret:
+        process.env.DISCORD_SECRET || serverRuntimeConfig.DISCORD_SECRET,
     }),
     GithubProvider({
       clientId: process.env.GITHUB_ID || serverRuntimeConfig.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET || serverRuntimeConfig.GITHUB_SECRET,
+      clientSecret:
+        process.env.GITHUB_SECRET || serverRuntimeConfig.GITHUB_SECRET,
     }),
     // ...add more providers here
   ],
@@ -33,6 +39,6 @@ export default NextAuth({
     },
   },
   // TODO remove hardcoded url
-  url: "http://49.12.216.156:3105",
+  url: 'http://49.12.216.156:3105',
   secret: process.env.NEXTAUTH_SECRET || serverRuntimeConfig.NEXTAUTH_SECRET,
 });
