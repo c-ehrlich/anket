@@ -9,7 +9,7 @@ declare global {
 }
 
 console.log('env: ' + process.env.NODE_ENV);
-console.log('db url: ' + process.env.DATABASE_URL);
+console.log('db url: ' + process.env.NEXT_PUBLIC_DATABASE_URL);
 console.log('NEXT_TESTVAR: ' + process.env.NEXT_TESTVAR);
 console.log('NEXT_PUBLIC_TESTVAR: ' + process.env.NEXT_PUBLIC_TESTVAR);
 

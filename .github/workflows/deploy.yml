@@ -23,7 +23,7 @@ jobs:
       - name: Build and Publish to Github Packages Registry
         uses: elgohr/Publish-Docker-Github-Action@master
         env:
-          DATABASE_URL: ${{ secrets.APP_DATABASE_URL }}
+          NEXT_PUBLIC_DATABASE_URL: ${{ secrets.APP_NEXT_PUBLIC_DATABASE_URL }}
           DISCORD_ID: ${{ secrets.APP_DISCORD_ID }}
           DISCORD_SECRET: ${{ secrets.APP_DISCORD_SECRET }}
           GITHUB_ID: ${{ secrets.APP_GITHUB_ID }}
@@ -38,7 +38,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.GITHUB_TOKEN }}
           dockerfile: Dockerfile
-          buildargs: DATABASE_URL,DISCORD_ID,DISCORD_SECRET,GITHUB_ID,GITHUB_SECRET,NEXTAUTH_SECRET,NEXTAUTH_URL,NEXT_TESTVAR,NEXT_PUBLIC_TESTVAR
+          buildargs: NEXT_PUBLIC_DATABASE_URL,DISCORD_ID,DISCORD_SECRET,GITHUB_ID,GITHUB_SECRET,NEXTAUTH_SECRET,NEXTAUTH_URL,NEXT_TESTVAR,NEXT_PUBLIC_TESTVAR
           tags: latest
 
       - name: Deploy package to VPS
