@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useQuery } from 'react-query';
 import {
   SurveyWithParticipationAndUserResponses,
-} from '../../api/surveyParticipation/surveyParticipation.schema';
+} from '../../backend/surveyParticipation/surveyParticipation.schema';
 import { QueryKeys } from '../../types/queryKeys';
 
 export const getOrCreateSurveyParticipation = async (surveyId: string) => {

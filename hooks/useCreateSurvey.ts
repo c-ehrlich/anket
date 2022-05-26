@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { SurveyFE } from '../api/survey/survey.schema';
+import { SurveyFE } from '../backend/survey/survey.schema';
 
 export const createSurvey = async () => {
   const survey: SurveyFE = await axios

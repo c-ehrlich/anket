@@ -14,7 +14,7 @@ import useReorderMultipleChoiceOption from '../hooks/useReorderMultipleChoiceOpt
 import {
   EditMultipleChoiceOptionData,
   MultipleChoiceOptionFE,
-} from '../api/multipleChoiceOption/multipleChoiceOption.schema';
+} from '../backend/multipleChoiceOption/multipleChoiceOption.schema';
 import { QuestionType } from '@prisma/client';
 import { useDebouncedCallback } from 'use-debounce';
 import DeleteModal from './modals/DeleteModal';

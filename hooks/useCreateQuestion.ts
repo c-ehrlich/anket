@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
-import { CreateQuestionData } from '../api/question/question.schema';
+import { CreateQuestionData } from '../backend/question/question.schema';
 import { QueryKeys } from '../types/queryKeys';
 
 const useCreateQuestion = (data: CreateQuestionData) => {

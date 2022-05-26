@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
-import { QuestionFE, ReorderQuestionData } from '../api/question/question.schema';
-import { SurveyFE } from '../api/survey/survey.schema';
+import { QuestionFE, ReorderQuestionData } from '../backend/question/question.schema';
+import { SurveyFE } from '../backend/survey/survey.schema';
 import { QueryKeys } from '../types/queryKeys';
 
 const useReorderQuestion = ({

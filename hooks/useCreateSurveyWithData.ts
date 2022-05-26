@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CreateSurvey, SurveyFE } from '../api/survey/survey.schema';
+import { CreateSurvey, SurveyFE } from '../backend/survey/survey.schema';
 
 export const createSurveyWithData = async (data: CreateSurvey) => {
   console.log(data);

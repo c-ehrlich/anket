@@ -15,7 +15,7 @@ import { useSession } from 'next-auth/react';
 import React from 'react';
 import { AlertTriangle, ChartBar, Check, Dots, Edit } from 'tabler-icons-react';
 import Link from 'next/link';
-import { SurveyPreviewWithAuthorAndInteraction } from '../api/survey/survey.schema';
+import { SurveyPreviewWithAuthorAndInteraction } from '../backend/survey/survey.schema';
 
 type Props = {
   survey: SurveyPreviewWithAuthorAndInteraction;

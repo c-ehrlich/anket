@@ -1,6 +1,6 @@
 import { Button, Radio } from '@mantine/core';
 import React, { useState } from 'react';
-import { SurveyQuestionWithResponses } from '../../api/surveyParticipation/surveyParticipation.schema';
+import { SurveyQuestionWithResponses } from '../../backend/surveyParticipation/surveyParticipation.schema';
 import useDeleteMultipleChoiceOptions from '../../hooks/surveyParticipation/useDeleteMultipleChoiceOptions';
 import useToggleMCSItem from '../../hooks/surveyParticipation/useToggleMCSItem';
 

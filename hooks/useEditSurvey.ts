@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
-import { EditSurveyData, SurveyFE } from '../api/survey/survey.schema';
+import { EditSurveyData, SurveyFE } from '../backend/survey/survey.schema';
 import { QueryKeys } from '../types/queryKeys';
 
 const useEditSurvey = ({ surveyId }: { surveyId: string }) => {

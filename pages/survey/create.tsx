@@ -1,7 +1,7 @@
-import { Button, Center, Group, Stack, TextInput, Title } from '@mantine/core';
+import { Button, Group, Stack, TextInput, Title } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { useRouter } from 'next/router';
-import { createSurveySchema } from '../../api/survey/survey.schema';
+import { createSurveySchema } from '../../backend/survey/survey.schema';
 import { createSurveyWithData } from '../../hooks/useCreateSurveyWithData';
 
 const CreateSurveyPage = () => {

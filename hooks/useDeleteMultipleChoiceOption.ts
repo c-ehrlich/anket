@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
-import { MultipleChoiceOptionFE } from '../api/multipleChoiceOption/multipleChoiceOption.schema';
-import { QuestionFE } from '../api/question/question.schema';
-import { SurveyFE } from '../api/survey/survey.schema';
+import { MultipleChoiceOptionFE } from '../backend/multipleChoiceOption/multipleChoiceOption.schema';
+import { QuestionFE } from '../backend/question/question.schema';
+import { SurveyFE } from '../backend/survey/survey.schema';
 import { QueryKeys } from '../types/queryKeys';
 
 const useDeleteMultipleChoiceOption = ({

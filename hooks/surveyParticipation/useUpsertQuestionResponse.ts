@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
-import { UpdateQuestionResponseRequest } from '../../api/questionResponse/questionResponse.schema';
-import { SurveyWithParticipationAndUserResponses } from '../../api/surveyParticipation/surveyParticipation.schema';
+import { UpdateQuestionResponseRequest } from '../../backend/questionResponse/questionResponse.schema';
+import { SurveyWithParticipationAndUserResponses } from '../../backend/surveyParticipation/surveyParticipation.schema';
 import { QueryKeys } from '../../types/queryKeys';
 
 const useUpsertQuestionResponse = ({ surveyId }: { surveyId: string }) => {

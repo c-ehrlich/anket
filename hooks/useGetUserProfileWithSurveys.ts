@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 import axios from 'axios';
-import { UserWithSurveysFE } from '../api/user/user.schema';
+import { UserWithSurveysFE } from '../backend/user/user.schema';
 import { QueryKeys } from '../types/queryKeys';
 
 export const getUserProfileWithSurveys = async (id: string) => {

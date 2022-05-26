@@ -1,6 +1,6 @@
 import { Divider, Paper, Stack, Text, Title } from '@mantine/core';
 import React from 'react';
-import { SurveyStatsResponse } from '../api/surveyStats/surveyStats.schema';
+import { SurveyStatsResponse } from '../backend/surveyStats/surveyStats.schema';
 import {
   ResponsiveContainer,
   Bar,

@@ -1,7 +1,7 @@
 import { Alert, Input, Stack } from '@mantine/core';
 import React, { useDeferredValue, useMemo, useState } from 'react';
 import { AlertCircle, Search, X } from 'tabler-icons-react';
-import { SurveyPreviewWithAuthorAndInteraction } from '../api/survey/survey.schema';
+import { SurveyPreviewWithAuthorAndInteraction } from '../backend/survey/survey.schema';
 import SurveyHero from './SurveyHero';
 
 interface Props {

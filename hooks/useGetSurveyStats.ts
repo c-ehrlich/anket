@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 import axios from 'axios';
-import { SurveyStatsResponse } from '../api/surveyStats/surveyStats.schema';
+import { SurveyStatsResponse } from '../backend/surveyStats/surveyStats.schema';
 
 const getSurveyStats = async (surveyId: string) => {
   const surveys: SurveyStatsResponse = await axios

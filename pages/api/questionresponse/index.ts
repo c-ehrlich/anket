@@ -1,10 +1,10 @@
 import NextConnectHandler from 'next-connect';
 import { NextApiRequest, NextApiResponse } from 'next';
-import requireSession from '../../../api/middleware/requireSession.middleware';
-import validateResource from '../../../api/middleware/validateResource.middleware';
-import { updateQuestionResponseRequestSchema } from '../../../api/questionResponse/questionResponse.schema';
-import { handleUpsertQuestionResponse } from '../../../api/questionResponse/questionReponse.controller';
-import { nextConnectOptions } from '../../../api/utils/nextConnect';
+import requireSession from '../../../backend/middleware/requireSession.middleware';
+import validateResource from '../../../backend/middleware/validateResource.middleware';
+import { updateQuestionResponseRequestSchema } from '../../../backend/questionResponse/questionResponse.schema';
+import { handleUpsertQuestionResponse } from '../../../backend/questionResponse/questionReponse.controller';
+import { nextConnectOptions } from '../../../backend/utils/nextConnect';
 
 const handler = NextConnectHandler<NextApiRequest, NextApiResponse>(
   nextConnectOptions

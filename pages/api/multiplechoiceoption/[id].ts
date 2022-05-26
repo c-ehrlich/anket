@@ -1,13 +1,13 @@
 import NextConnectHandler from 'next-connect';
 import { NextApiRequest, NextApiResponse } from 'next';
-import requireSession from '../../../api/middleware/requireSession.middleware';
+import requireSession from '../../../backend/middleware/requireSession.middleware';
 import {
   deleteMultipleChoiceOptionHandler,
   editMultipleChoiceOptionHandler,
-} from '../../../api/multipleChoiceOption/multipleChoiceOption.controller';
-import validateResource from '../../../api/middleware/validateResource.middleware';
-import { editMultipleChoiceOptionSchema } from '../../../api/multipleChoiceOption/multipleChoiceOption.schema';
-import { nextConnectOptions } from '../../../api/utils/nextConnect';
+} from '../../../backend/multipleChoiceOption/multipleChoiceOption.controller';
+import validateResource from '../../../backend/middleware/validateResource.middleware';
+import { editMultipleChoiceOptionSchema } from '../../../backend/multipleChoiceOption/multipleChoiceOption.schema';
+import { nextConnectOptions } from '../../../backend/utils/nextConnect';
 
 const handler = NextConnectHandler<NextApiRequest, NextApiResponse>(
   nextConnectOptions

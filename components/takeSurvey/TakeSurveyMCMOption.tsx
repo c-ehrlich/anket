@@ -1,5 +1,5 @@
 import { Checkbox } from '@mantine/core';
-import { MultipleChoiceOptionFE } from '../../api/surveyParticipation/surveyParticipation.schema';
+import { MultipleChoiceOptionFE } from '../../backend/surveyParticipation/surveyParticipation.schema';
 import useToggleMCMItem from '../../hooks/surveyParticipation/useToggleMCMItem';
 
 const TakeSurveyMCMOption = ({

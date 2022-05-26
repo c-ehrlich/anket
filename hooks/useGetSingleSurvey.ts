@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 import axios from 'axios';
-import { SurveyFE, SurveyFEWithAuthor } from '../api/survey/survey.schema';
+import { SurveyFE, SurveyFEWithAuthor } from '../backend/survey/survey.schema';
 import { QueryKeys } from '../types/queryKeys';
 
 export const getSingleSurvey = async (id: string) => {

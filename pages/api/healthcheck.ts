@@ -1,6 +1,6 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next';
-import logger from '../../api/utils/logger';
+import logger from '../../backend/utils/logger';
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
   logger.info('healthcheck');

@@ -11,7 +11,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
 import React, { memo, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import { EditSurveyData, SurveyFE } from '../api/survey/survey.schema';
+import { EditSurveyData, SurveyFE } from '../backend/survey/survey.schema';
 import useCreateQuestion from '../hooks/useCreateQuestion';
 import useDeleteSurvey from '../hooks/useDeleteSurvey';
 import useEditSurvey from '../hooks/useEditSurvey';

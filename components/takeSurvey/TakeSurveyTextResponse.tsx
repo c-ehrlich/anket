@@ -1,7 +1,7 @@
 import { Textarea } from '@mantine/core';
 import { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import { UpdateQuestionResponseRequest } from '../../api/questionResponse/questionResponse.schema';
+import { UpdateQuestionResponseRequest } from '../../backend/questionResponse/questionResponse.schema';
 import useUpsertQuestionResponse from '../../hooks/surveyParticipation/useUpsertQuestionResponse';
 
 interface TakeSurveyTextResponseProps {

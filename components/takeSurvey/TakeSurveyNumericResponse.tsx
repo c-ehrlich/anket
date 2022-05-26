@@ -5,8 +5,8 @@ import { useDebouncedCallback } from 'use-debounce';
 import {
   questionResponseFESchema,
   UpdateQuestionResponseRequest,
-} from '../../api/questionResponse/questionResponse.schema';
-import { SurveyQuestionWithResponses } from '../../api/surveyParticipation/surveyParticipation.schema';
+} from '../../backend/questionResponse/questionResponse.schema';
+import { SurveyQuestionWithResponses } from '../../backend/surveyParticipation/surveyParticipation.schema';
 import useDeleteQuestionResponse from '../../hooks/surveyParticipation/useDeleteQuestionResponse';
 import useUpsertQuestionResponse from '../../hooks/surveyParticipation/useUpsertQuestionResponse';
 

@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import NextConnectHandler from 'next-connect';
-import requireSession from '../../../api/middleware/requireSession.middleware';
-import { getMySurveyParticipationsHandler } from '../../../api/surveyParticipation/surveyParticipation.controller';
-import { nextConnectOptions } from '../../../api/utils/nextConnect';
+import requireSession from '../../../backend/middleware/requireSession.middleware';
+import { getMySurveyParticipationsHandler } from '../../../backend/surveyParticipation/surveyParticipation.controller';
+import { nextConnectOptions } from '../../../backend/utils/nextConnect';
 
 const handler = NextConnectHandler<NextApiRequest, NextApiResponse>(
   nextConnectOptions

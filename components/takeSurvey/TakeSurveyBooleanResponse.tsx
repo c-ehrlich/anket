@@ -1,8 +1,8 @@
 import { RadioGroup, Radio, Stack, Button } from '@mantine/core';
 import { useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import { UpdateQuestionResponseRequest } from '../../api/questionResponse/questionResponse.schema';
-import { SurveyQuestionWithResponses } from '../../api/surveyParticipation/surveyParticipation.schema';
+import { UpdateQuestionResponseRequest } from '../../backend/questionResponse/questionResponse.schema';
+import { SurveyQuestionWithResponses } from '../../backend/surveyParticipation/surveyParticipation.schema';
 import useDeleteQuestionResponse from '../../hooks/surveyParticipation/useDeleteQuestionResponse';
 import useUpsertQuestionResponse from '../../hooks/surveyParticipation/useUpsertQuestionResponse';
 

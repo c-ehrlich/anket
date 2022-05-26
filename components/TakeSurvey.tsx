@@ -3,7 +3,7 @@ import {
   SurveyQuestionWithResponses,
   SurveyWithParticipationAndUserResponses,
   UpdateSurveyParticipationResponse,
-} from '../api/surveyParticipation/surveyParticipation.schema';
+} from '../backend/surveyParticipation/surveyParticipation.schema';
 import {
   Avatar,
   Badge,

@@ -1,10 +1,10 @@
 import NextConnectHandler from 'next-connect';
 import { NextApiRequest, NextApiResponse } from 'next';
-import requireSession from '../../../api/middleware/requireSession.middleware';
-import { getOrCreateSurveyParticipationHandler, updateSurveyParticipationHandler } from '../../../api/surveyParticipation/surveyParticipation.controller';
-import { nextConnectOptions } from '../../../api/utils/nextConnect';
-import validateResource from '../../../api/middleware/validateResource.middleware';
-import { updateSurveyParticipationDataSchema } from '../../../api/surveyParticipation/surveyParticipation.schema';
+import requireSession from '../../../backend/middleware/requireSession.middleware';
+import { getOrCreateSurveyParticipationHandler, updateSurveyParticipationHandler } from '../../../backend/surveyParticipation/surveyParticipation.controller';
+import { nextConnectOptions } from '../../../backend/utils/nextConnect';
+import validateResource from '../../../backend/middleware/validateResource.middleware';
+import { updateSurveyParticipationDataSchema } from '../../../backend/surveyParticipation/surveyParticipation.schema';
 
 const handler = NextConnectHandler<NextApiRequest, NextApiResponse>(
   nextConnectOptions

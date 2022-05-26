@@ -19,7 +19,7 @@ import { motion, Reorder, useDragControls } from 'framer-motion';
 import React, { memo, useState } from 'react';
 import { CaretDown, CaretUp, Trash } from 'tabler-icons-react';
 import { useDebouncedCallback } from 'use-debounce';
-import { EditQuestionData, QuestionFE } from '../api/question/question.schema';
+import { EditQuestionData, QuestionFE } from '../backend/question/question.schema';
 import useCreateMultipleChoiceOption from '../hooks/useCreateMultipleChoiceOption';
 import useDeleteQuestion from '../hooks/useDeleteQuestion';
 import useEditQuestion from '../hooks/useEditQuestion';

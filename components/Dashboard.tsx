@@ -15,9 +15,9 @@ import useGetMySurveys from '../hooks/useGetMySurveys';
 import useGetMySurveyParticipations from '../hooks/useGetMySurveyParticipations';
 import useGetNewParticipationsCount from '../hooks/useGetNewParticipationsCount';
 import { MoonLoader } from 'react-spinners';
-import { DashboardSurveyParticipation } from '../api/surveyParticipation/surveyParticipation.schema';
+import { DashboardSurveyParticipation } from '../backend/surveyParticipation/surveyParticipation.schema';
 import { ChartBar, Edit, Eye, Tool } from 'tabler-icons-react';
-import { SurveyPreviewWithAuthorAndInteraction } from '../api/survey/survey.schema';
+import { SurveyPreviewWithAuthorAndInteraction } from '../backend/survey/survey.schema';
 import { useRouter } from 'next/router';
 import { createSurvey } from '../hooks/useCreateSurvey';
 

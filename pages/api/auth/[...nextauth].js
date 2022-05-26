@@ -3,7 +3,7 @@ import NextAuth from 'next-auth';
 import DiscordProvider from 'next-auth/providers/discord';
 import GithubProvider from 'next-auth/providers/github';
 // import GoogleProvider from 'next-auth/providers/google';
-import prisma from '../../../api/utils/prisma';
+import prisma from '../../../backend/utils/prisma';
 
 export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET || 'changeme',
