@@ -9,6 +9,7 @@ const userWithSurveysSchema = z.object({
     z.object({
       id: z.string().cuid(),
       name: z.string(),
+      picture: z.string().url(),
       description: z.string(),
       isCompleted: z.boolean(),
       isPublic: z.boolean(),

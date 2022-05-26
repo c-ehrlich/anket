@@ -19,6 +19,7 @@ export async function getUserWithSurveys(id: string) {
             id: true,
             name: true,
             description: true,
+            picture: true,
             updatedAt: true,
             isCompleted: true,
             isPublic: true,

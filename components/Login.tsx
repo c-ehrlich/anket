@@ -163,9 +163,6 @@ const Login = () => {
         }`,
       }}
     >
-      {/* TODO remove once this gets merged or there is another fix
-          https://github.com/framer/motion/pull/1507 
-          @ts-expect-error TODO */}
       <AnimatePresence exitBeforeEnter initial={false}>
         <Content />
       </AnimatePresence>

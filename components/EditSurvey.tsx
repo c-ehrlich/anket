@@ -132,9 +132,6 @@ const EditSurveyHaveData = memo(({ survey }: { survey: SurveyFE }) => {
 
         <Stack>
           <Title order={3}>Questions</Title>
-          {/* TODO remove once this gets merged or there is another fix
-              https://github.com/framer/motion/pull/1507 
-              @ts-expect-error */}
           <AnimatePresence>
             {survey.questions.map((question, index) => (
               <motion.div key={question.id} layout {...animations}>
