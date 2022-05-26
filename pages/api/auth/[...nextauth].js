@@ -3,20 +3,21 @@ import NextAuth from 'next-auth';
 import DiscordProvider from 'next-auth/providers/discord';
 import GithubProvider from 'next-auth/providers/github';
 import prisma from '../../../api/utils/prisma';
+import getConfig from 'next/config';
 
-const { serverRuntimeConfig } = getConfig()
+const { serverRuntimeConfig = {} } = getConfig() || {}
 
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
   // Configure one or more authentication providers
   providers: [
     DiscordProvider({
-      clientId: process.env.DISCORD_ID,
-      clientSecret: process.env.DISCORD_SECRET,
+      clientId: serverRuntimeConfig.DISCORD_ID,
+      clientSecret: serverRuntimeConfig.DISCORD_SECRET,
     }),
     GithubProvider({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
+      clientId: serverRuntimeConfig.GITHUB_ID,
+      clientSecret: serverRuntimeConfig.GITHUB_SECRET,
     }),
     // ...add more providers here
   ],
@@ -31,5 +32,6 @@ export default NextAuth({
       return session;
     },
   },
+  url: serverRuntimeConfig.NEXTAUTH_URL,
   secret: serverRuntimeConfig.NEXTAUTH_SECRET,
 });

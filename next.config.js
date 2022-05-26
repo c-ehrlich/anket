@@ -16,7 +16,6 @@ module.exports = async (phase, { defaultConfig }) => {
       GITHUB_SECRET: process.env.GITHUB_SECRET,
       NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
       NEXTAUTH_URL: process.env.NEXTAUTH_URL,
-      TESTVAR: 'test',
     },
     serverRuntimeConfig: {
       DATABASE_URL: process.env.DATABASE_URL,
@@ -26,7 +25,6 @@ module.exports = async (phase, { defaultConfig }) => {
       GITHUB_SECRET: process.env.GITHUB_SECRET,
       NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
       NEXTAUTH_URL: process.env.NEXTAUTH_URL,
-      TESTVAR: 'test',
     }
   }
   return nextConfig
