@@ -30,6 +30,7 @@ jobs:
           GITHUB_SECRET: ${{ secrets.APP_GITHUB_SECRET }}
           NEXTAUTH_SECRET: ${{ secrets.APP_NEXTAUTH_SECRET }}
           NEXTAUTH_URL: ${{ secrets.APP_NEXTAUTH_URL }}
+          NEXTAUTH_URL_INTERNAL: ${{ SECRETS.APP_NEXTAUTH_URL_INTERNAL }}
           NEXT_PUBLIC_URL: ${{ secrets.APP_NEXT_PUBLIC_URL }}
         with:
           name: c-ehrlich/anket/anket_docker_image
@@ -37,7 +38,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.GITHUB_TOKEN }}
           dockerfile: Dockerfile
-          buildargs: DATABASE_URL,DISCORD_ID,DISCORD_SECRET,GITHUB_ID,GITHUB_SECRET,NEXTAUTH_SECRET,NEXTAUTH_URL,NEXT_PUBLIC_URL
+          buildargs: DATABASE_URL,DISCORD_ID,DISCORD_SECRET,GITHUB_ID,GITHUB_SECRET,NEXTAUTH_SECRET,NEXTAUTH_URL,NEXTAUTH_URL_INTERNAL,NEXT_PUBLIC_URL
           tags: latest
 
       - name: Deploy package to VPS
