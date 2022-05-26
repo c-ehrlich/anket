@@ -41,18 +41,18 @@ export default NextAuth({
       console.log('---in redirect callback');
       console.log('process.env.NEXTAUTH_URL: ' + process.env.NEXTAUTH_URL);
       console.log(
-        'serverRuntimeConfig.NEXTAUTH_SECRET: ' +
-          serverRuntimeConfig.NEXTAUTH_SECRET
+        'serverRuntimeConfig.NEXTAUTH_URL: ' + serverRuntimeConfig.NEXTAUTH_URL
       );
       console.log('url:', url, 'baseUrl:', baseUrl);
-      // Allows relative callback URLs
-      if (url.startsWith('/')) return `${baseUrl}${url}`;
-      // Allows callback URLs on the same origin
-      else if (new URL(url).origin === baseUrl) return url;
-      return baseUrl;
+      if (url.startsWith('/')) return `${process.env.NEXTAUTH_URL}${url}`;
+      return process.env.NEXTAUTH_URL;
+      // // Allows relative callback URLs
+      // if (url.startsWith('/')) return `${baseUrl}${url}`;
+      // // Allows callback URLs on the same origin
+      // else if (new URL(url).origin === baseUrl) return url;
+      // return baseUrl;
     },
   },
   // TODO remove hardcoded url
-  url: 'http://49.12.216.156:3105',
   secret: process.env.NEXTAUTH_SECRET || serverRuntimeConfig.NEXTAUTH_SECRET,
 });
