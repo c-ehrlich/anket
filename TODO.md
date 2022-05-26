@@ -61,6 +61,8 @@
 
 # Anket Done
 ## MVP 2
+### Bugs
+- [x] Resume button on dashboard links to bugs
 ### Survey Creation / Editing
 - [x] FIRST VALIDATION TEST: /create should be a form with title and optional description, clicking it creates a survey and takes us to the page to edit that survey
 - [x] Description should support line breaks

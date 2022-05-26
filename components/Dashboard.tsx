@@ -179,7 +179,7 @@ function CreatedSurveyCard({
             <Box sx={{ marginTop: '8px' }}>
               {!survey.isCompleted ? (
                 <Button
-                  onClick={() => router.push(`/survey/stats/${survey.id}`)}
+                  onClick={() => router.push(`/survey/edit/${survey.id}`)}
                   leftIcon={<Edit />}
                   variant='outline'
                 >
