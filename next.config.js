@@ -3,9 +3,6 @@ const nextConfig = {
   // reactStrictMode: true,
   experimental: {
     reactRoot: true,
-    env: {
-      NEXT_TESTVAR: process.env.NEXT_TESTVAR,
-    },
   },
 };
 

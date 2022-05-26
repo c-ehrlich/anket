@@ -24,21 +24,19 @@ jobs:
         uses: elgohr/Publish-Docker-Github-Action@master
         env:
           NEXT_PUBLIC_DATABASE_URL: ${{ secrets.APP_NEXT_PUBLIC_DATABASE_URL }}
-          DISCORD_ID: ${{ secrets.APP_DISCORD_ID }}
-          DISCORD_SECRET: ${{ secrets.APP_DISCORD_SECRET }}
-          GITHUB_ID: ${{ secrets.APP_GITHUB_ID }}
-          GITHUB_SECRET: ${{ secrets.APP_GITHUB_SECRET }}
-          NEXTAUTH_SECRET: ${{ secrets.APP_NEXTAUTH_SECRET }}
-          NEXTAUTH_URL: ${{ secrets.APP_NEXTAUTH_URL }}
-          NEXT_TESTVAR: ${{ secrets.APP_NEXT_TESTVAR }}
-          NEXT_PUBLIC_TESTVAR: ${{ secrets.APP_NEXT_PUBLIC_TESTVAR }}
+          NEXT_PUBLIC_DISCORD_ID: ${{ secrets.APP_NEXT_PUBLIC_DISCORD_ID }}
+          NEXT_PUBLIC_DISCORD_SECRET: ${{ secrets.APP_NEXT_PUBLIC_DISCORD_SECRET }}
+          NEXT_PUBLIC_GITHUB_ID: ${{ secrets.APP_NEXT_PUBLIC_GITHUB_ID }}
+          NEXT_PUBLIC_GITHUB_SECRET: ${{ secrets.APP_NEXT_PUBLIC_GITHUB_SECRET }}
+          NEXT_PUBLIC_NEXTAUTH_SECRET: ${{ secrets.APP_NEXT_PUBLIC_NEXTAUTH_SECRET }}
+          NEXT_PUBLIC_NEXTAUTH_URL: ${{ secrets.APP_NEXT_PUBLIC_NEXTAUTH_URL }}
         with:
           name: c-ehrlich/anket/anket_docker_image
           registry: ghcr.io
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.GITHUB_TOKEN }}
           dockerfile: Dockerfile
-          buildargs: NEXT_PUBLIC_DATABASE_URL,DISCORD_ID,DISCORD_SECRET,GITHUB_ID,GITHUB_SECRET,NEXTAUTH_SECRET,NEXTAUTH_URL,NEXT_TESTVAR,NEXT_PUBLIC_TESTVAR
+          buildargs: NEXT_PUBLIC_DATABASE_URL,NEXT_PUBLIC_DISCORD_ID,NEXT_PUBLIC_DISCORD_SECRET,NEXT_PUBLIC_GITHUB_ID,NEXT_PUBLIC_GITHUB_SECRET,NEXT_PUBLIC_NEXTAUTH_SECRET,NEXT_PUBLIC_NEXTAUTH_URL
           tags: latest
 
       - name: Deploy package to VPS
