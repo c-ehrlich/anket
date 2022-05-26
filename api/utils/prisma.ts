@@ -1,4 +1,7 @@
 import { PrismaClient } from '@prisma/client';
+import getConfig from 'next/config';
+
+const { serverRuntimeConfig } = getConfig()
 
 // https://www.prisma.io/docs/support/help-articles/nextjs-prisma-client-dev-practices
 
@@ -10,7 +13,7 @@ declare global {
 
 console.log('env: ' + process.env.NODE_ENV);
 console.log('db url: ' + process.env.DATABASE_URL);
-console.log('TESTVAR: ' + process.env.TESTVAR);
+console.log('TESTVAR: ' + serverRuntimeConfig.TESTVAR);
 
 const prisma =
   global.prisma ||
