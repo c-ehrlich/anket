@@ -43,9 +43,14 @@ export default NextAuth({
       console.log(
         'serverRuntimeConfig.NEXTAUTH_URL: ' + serverRuntimeConfig.NEXTAUTH_URL
       );
-      console.log('url:', url, 'baseUrl:', baseUrl);
-      if (url.startsWith('/')) return `${process.env.NEXTAUTH_URL}${url}`;
-      return process.env.NEXTAUTH_URL;
+      console.log('baseUrl:', baseUrl);
+      console.log('url:', url)
+
+      return url;
+
+      // if (url.startsWith('/')) return `${process.env.NEXTAUTH_URL}${url}`;
+      // return process.env.NEXTAUTH_URL;
+
       // // Allows relative callback URLs
       // if (url.startsWith('/')) return `${baseUrl}${url}`;
       // // Allows callback URLs on the same origin
