@@ -50,6 +50,8 @@ function SignInPage(props: {
             If you already have an Anket account, please select the same
             provider that you previously created your account with.
           </Text>
+          {/* TODO remove */}
+          <Text>callbackUrl: {process.env.NEXT_PUBLIC_URL}</Text>
           <Space h='xs' />
           <Stack>
             {Object.values(props.providers).map((provider) => (
