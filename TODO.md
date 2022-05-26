@@ -2,18 +2,10 @@
 ## MVP v1
 ### Bugs
 ### Initial Deployment
-- [x] Create a Hetzner VPS
-- [x] Get a sample Next app working with Docker and GitHub Actions
-- [x] Get RDS Postgres working locally
-- [x] Add callback URLs to auth services
-  - [x] GitHub
-  - [x] Discord
-  - [-] (can't add Google)
-- [x] Create Docker Container
-- [x] Create GitHub Action / yml file
-- [ ] Actually Deploy and get it working
-- [ ] Add one more auth option (OAuth?)
-
+- [ ] Figure out how to deploy it
+- [ ] To a VPS? Hetzner?
+- [ ] Get the real DB running (RDS or Heroku Postgres?)
+  - [ ] Can test this even before deploying
 
 ## MVP 2
 ### Deployment
