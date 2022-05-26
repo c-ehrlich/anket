@@ -33,6 +33,6 @@ export default NextAuth({
     },
   },
   // TODO remove hardcoded url
-  url: process.env.NEXTAUTH_URL || serverRuntimeConfig.NEXTAUTH_URL || "http://49.12.216.156:3105",
+  url: "http://49.12.216.156:3105",
   secret: process.env.NEXTAUTH_SECRET || serverRuntimeConfig.NEXTAUTH_SECRET,
 });
