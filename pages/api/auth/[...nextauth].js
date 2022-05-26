@@ -12,12 +12,12 @@ export default NextAuth({
   // Configure one or more authentication providers
   providers: [
     DiscordProvider({
-      clientId: serverRuntimeConfig.DISCORD_ID,
-      clientSecret: serverRuntimeConfig.DISCORD_SECRET,
+      clientId: process.env.DISCORD_ID || serverRuntimeConfig.DISCORD_ID,
+      clientSecret: process.env.DISCORD_SECRET || serverRuntimeConfig.DISCORD_SECRET,
     }),
     GithubProvider({
-      clientId: serverRuntimeConfig.GITHUB_ID,
-      clientSecret: serverRuntimeConfig.GITHUB_SECRET,
+      clientId: process.env.GITHUB_ID || serverRuntimeConfig.GITHUB_ID,
+      clientSecret: process.env.GITHUB_SECRET || serverRuntimeConfig.GITHUB_SECRET,
     }),
     // ...add more providers here
   ],
@@ -32,6 +32,6 @@ export default NextAuth({
       return session;
     },
   },
-  url: serverRuntimeConfig.NEXTAUTH_URL,
-  secret: serverRuntimeConfig.NEXTAUTH_SECRET,
+  url: process.env.NEXTAUTH_URL || serverRuntimeConfig.NEXTAUTH_URL,
+  secret: process.env.NEXTAUTH_SECRET || serverRuntimeConfig.NEXTAUTH_SECRET,
 });
