@@ -55,7 +55,7 @@ function SignInPage(props: {
             {Object.values(props.providers).map((provider) => (
               <Button
                 key={provider.id}
-                onClick={() => signIn(provider.id)}
+                onClick={() => signIn(provider.id, { callbackUrl: process.env.NEXT_PUBLIC_URL })}
                 size='lg'
                 leftIcon={<GetProviderLogo id={provider.id} />}
               >
