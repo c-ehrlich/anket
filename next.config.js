@@ -2,8 +2,8 @@
 const nextConfig = {
   // reactStrictMode: true,
   experimental: {
-    reactRoot: true,
-  },
-};
+    reactRoot: true
+  }
+}
 
-module.exports = nextConfig;
+module.exports = nextConfig
