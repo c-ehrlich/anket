@@ -2,8 +2,11 @@
 const nextConfig = {
   // reactStrictMode: true,
   experimental: {
-    reactRoot: true
-  }
-}
+    reactRoot: true,
+    env: {
+      NEXT_TESTVAR: process.env.NEXT_TESTVAR,
+    },
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
