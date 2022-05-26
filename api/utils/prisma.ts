@@ -9,6 +9,7 @@ declare global {
 }
 
 console.log('env: ' + process.env.NODE_ENV);
+console.log('db url: ' + process.env.DATABASE_URL);
 
 const prisma =
   global.prisma ||
