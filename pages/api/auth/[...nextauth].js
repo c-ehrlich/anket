@@ -2,8 +2,9 @@ import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import NextAuth from 'next-auth';
 import DiscordProvider from 'next-auth/providers/discord';
 import GithubProvider from 'next-auth/providers/github';
-import GoogleProvider from 'next-auth/providers/google';
 import prisma from '../../../api/utils/prisma';
+
+const { serverRuntimeConfig } = getConfig()
 
 export default NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -30,4 +31,5 @@ export default NextAuth({
       return session;
     },
   },
+  secret: serverRuntimeConfig.NEXTAUTH_SECRET,
 });
