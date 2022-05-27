@@ -10,12 +10,29 @@ export default class _Document extends Document {
     return (
       <Html>
         <Head>
-          <link rel='preconnect' href='https://fonts.googleapis.com' />
-          {/* <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin /> */}
           <link
-            href='https://fonts.googleapis.com/css2?family=Open+Sans&family=Source+Serif+Pro&display=swap'
-            rel='stylesheet'
+            rel='preconnect'
+            href='https://fonts.gstatic.com'
+            crossOrigin='true'
           />
+          <link
+            rel='preload'
+            as='style'
+            href='https://fonts.googleapis.com/css2?family=Open+Sans&family=Source+Serif+Pro&display=swap'
+          />
+          <link
+            rel='stylesheet'
+            href='https://fonts.googleapis.com/css2?family=Open+Sans&family=Source+Serif+Pro&display=swap'
+            media='print'
+            // @ts-ignore
+            onLoad="this.media='all'"
+          />
+          <noscript>
+            <link
+              rel='stylesheet'
+              href='https://fonts.googleapis.com/css2?family=Open+Sans&family=Source+Serif+Pro&display=swap'
+            />
+          </noscript>
         </Head>
         <body>
           <Main />

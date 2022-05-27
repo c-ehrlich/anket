@@ -6,6 +6,7 @@
 ### Known bugs
 - [!] Heading font doesn't work on Vercel
 ### Deployment
+- [ ] 404/500 handling
 - [ ] Get it working on VPS with Docker + GitHub Actions
   - [ ] See vps branch
   - [ ] Research HTTPS on Hetzner...do I need to buy a domain?
@@ -61,6 +62,7 @@
 - [ ] Go through all major parts of the app in browser with console open and fix any errors
 - [ ] Go through all major parts of the app with network requests open and fix any that are red
 - [ ] See if there are any schema/types that are used nowhere
+  - [x] MultipleChoiceOption
 
 # Anket Done
 ## MVP 2
