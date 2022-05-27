@@ -2,7 +2,6 @@
 
 ## Next thing to do
 - [ ] Add Google login again
-- [ ] Use APIErrorResponse in all Controllers
 
 ## MVP 2
 ### Known bugs
@@ -13,7 +12,6 @@
   - [ ] Research HTTPS on Hetzner...do I need to buy a domain?
 ### Known Bugs
 ### UI
-- [ ] Spinner for /survey/mine
 - [ ] Figure out how not to invalidate front page and list data as soon as we leave a page (give it 5 minutes or something)
 - [ ] Landing page: reduce spacing between sections on phones
 - [ ] AppShell: on phone screens, scrolling the menu should scroll the menu, not the content underneath it!
@@ -87,6 +85,7 @@
 ### UI
 - [x] Dashboard... Spinners for left AND right sections! right section currently doesn't have a spinner
 - [x] Spinner for /survey/all
+- [x] Spinner for /survey/mine
 
 ## MVP 1
 ### Deployment
