@@ -5,6 +5,8 @@
 - [ ] Use APIErrorResponse in all Controllers
 
 ## MVP 2
+### Known bugs
+- [!] Heading font doesn't work on Vercel
 ### Deployment
 - [ ] Get it working on VPS with Docker + GitHub Actions
   - [ ] See vps branch

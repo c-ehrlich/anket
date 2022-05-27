@@ -2,7 +2,6 @@ import {
   Avatar,
   Box,
   Button,
-  Center,
   Group,
   Paper,
   SimpleGrid,
@@ -14,11 +13,11 @@ import { useMemo } from 'react';
 import useGetMySurveys from '../hooks/useGetMySurveys';
 import useGetMySurveyParticipations from '../hooks/useGetMySurveyParticipations';
 import useGetNewParticipationsCount from '../hooks/useGetNewParticipationsCount';
-import { MoonLoader } from 'react-spinners';
 import { DashboardSurveyParticipation } from '../backend/surveyParticipation/surveyParticipation.schema';
 import { ChartBar, Edit, Eye, Tool } from 'tabler-icons-react';
 import { SurveyPreviewWithAuthorAndInteraction } from '../backend/survey/survey.schema';
 import { useRouter } from 'next/router';
+import Spinner from './Spinner';
 
 // TODO switch between rows/columns based on useQuerySelector
 
@@ -101,9 +100,7 @@ function MySurveys() {
           </Text>
         </>
       ) : (
-        <Center>
-          <MoonLoader color='green' />
-        </Center>
+        <Spinner />
       )}
     </Stack>
     // </Paper>
@@ -157,12 +154,9 @@ function TakenSurveys() {
           )}
         </>
       ) : (
-        <Center>
-          <MoonLoader color='green' />
-        </Center>
+        <Spinner />
       )}
     </Stack>
-    // </Paper>
   );
 }
 
