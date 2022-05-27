@@ -108,6 +108,7 @@ function MySurveys() {
 }
 
 function TakenSurveys() {
+  const router = useRouter();
   const { data: myParticipations } = useGetMySurveyParticipations();
 
   const myFinishedParticipations = useMemo(() => {
@@ -124,32 +125,47 @@ function TakenSurveys() {
       <Title order={2}>Taken Surveys</Title>
       {myParticipations !== undefined ? (
         <>
-          {myUnfinishedParticipations !== undefined && (
+          {myParticipations.length > 0 ? (
             <>
-              <Text size='lg'>
-                You have {myUnfinishedParticipations.length} unfinished{' '}
-                {myUnfinishedParticipations.length === 1
-                  ? 'participation'
-                  : 'participations'}
-              </Text>
-              {myUnfinishedParticipations.map((p) => (
-                <TakenSurveyCard key={p.id} participation={p} />
-              ))}
+              {myUnfinishedParticipations !== undefined && (
+                <>
+                  <Text size='lg'>
+                    You have {myUnfinishedParticipations.length} unfinished{' '}
+                    {myUnfinishedParticipations.length === 1
+                      ? 'participation'
+                      : 'participations'}
+                  </Text>
+                  {myUnfinishedParticipations.map((p) => (
+                    <TakenSurveyCard key={p.id} participation={p} />
+                  ))}
+                </>
+              )}
+              {myFinishedParticipations !== undefined &&
+                myFinishedParticipations.length > 0 && (
+                  <>
+                    <Text size='lg'>
+                      Here{' '}
+                      {myFinishedParticipations.length === 1 ? 'is' : 'are'}{' '}
+                      your {Math.min(3, myFinishedParticipations.length)} most
+                      recently completed{' '}
+                      {myFinishedParticipations.length === 1
+                        ? 'participation'
+                        : 'participations'}
+                    </Text>
+                    {myFinishedParticipations.slice(0, 3).map((p) => (
+                      <TakenSurveyCard key={p.id} participation={p} />
+                    ))}
+                  </>
+                )}
             </>
-          )}
-          {myFinishedParticipations !== undefined && (
+          ) : (
             <>
-              <Text size='lg'>
-                Here {myFinishedParticipations.length === 1 ? 'is' : 'are'} your{' '}
-                {Math.min(3, myFinishedParticipations.length)} most recently
-                completed{' '}
-                {myFinishedParticipations.length === 1
-                  ? 'participation'
-                  : 'participations'}
+              <Text>
+                You have not yet taken any surveys. Why not take one now?
               </Text>
-              {myFinishedParticipations.slice(0, 3).map((p) => (
-                <TakenSurveyCard key={p.id} participation={p} />
-              ))}
+              <Button onClick={() => router.push('/survey/all')}>
+                View Public Surveys
+              </Button>
             </>
           )}
         </>

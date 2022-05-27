@@ -90,6 +90,7 @@
 - [x] Spinner for /survey/mine
 ### Misc
 - [x] Fix uneven font size in dashboard
+- [x] Fix weird empty bits in dashboard
 
 ## MVP 1
 ### Deployment
