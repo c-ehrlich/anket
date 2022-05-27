@@ -1,28 +1,35 @@
 import { Stack, Text, Title } from '@mantine/core';
 import React from 'react';
-import SurveyHero from '../../components/SurveyHero';
+import Spinner from '../../components/Spinner';
 import SurveyHeroList from '../../components/SurveyHeroList';
 import useGetAllSurveys from '../../hooks/useGetAllSurveys';
 
-const AllSurveys = () => {
-  const { data: surveys, status } = useGetAllSurveys();
-
-  if (status === 'loading') {
-    return <div>Loading...</div>;
-  }
-
-  if (status === 'error') {
-    return <div>{status}</div>;
-  }
-
-  if (!surveys) return <div>No Surveys</div>;
-
+export default function AllSurveys() {
   return (
     <Stack>
       <Title order={2}>All Surveys</Title>
-      <SurveyHeroList surveys={surveys} />
+      <SurveysQuery />
     </Stack>
   );
-};
+}
 
-export default AllSurveys;
+function SurveysQuery() {
+  const { data: surveys, isLoading, isError, error } = useGetAllSurveys();
+
+  if (isLoading) return <Spinner />;
+  if (isError) return <>{JSON.stringify(error)}</>;
+
+  return (
+    <>
+      {surveys.length === 0 ? (
+        <NoSurveys />
+      ) : (
+        <SurveyHeroList surveys={surveys} />
+      )}
+    </>
+  );
+}
+
+function NoSurveys() {
+  return <Text>There are no public surveys.</Text>;
+}

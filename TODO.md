@@ -13,7 +13,6 @@
   - [ ] Research HTTPS on Hetzner...do I need to buy a domain?
 ### Known Bugs
 ### UI
-- [ ] Spinner for /survey/all
 - [ ] Spinner for /survey/mine
 - [ ] Figure out how not to invalidate front page and list data as soon as we leave a page (give it 5 minutes or something)
 - [ ] Landing page: reduce spacing between sections on phones
@@ -87,6 +86,7 @@
 - [x] Use APIErrorResponse in all controllers
 ### UI
 - [x] Dashboard... Spinners for left AND right sections! right section currently doesn't have a spinner
+- [x] Spinner for /survey/all
 
 ## MVP 1
 ### Deployment
