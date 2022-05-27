@@ -121,9 +121,9 @@ export async function getAllPublicSurveysHandler(
 
   const surveys: SurveyPreviewWithAuthorAndInteraction[] | undefined =
     await getAllPublicSurveyPreviews(userId);
-  if (!surveys) return res.status(400).send('error getting surveys');
+  if (surveys === undefined) return res.status(400).send('error getting surveys');
 
-  console.log(surveys[0].participations[0]);
+  console.log(surveys);
 
   return res.status(200).json(surveys);
 }

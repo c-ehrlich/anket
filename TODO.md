@@ -10,6 +10,8 @@
 ## MVP 2
 ### Deployment
 - [ ] Figure out how to set up GitHub Actions
+### Bugs
+- [ ] 400 Errors on reordering stuff too fast
 ### UI
 - [ ] Landing page: reduce spacing between sections on phones
 - [ ] AppShell: on phone screens, scrolling the menu should scroll the menu, not the content underneath it!
@@ -63,6 +65,7 @@
 ## MVP 2
 ### Bugs
 - [x] Resume button on dashboard links to bugs
+- [x] 400 on requesting all surveys when there are none
 ### Survey Creation / Editing
 - [x] FIRST VALIDATION TEST: /create should be a form with title and optional description, clicking it creates a survey and takes us to the page to edit that survey
 - [x] Description should support line breaks
