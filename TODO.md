@@ -6,11 +6,11 @@
 ## MVP 2
 ### Known bugs
 - [!] Heading font doesn't work on Vercel
+- [!] Logging out should redirect to dashboard, not to /signin
 ### Deployment
 - [ ] Get it working on VPS with Docker + GitHub Actions
   - [ ] See vps branch
   - [ ] Research HTTPS on Hetzner...do I need to buy a domain?
-### Known Bugs
 ### UI
 - [ ] Figure out how not to invalidate front page and list data as soon as we leave a page (give it 5 minutes or something)
 - [ ] Landing page: reduce spacing between sections on phones
@@ -74,6 +74,8 @@
 - [x] Resume button on dashboard links to bugs
 - [x] 400 on requesting all surveys when there are none
 - [x] buggy MCO reordering
+### Accounts / Auth
+- [x] Add GoogleProvider
 ### Survey Creation / Editing
 - [x] FIRST VALIDATION TEST: /create should be a form with title and optional description, clicking it creates a survey and takes us to the page to edit that survey
 - [x] Description should support line breaks
