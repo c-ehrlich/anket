@@ -13,23 +13,21 @@ const useDeleteQuestion = ({
   questionId: string;
   questionIndex: number;
 }) => {
+  const queryKey = [QueryKeys.survey, surveyId];
   const queryClient = useQueryClient();
 
   return useMutation(
-    [QueryKeys.survey, surveyId],
+    queryKey,
     () => {
       return axios.delete(`/api/question/${questionId}`);
     },
     {
-      onError: (e: any) => window.alert(e),
+      onError: (e) => window.alert(e),
       onMutate: () => {
-        queryClient.cancelQueries([QueryKeys.survey, surveyId]);
-        const oldSurvey: SurveyFE | undefined = queryClient.getQueryData([
-          QueryKeys.survey,
-          surveyId,
-        ]);
+        queryClient.cancelQueries(queryKey);
+        const oldSurvey: SurveyFE | undefined = queryClient.getQueryData(queryKey);
         if (oldSurvey) {
-          queryClient.setQueryData([QueryKeys.survey, surveyId], {
+          queryClient.setQueryData(queryKey, {
             ...oldSurvey,
             questions: ([] as QuestionFE[]).concat(
               oldSurvey.questions.slice(0, questionIndex),
@@ -39,7 +37,7 @@ const useDeleteQuestion = ({
         }
       },
       onSettled: () => {
-        queryClient.invalidateQueries([QueryKeys.survey, surveyId]);
+        queryClient.invalidateQueries(queryKey);
       },
     }
   );

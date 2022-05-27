@@ -5,20 +5,21 @@ import { QueryKeys } from '../types/queryKeys';
 const useCreateMultipleChoiceOption = ({
   surveyId,
   questionId,
-  // TODO maybe use the questionIndex to create an optimistic update?
-}: {
+}: // TODO maybe use the questionIndex to create an optimistic update?
+{
   surveyId: string;
   questionId: string;
 }) => {
+  const queryKey = [QueryKeys.survey, surveyId];
   const queryClient = useQueryClient();
 
   return useMutation(
-    [QueryKeys.survey, surveyId],
+    queryKey,
     () => {
       return axios.post('/api/multiplechoiceoption', { questionId });
     },
     {
-      onError: (e: any) => window.alert(e),
+      onError: (e) => window.alert(e),
       onMutate: () => {
         // TODO: for the time being we're not doing optimistic updates here because
         // we're using the id for the element key in the frontend
@@ -27,7 +28,7 @@ const useCreateMultipleChoiceOption = ({
         // (or maybe we can? see if there is a way...)
       },
       onSettled: () => {
-        queryClient.invalidateQueries([QueryKeys.survey, surveyId]);
+        queryClient.invalidateQueries(queryKey);
       },
     }
   );

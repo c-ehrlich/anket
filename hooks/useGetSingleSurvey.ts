@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
 import axios from 'axios';
-import { SurveyFE, SurveyFEWithAuthor } from '../backend/survey/survey.schema';
+import { SurveyFEWithAuthor } from '../backend/survey/survey.schema';
 import { QueryKeys } from '../types/queryKeys';
 
 export const getSingleSurvey = async (id: string) => {
@@ -11,8 +11,10 @@ export const getSingleSurvey = async (id: string) => {
 }
 
 export default function useGetSingleSurvey(id: string) {
+  const queryKey = [QueryKeys.survey, id];
+
   return useQuery<SurveyFEWithAuthor>(
-    [QueryKeys.survey, id],
+    queryKey,
     () => getSingleSurvey(id),
     {
       staleTime: 1000 * 60 * 5, // 5 minutes

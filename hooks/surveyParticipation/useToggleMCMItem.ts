@@ -12,10 +12,11 @@ const useToggleMCMItem = ({
   questionIndex: number;
   mcoIndex: number;
 }) => {
+  const queryKey = [QueryKeys.surveyParticipation, surveyId];
   const queryClient = useQueryClient();
 
   return useMutation(
-    [QueryKeys.surveyParticipation, surveyId],
+    queryKey,
     ({ selected, optionId }: { selected: boolean; optionId: string }) => {
       return axios
         .patch(`/api/multiplechoiceoptionselection/${optionId}`, {
@@ -25,28 +26,21 @@ const useToggleMCMItem = ({
         .then((res) => res.data);
     },
     {
-      onError: (e: any) => window.alert(e),
+      onError: (e) => window.alert(e),
       onMutate: (values) => {
-        queryClient.cancelQueries([QueryKeys.surveyParticipation, surveyId]);
+        queryClient.cancelQueries(queryKey);
         let draft: SurveyWithParticipationAndUserResponses | undefined =
-          queryClient.getQueryData([QueryKeys.surveyParticipation, surveyId]);
+          queryClient.getQueryData(queryKey);
         if (draft?.questions[questionIndex].multipleChoiceOptions[mcoIndex]) {
           draft.questions[questionIndex].multipleChoiceOptions[
             mcoIndex
           ].multipleChoiceOptionSelections = [
             { id: 'temp', selected: values.selected },
           ];
-          queryClient.setQueryData(
-            [QueryKeys.surveyParticipation, surveyId],
-            draft
-          );
+          queryClient.setQueryData(queryKey, draft);
         }
       },
-      onSettled: () =>
-        queryClient.invalidateQueries([
-          QueryKeys.surveyParticipation,
-          surveyId,
-        ]),
+      onSettled: () => queryClient.invalidateQueries(queryKey),
     }
   );
 };

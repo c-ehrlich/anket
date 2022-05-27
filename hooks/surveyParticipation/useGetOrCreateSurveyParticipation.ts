@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import {
-  SurveyWithParticipationAndUserResponses,
-} from '../../backend/surveyParticipation/surveyParticipation.schema';
+import { SurveyWithParticipationAndUserResponses } from '../../backend/surveyParticipation/surveyParticipation.schema';
 import { QueryKeys } from '../../types/queryKeys';
 
 export const getOrCreateSurveyParticipation = async (surveyId: string) => {
@@ -17,8 +15,9 @@ export default function useGetOrCreateSurveyParticipation({
 }: {
   surveyId: string;
 }) {
+  const queryKey = [QueryKeys.surveyParticipation, surveyId];
   return useQuery<SurveyWithParticipationAndUserResponses>(
-    [QueryKeys.surveyParticipation, surveyId],
+    queryKey,
     () => getOrCreateSurveyParticipation(surveyId),
     {
       staleTime: 100 * 60 * 5,

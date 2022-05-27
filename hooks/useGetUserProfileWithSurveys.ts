@@ -11,8 +11,10 @@ export const getUserProfileWithSurveys = async (id: string) => {
 };
 
 export default function useGetUserProfileWithSurveys(id: string) {
+  const queryKey = [QueryKeys.user, id];
+
   return useQuery<UserWithSurveysFE>(
-    [QueryKeys.user, id],
+    queryKey,
     () => getUserProfileWithSurveys(id),
     {
       staleTime: 1000 * 60 * 1, // 1 minute

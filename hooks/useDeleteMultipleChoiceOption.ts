@@ -16,21 +16,20 @@ const useDeleteMultipleChoiceOption = ({
   questionIndex: number;
   surveyId: string;
 }) => {
+  const queryKey = [QueryKeys.survey, surveyId];
   const queryClient = useQueryClient();
 
   return useMutation(
-    [QueryKeys.survey, surveyId],
+    queryKey,
     () => {
       return axios.delete(`/api/multiplechoiceoption/${optionId}`);
     },
     {
-      onError: (e: any) => window.alert(e),
+      onError: (e) => window.alert(e),
       onMutate: () => {
-        queryClient.cancelQueries([QueryKeys.survey, surveyId]);
-        const oldSurvey: SurveyFE | undefined = queryClient.getQueryData([
-          QueryKeys.survey,
-          surveyId,
-        ]);
+        queryClient.cancelQueries(queryKey);
+        const oldSurvey: SurveyFE | undefined =
+          queryClient.getQueryData(queryKey);
         if (oldSurvey) {
           const optimisticUpdate = {
             ...oldSurvey,
@@ -50,14 +49,11 @@ const useDeleteMultipleChoiceOption = ({
               oldSurvey.questions.slice(questionIndex + 1)
             ),
           };
-          queryClient.setQueryData(
-            [QueryKeys.survey, surveyId],
-            optimisticUpdate
-          );
+          queryClient.setQueryData(queryKey, optimisticUpdate);
         }
       },
       onSettled: () => {
-        queryClient.invalidateQueries([QueryKeys.survey, surveyId]);
+        queryClient.invalidateQueries(queryKey);
       },
     }
   );

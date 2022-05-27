@@ -10,15 +10,16 @@ const useDeleteSurvey = ({
   setDeleteModalOpen: (open: boolean) => void;
   surveyId: string;
 }) => {
+  const queryKey = [QueryKeys.survey, surveyId];
   const router = useRouter();
 
   return useMutation(
-    [QueryKeys.survey, surveyId],
+    queryKey,
     () => {
       return axios.delete(`/api/survey/${surveyId}`).then((res) => res.data);
     },
     {
-      onError: (e: any) => window.alert(e),
+      onError: (e) => window.alert(e),
       onSuccess: () => {
         setDeleteModalOpen(false);
         router.push('/survey/mine');

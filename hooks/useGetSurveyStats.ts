@@ -10,7 +10,9 @@ const getSurveyStats = async (surveyId: string) => {
 };
 
 export default function useGetSurveyStats(surveyId: string) {
-  return useQuery<SurveyStatsResponse, Error>(['survey-stats', surveyId], () =>
+  const queryKey = ['survey-stats', surveyId];
+
+  return useQuery<SurveyStatsResponse, Error>(queryKey, () =>
     getSurveyStats(surveyId)
   );
 }

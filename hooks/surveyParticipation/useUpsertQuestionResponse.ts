@@ -5,10 +5,11 @@ import { SurveyWithParticipationAndUserResponses } from '../../backend/surveyPar
 import { QueryKeys } from '../../types/queryKeys';
 
 const useUpsertQuestionResponse = ({ surveyId }: { surveyId: string }) => {
+  const queryKey = [QueryKeys.surveyParticipation, surveyId];
   const queryClient = useQueryClient();
 
   return useMutation(
-    [QueryKeys.surveyParticipation, surveyId],
+    queryKey,
     ({
       questionId,
       surveyParticipationId,
@@ -27,11 +28,11 @@ const useUpsertQuestionResponse = ({ surveyId }: { surveyId: string }) => {
         .then((res) => res.data);
     },
     {
-      onError: (e: any) => window.alert(e),
+      onError: (e) => window.alert(e),
       onMutate: (values) => {
-        queryClient.cancelQueries([QueryKeys.surveyParticipation, surveyId]);
+        queryClient.cancelQueries(queryKey);
         let draft: SurveyWithParticipationAndUserResponses | undefined =
-          queryClient.getQueryData([QueryKeys.surveyParticipation, surveyId]);
+          queryClient.getQueryData(queryKey);
 
         if (draft) {
           const index = draft.questions.findIndex(
@@ -43,17 +44,10 @@ const useUpsertQuestionResponse = ({ surveyId }: { surveyId: string }) => {
             answerNumeric: values.answerNumeric ? values.answerNumeric : null,
             answerBoolean: values.answerBoolean ? values.answerBoolean : null,
           };
-          queryClient.setQueryData(
-            [QueryKeys.surveyParticipation, surveyId],
-            draft
-          );
+          queryClient.setQueryData(queryKey, draft);
         }
       },
-      onSettled: () =>
-        queryClient.invalidateQueries([
-          QueryKeys.surveyParticipation,
-          surveyId,
-        ]),
+      onSettled: () => queryClient.invalidateQueries(queryKey),
     }
   );
 };

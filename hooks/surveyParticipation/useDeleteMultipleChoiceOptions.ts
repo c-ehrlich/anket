@@ -4,10 +4,11 @@ import { SurveyWithParticipationAndUserResponses } from '../../backend/surveyPar
 import { QueryKeys } from '../../types/queryKeys';
 
 const useDeleteMultipleChoiceOptions = ({ surveyId }: { surveyId: string }) => {
+  const queryKey = [QueryKeys.surveyParticipation, surveyId];
   const queryClient = useQueryClient();
 
   return useMutation(
-    [QueryKeys.surveyParticipation, surveyId],
+    queryKey,
     ({
       questionId,
       questionIndex,
@@ -25,9 +26,9 @@ const useDeleteMultipleChoiceOptions = ({ surveyId }: { surveyId: string }) => {
     {
       onError: (e: any) => window.alert(e),
       onMutate: (data) => {
-        queryClient.cancelQueries([QueryKeys.surveyParticipation, surveyId]);
+        queryClient.cancelQueries(queryKey);
         let draft: SurveyWithParticipationAndUserResponses | undefined =
-          queryClient.getQueryData([QueryKeys.surveyParticipation, surveyId]);
+          queryClient.getQueryData(queryKey);
         if (draft) {
           draft.questions[data.questionIndex].multipleChoiceOptions.forEach(
             (_, index) => {
@@ -36,17 +37,11 @@ const useDeleteMultipleChoiceOptions = ({ surveyId }: { surveyId: string }) => {
               ].multipleChoiceOptionSelections = [];
             }
           );
-          queryClient.setQueryData(
-            [QueryKeys.surveyParticipation, surveyId],
-            draft
-          );
+          queryClient.setQueryData(queryKey, draft);
         }
       },
       onSettled: () => {
-        queryClient.invalidateQueries([
-          QueryKeys.surveyParticipation,
-          surveyId,
-        ]);
+        queryClient.invalidateQueries(queryKey);
       },
     }
   );

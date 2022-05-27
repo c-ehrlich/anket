@@ -4,10 +4,11 @@ import { SurveyWithParticipationAndUserResponses } from '../../backend/surveyPar
 import { QueryKeys } from '../../types/queryKeys';
 
 const useToggleMCSItem = ({ surveyId }: { surveyId: string }) => {
+  const queryKey = [QueryKeys.surveyParticipation, surveyId];
   const queryClient = useQueryClient();
 
   return useMutation(
-    [QueryKeys.surveyParticipation, surveyId],
+    queryKey,
     ({
       selected,
       questionIndex,
@@ -27,12 +28,16 @@ const useToggleMCSItem = ({ surveyId }: { surveyId: string }) => {
         .then((res) => res.data);
     },
     {
-      onError: (e: any) => window.alert(e),
+      onError: (e) => window.alert(e),
       onMutate: (values) => {
-        queryClient.cancelQueries([QueryKeys.surveyParticipation, surveyId]);
+        queryClient.cancelQueries(queryKey);
         let draft: SurveyWithParticipationAndUserResponses | undefined =
-          queryClient.getQueryData([QueryKeys.surveyParticipation, surveyId]);
-        if (draft?.questions[values.questionIndex].multipleChoiceOptions[values.optionIndex]) {
+          queryClient.getQueryData(queryKey);
+        if (
+          draft?.questions[values.questionIndex].multipleChoiceOptions[
+            values.optionIndex
+          ]
+        ) {
           draft.questions[values.questionIndex].multipleChoiceOptions.forEach(
             (option) => {
               option.multipleChoiceOptionSelections = [];
@@ -42,17 +47,10 @@ const useToggleMCSItem = ({ surveyId }: { surveyId: string }) => {
             values.optionIndex
           ].multipleChoiceOptionSelections[0] = { id: 'temp', selected: true };
           console.log(draft);
-          queryClient.setQueryData(
-            [QueryKeys.surveyParticipation, surveyId],
-            draft
-          );
+          queryClient.setQueryData(queryKey, draft);
         }
       },
-      onSettled: () =>
-        queryClient.invalidateQueries([
-          QueryKeys.surveyParticipation,
-          surveyId,
-        ]),
+      onSettled: () => queryClient.invalidateQueries(queryKey),
     }
   );
 };

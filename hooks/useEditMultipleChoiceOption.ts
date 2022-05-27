@@ -19,23 +19,22 @@ const useEditMultipleChoiceOption = ({
   questionIndex: number;
   surveyId: string;
 }) => {
+  const queryKey = [QueryKeys.survey, surveyId];
   const queryClient = useQueryClient();
 
   return useMutation(
-    [QueryKeys.survey, surveyId],
+    queryKey,
     (data: EditMultipleChoiceOptionData) => {
       return axios.patch(`/api/multiplechoiceoption/${optionId}`, data);
     },
     {
-      onError: (e: any) => window.alert(e),
+      onError: (e) => window.alert(e),
       onMutate: (data) => {
-        queryClient.cancelQueries([QueryKeys.survey, surveyId]);
-        const oldSurvey: SurveyFE | undefined = queryClient.getQueryData([
-          QueryKeys.survey,
-          surveyId,
-        ]);
+        queryClient.cancelQueries(queryKey);
+        const oldSurvey: SurveyFE | undefined =
+          queryClient.getQueryData(queryKey);
         if (oldSurvey) {
-          queryClient.setQueryData([QueryKeys.survey, surveyId], {
+          queryClient.setQueryData(queryKey, {
             ...oldSurvey,
             questions: ([] as QuestionFE[]).concat(
               oldSurvey.questions.slice(0, questionIndex),
@@ -61,8 +60,7 @@ const useEditMultipleChoiceOption = ({
           });
         }
       },
-      onSettled: () =>
-        queryClient.invalidateQueries([QueryKeys.survey, surveyId]),
+      onSettled: () => queryClient.invalidateQueries(queryKey),
     }
   );
 };

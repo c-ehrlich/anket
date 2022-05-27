@@ -1,6 +1,9 @@
 import axios from 'axios';
 import { useMutation, useQueryClient } from 'react-query';
-import { QuestionFE, ReorderQuestionData } from '../backend/question/question.schema';
+import {
+  QuestionFE,
+  ReorderQuestionData,
+} from '../backend/question/question.schema';
 import { SurveyFE } from '../backend/survey/survey.schema';
 import { QueryKeys } from '../types/queryKeys';
 
@@ -13,21 +16,22 @@ const useReorderQuestion = ({
   questionId: string;
   questionIndex: number;
 }) => {
+  const queryKey = [QueryKeys.survey, surveyId];
   const queryClient = useQueryClient();
 
   return useMutation(
-    [],
+    queryKey,
     (data: ReorderQuestionData) => {
       return axios.patch(`/api/question/reorder/${questionId}`, {
         order: data.order,
       });
     },
     {
-      onError: (e: any) => window.alert(e),
+      onError: (e) => window.alert(e),
       onMutate: (data) => {
-        queryClient.cancelQueries([QueryKeys.survey, surveyId]);
+        queryClient.cancelQueries(queryKey);
         const oldSurvey: SurveyFE | undefined =
-          queryClient.getQueryData([QueryKeys.survey, surveyId]);
+          queryClient.getQueryData(queryKey);
         if (oldSurvey) {
           const oldOrder = oldSurvey.questions[questionIndex].order;
           if (data.order > oldOrder) {
@@ -46,7 +50,7 @@ const useReorderQuestion = ({
               order: data.order,
             };
             // rebuild survey object with new questions
-            queryClient.setQueryData([QueryKeys.survey, oldSurvey.id], {
+            queryClient.setQueryData(queryKey, {
               ...oldSurvey,
               questions: ([] as QuestionFE[]).concat(
                 // the lower stuff
@@ -75,7 +79,7 @@ const useReorderQuestion = ({
               order: data.order,
             };
             // rebuild survey object with new questions
-            queryClient.setQueryData([QueryKeys.survey, oldSurvey.id], {
+            queryClient.setQueryData(queryKey, {
               ...oldSurvey,
               questions: ([] as QuestionFE[]).concat(
                 // the lower stuff
@@ -92,7 +96,7 @@ const useReorderQuestion = ({
         }
       },
       onSettled: () => {
-        queryClient.invalidateQueries([QueryKeys.survey, surveyId]);
+        queryClient.invalidateQueries(queryKey);
       },
     }
   );

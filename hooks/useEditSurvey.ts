@@ -4,34 +4,31 @@ import { EditSurveyData, SurveyFE } from '../backend/survey/survey.schema';
 import { QueryKeys } from '../types/queryKeys';
 
 const useEditSurvey = ({ surveyId }: { surveyId: string }) => {
+  const queryKey = [QueryKeys.survey, surveyId];
   const queryClient = useQueryClient();
 
   return useMutation(
-    [QueryKeys.survey, surveyId],
-    (
-      data: EditSurveyData
-    ) => {
+    queryKey,
+    (data: EditSurveyData) => {
       return axios
         .patch(`/api/survey/${surveyId}`, { ...data })
         .then((res) => res.data);
     },
     {
-      onError: (e: any) => window.alert(e),
-      onMutate: (
-        values
-      ) => {
-        queryClient.cancelQueries([QueryKeys.survey, surveyId]);
+      onError: (e) => window.alert(e),
+      onMutate: (values) => {
+        queryClient.cancelQueries(queryKey);
         const oldSurvey: SurveyFE | undefined =
-          queryClient.getQueryData([QueryKeys.survey, surveyId]);
+          queryClient.getQueryData(queryKey);
         if (oldSurvey)
-          queryClient.setQueryData([QueryKeys.survey, surveyId], () => {
+          queryClient.setQueryData(queryKey, () => {
             return {
               ...oldSurvey,
               ...values,
             };
           });
       },
-      onSettled: () => queryClient.invalidateQueries([QueryKeys.survey, surveyId]),
+      onSettled: () => queryClient.invalidateQueries(queryKey),
     }
   );
 };

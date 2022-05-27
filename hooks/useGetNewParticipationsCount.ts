@@ -9,8 +9,6 @@ const getNewParticipationsCount = async () => {
 };
 
 export default function useGetNewParticipationsCount() {
-  return useQuery<number, Error>(
-    ['dashboard', 'interactions'],
-    () => getNewParticipationsCount()
-  );
+  const queryKey = ['dashboard', 'interactions'];
+  return useQuery<number, Error>(queryKey, () => getNewParticipationsCount());
 }

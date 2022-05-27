@@ -10,8 +10,9 @@ const getMySurveyParticipations = async () => {
 };
 
 export default function useGetMySurveyParticipations() {
-  return useQuery<DashboardSurveyParticipation[], Error>(
-    ['dashboard', 'participations'],
-    () => getMySurveyParticipations()
+  const queryKey = ['dashboard', 'participations'];
+
+  return useQuery<DashboardSurveyParticipation[], Error>(queryKey, () =>
+    getMySurveyParticipations()
   );
 }

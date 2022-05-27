@@ -83,7 +83,7 @@
 - [x] Hide stats if there are 0 responses
 ### Refactor
 - [x] Use APIErrorResponse in all controllers
-- [x] 
+- [x] clean up hooks/queries/mutations
 ### UI
 - [x] Dashboard... Spinners for left AND right sections! right section currently doesn't have a spinner
 - [x] Spinner for /survey/all

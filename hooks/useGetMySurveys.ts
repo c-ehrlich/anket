@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import { useSession } from 'next-auth/react';
-import {  SurveyPreviewWithAuthorAndInteraction } from '../backend/survey/survey.schema';
+import { SurveyPreviewWithAuthorAndInteraction } from '../backend/survey/survey.schema';
 
 const getMySurveys = async (userId: string) => {
   const surveys: SurveyPreviewWithAuthorAndInteraction[] = await axios
@@ -11,6 +11,8 @@ const getMySurveys = async (userId: string) => {
 };
 
 export default function useGetMySurveys() {
+  const queryKey = ['my-surveys'];
+
   const { data: session } = useSession();
   let userId = '';
   if (session?.user?.id) {
@@ -19,7 +21,8 @@ export default function useGetMySurveys() {
     console.error('no userId');
   }
 
-  return useQuery<SurveyPreviewWithAuthorAndInteraction[], Error>(['my-surveys'], () =>
-    getMySurveys(userId)
+  return useQuery<SurveyPreviewWithAuthorAndInteraction[], Error>(
+    queryKey,
+    () => getMySurveys(userId)
   );
 }
