@@ -24,10 +24,9 @@ export default NextAuth({
     })
     // ...add more providers here
   ],
-  // TODO switch back to default signin page
-  // pages: {
-  //   signIn: '/signin',
-  // },
+  pages: {
+    signIn: '/signin',
+  },
   callbacks: {
     async session({ session, user }) {
       if (session?.user) {
