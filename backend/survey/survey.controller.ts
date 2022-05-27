@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
+import APIErrorResponse from '../../types/APIErrorResponse';
 import getId from '../utils/getId';
 import logger from '../utils/logger';
 import {
@@ -23,22 +24,22 @@ import {
 
 export async function createSurveyHandler(
   req: NextApiRequest,
-  res: NextApiResponse<SurveyFE | string>
+  res: NextApiResponse<SurveyFE | APIErrorResponse>
 ) {
   logger.info('in createSurveyHandler');
-  
+
   const session = await getSession({ req });
   const authorId = session!.user!.id;
 
   if (!authorId) {
-    return res.status(400).send('No session');
+    return res.status(400).json({ error: 'No session' });
   }
 
   const data: CreateSurvey = req.body;
 
   const survey = await createSurvey(data, authorId);
   if (!survey) {
-    return res.status(400).send('Error creating survey')
+    return res.status(400).json({ error: 'Error creating survey' });
   }
 
   return res.status(201).json(survey);
@@ -52,14 +53,14 @@ export async function createSurveyHandler(
  */
 export async function upsertEmptySurveyHandler(
   req: NextApiRequest,
-  res: NextApiResponse<SurveyFE | { message: string }>
+  res: NextApiResponse<SurveyFE | APIErrorResponse>
 ) {
   const session = await getSession({ req });
   const authorId = session!.user!.id;
 
   if (!authorId) {
     logger.error('no session');
-    return res.status(400).json({ message: 'No session' });
+    return res.status(400).json({ error: 'No session' });
   }
 
   const data: CreateDefaultSurveyInput = { authorId };
@@ -71,21 +72,20 @@ export async function upsertEmptySurveyHandler(
       return res.status(201).json(survey);
     }
   }
-  return res.status(400).json({ message: 'Failed to create survey' });
+  return res.status(400).json({ error: 'Failed to create survey' });
 }
 
 export async function getSingleSurveyHandler(
   req: NextApiRequest,
-  res: NextApiResponse<{ message: string } | SurveyFEWithAuthor>
+  res: NextApiResponse<SurveyFEWithAuthor | APIErrorResponse>
 ) {
   const id = getId(req);
   if (!id) {
-    return res.status(400).json({ message: 'failed to get ID from query' });
+    return res.status(400).json({ error: 'failed to get ID from query' });
   }
 
   const survey = await getSingleSurvey(id);
-  if (!survey)
-    return res.status(400).json({ message: 'failed to find survey' });
+  if (!survey) return res.status(400).json({ error: 'failed to find survey' });
 
   const session = await getSession({ req });
 
@@ -98,7 +98,7 @@ export async function getSingleSurveyHandler(
   ) {
     return res
       .status(400)
-      .json({ message: 'Not authorized to retrieve survey' });
+      .json({ error: 'Not authorized to retrieve survey' });
   }
 
   return res.status(200).json(survey);
@@ -106,7 +106,9 @@ export async function getSingleSurveyHandler(
 
 export async function getAllPublicSurveysHandler(
   req: NextApiRequest,
-  res: NextApiResponse<string | SurveyPreviewWithAuthorAndInteraction[]>
+  res: NextApiResponse<
+    SurveyPreviewWithAuthorAndInteraction[] | APIErrorResponse
+  >
 ) {
   let userId = getId(req);
   if (!userId) {
@@ -115,13 +117,14 @@ export async function getAllPublicSurveysHandler(
 
     if (!userId) {
       logger.error('no session');
-      return res.status(400).send('No session');
+      return res.status(400).json({ error: 'No session' });
     }
   }
 
   const surveys: SurveyPreviewWithAuthorAndInteraction[] | undefined =
     await getAllPublicSurveyPreviews(userId);
-  if (surveys === undefined) return res.status(400).send('error getting surveys');
+  if (surveys === undefined)
+    return res.status(400).json({ error: 'error getting surveys' });
 
   console.log(surveys);
 
@@ -130,7 +133,7 @@ export async function getAllPublicSurveysHandler(
 
 export async function getUserSurveysHandler(
   req: NextApiRequest,
-  res: NextApiResponse<{ message: string } | SurveyPreviewWithAuthor[]>
+  res: NextApiResponse<SurveyPreviewWithAuthor[] | APIErrorResponse>
 ) {
   let userId = getId(req);
   if (!userId) {
@@ -139,7 +142,7 @@ export async function getUserSurveysHandler(
 
     if (!userId) {
       logger.error('no session');
-      return res.status(400).json({ message: 'No session' });
+      return res.status(400).json({ error: 'No session' });
     }
   }
 
@@ -151,11 +154,11 @@ export async function getUserSurveysHandler(
 
 export async function updateSurveyBasicInfoHandler(
   req: NextApiRequest,
-  res: NextApiResponse<{ message: string } | SurveyFE>
+  res: NextApiResponse<SurveyFE | APIErrorResponse>
 ) {
   const id = getId(req);
   if (!id) {
-    return res.status(400).json({ message: 'failed to get ID from query' });
+    return res.status(400).json({ error: 'failed to get ID from query' });
   }
 
   const data = req.body;
@@ -164,39 +167,35 @@ export async function updateSurveyBasicInfoHandler(
   const surveyOwner = await getSurveyOwner(id);
   const session = await getSession({ req });
   if (!session?.user || surveyOwner?.authorId !== session.user.id) {
-    return res
-      .status(400)
-      .send({ message: 'Invalid user. Permission denied.' });
+    return res.status(400).send({ error: 'Invalid user. Permission denied.' });
   }
 
   const survey = await updateSurvey({ id, data });
   if (!survey)
-    return res.status(400).json({ message: 'failed to update survey' });
+    return res.status(400).json({ error: 'failed to update survey' });
 
   return res.status(200).json(survey);
 }
 
 export async function deleteSurveyHandler(
   req: NextApiRequest,
-  res: NextApiResponse<{ message: String } | SurveyFE>
+  res: NextApiResponse<SurveyFE | APIErrorResponse>
 ) {
   const id = getId(req);
   if (!id) {
-    return res.status(400).json({ message: 'failed to get ID from query' });
+    return res.status(400).json({ error: 'failed to get ID from query' });
   }
 
   // make sure the user is allowed to modify that survey
   const surveyOwner = await getSurveyOwner(id);
   const session = await getSession({ req });
   if (!session?.user || surveyOwner?.authorId !== session.user.id) {
-    return res
-      .status(400)
-      .send({ message: 'Invalid user. Permission denied.' });
+    return res.status(400).send({ error: 'Invalid user. Permission denied.' });
   }
 
   const deletedSurvey = await deleteSurvey({ id });
   if (!deletedSurvey)
-    return res.status(400).json({ message: 'failed to delete survey' });
+    return res.status(400).json({ error: 'failed to delete survey' });
 
   return res.status(200).json(deletedSurvey);
 }

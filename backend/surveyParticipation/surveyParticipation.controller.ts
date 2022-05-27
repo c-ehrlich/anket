@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
+import APIErrorResponse from '../../types/APIErrorResponse';
 import getId from '../utils/getId';
 import logger from '../utils/logger';
 import {
@@ -17,7 +18,7 @@ import {
 export async function getOrCreateSurveyParticipationHandler(
   req: NextApiRequest,
   res: NextApiResponse<
-    SurveyWithParticipationAndUserResponses | { message: string }
+    SurveyWithParticipationAndUserResponses | APIErrorResponse
   >
 ) {
   const session = await getSession({ req });
@@ -25,12 +26,12 @@ export async function getOrCreateSurveyParticipationHandler(
 
   if (!userId) {
     logger.error('no session');
-    return res.status(400).json({ message: 'No session' });
+    return res.status(400).json({ error: 'No session' });
   }
 
   const surveyId = getId(req);
   if (!surveyId) {
-    return res.status(400).json({ message: 'failed to get ID from query' });
+    return res.status(400).json({ error: 'failed to get ID from query' });
   }
 
   const surveyParticipation = await getOrCreateSurveyParticipation({
@@ -41,7 +42,7 @@ export async function getOrCreateSurveyParticipationHandler(
   if (!surveyParticipation) {
     return res
       .status(400)
-      .json({ message: 'Failed to retrieve or create Survey Participation' });
+      .json({ error: 'Failed to retrieve or create Survey Participation' });
   }
 
   return res.status(200).json(surveyParticipation);
@@ -49,12 +50,12 @@ export async function getOrCreateSurveyParticipationHandler(
 
 export async function getMySurveyParticipationsHandler(
   req: NextApiRequest,
-  res: NextApiResponse<DashboardSurveyParticipation[] | string>
+  res: NextApiResponse<DashboardSurveyParticipation[] | APIErrorResponse>
 ) {
   const session = await getSession({ req });
   const userId = session!.user!.id;
   if (!userId) {
-    return res.status(400).json('no session');
+    return res.status(400).json({ error: 'no session' });
   }
 
   const mySurveyParticipations: DashboardSurveyParticipation[] | undefined =
@@ -62,7 +63,9 @@ export async function getMySurveyParticipationsHandler(
       userId,
     });
   if (mySurveyParticipations === undefined) {
-    return res.status(400).send('failed to get surveyParticipations');
+    return res
+      .status(400)
+      .json({ error: 'failed to get surveyParticipations' });
   }
 
   return res.status(200).send(mySurveyParticipations);
@@ -70,12 +73,12 @@ export async function getMySurveyParticipationsHandler(
 
 export async function getNewParticipationsHandler(
   req: NextApiRequest,
-  res: NextApiResponse<number | string>
+  res: NextApiResponse<number | APIErrorResponse>
 ) {
   const session = await getSession({ req });
   const userId = session!.user!.id;
   if (!userId) {
-    return res.status(400).json('no session');
+    return res.status(400).json({ error: 'no session' });
   }
 
   const sinceArg = Array.isArray(req.query.since)
@@ -88,7 +91,7 @@ export async function getNewParticipationsHandler(
     since,
   });
   if (participations === undefined) {
-    return res.status(400).send('failed to get participations');
+    return res.status(400).json({ error: 'failed to get participations' });
   }
 
   return res.status(200).send(participations);
@@ -96,12 +99,12 @@ export async function getNewParticipationsHandler(
 
 export async function updateSurveyParticipationHandler(
   req: NextApiRequest,
-  res: NextApiResponse<UpdateSurveyParticipationResponse | string>
+  res: NextApiResponse<UpdateSurveyParticipationResponse | APIErrorResponse>
 ) {
   const session = await getSession({ req });
   const userId = session!.user!.id;
   if (!userId) {
-    return res.status(400).json('no session');
+    return res.status(400).json({ error: 'no session' });
   }
 
   const id = getId(req);
@@ -114,7 +117,9 @@ export async function updateSurveyParticipationHandler(
   });
 
   if (!updatedSurveyParticipation)
-    return res.status(400).send('failed to update survey participation');
+    return res
+      .status(400)
+      .json({ error: 'failed to update survey participation' });
 
   return res.status(200).json(updatedSurveyParticipation);
 }

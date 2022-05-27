@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
+import APIErrorResponse from '../../types/APIErrorResponse';
 import { getQuestionTypeByMultipleChoiceOptionId } from '../multipleChoiceOption/multipleChoiceOption.service';
 import { getSurveyIdFromQuestionId } from '../survey/survey.service';
 import { ToggleMCMItemRequest } from '../surveyParticipation/surveyParticipation.schema';
@@ -13,17 +14,17 @@ import {
 
 export async function upsertMultipleChoiceOptionResponseHandler(
   req: NextApiRequest,
-  res: NextApiResponse<MultipleChoiceOptionSelectionFE | string>
+  res: NextApiResponse<MultipleChoiceOptionSelectionFE | APIErrorResponse>
 ) {
   const session = await getSession({ req });
   const userId = session!.user!.id;
   if (!userId) {
-    return res.status(400).send('no session');
+    return res.status(400).json({ error: 'no session' });
   }
 
   const multipleChoiceOptionId = getId(req);
   if (!multipleChoiceOptionId) {
-    return res.status(400).send('no mco id');
+    return res.status(400).json({ error: 'no mco id' });
   }
 
   const { selected, surveyId }: ToggleMCMItemRequest = req.body;
@@ -33,14 +34,16 @@ export async function upsertMultipleChoiceOptionResponseHandler(
     userId,
   });
   if (!surveyParticipationId) {
-    return res.status(400).send('failed to find survey participation');
+    return res
+      .status(400)
+      .json({ error: 'failed to find survey participation' });
   }
 
   const question = await getQuestionTypeByMultipleChoiceOptionId(
     multipleChoiceOptionId
   );
   if (!question) {
-    return res.status(400).send('failed to determine question type');
+    return res.status(400).json({ error: 'failed to determine question type' });
   }
 
   if (question.questionType === 'multipleChoiceSingle') {
@@ -59,7 +62,7 @@ export async function upsertMultipleChoiceOptionResponseHandler(
     surveyParticipationId: surveyParticipationId,
   });
   if (!multipleChoiceOptionSelection) {
-    return res.status(400).send('failed to upsert');
+    return res.status(400).json({ error: 'failed to upsert' });
   }
 
   return res.status(200).json(multipleChoiceOptionSelection);
@@ -67,12 +70,12 @@ export async function upsertMultipleChoiceOptionResponseHandler(
 
 export async function deleteAllSelectionsForQuestionHandler(
   req: NextApiRequest,
-  res: NextApiResponse<{ count: number} | string>
+  res: NextApiResponse<{ count: number } | APIErrorResponse>
 ) {
   const session = await getSession({ req });
   const userId = session!.user!.id;
   if (!userId) {
-    return res.status(400).send('no session');
+    return res.status(400).json({ error: 'no session' });
   }
 
   const questionId = getId(req);
@@ -80,9 +83,9 @@ export async function deleteAllSelectionsForQuestionHandler(
   // surveyId can optionally be on the request - if not, get from db based on questionId
   let { surveyId }: { surveyId: string | undefined } = req.body;
   if (!surveyId) {
-    surveyId = await getSurveyIdFromQuestionId(questionId)
+    surveyId = await getSurveyIdFromQuestionId(questionId);
     if (!surveyId) {
-      return res.status(400).send('failed to find surveyId');
+      return res.status(400).json({ error: 'failed to find surveyId' });
     }
   }
 
@@ -91,16 +94,21 @@ export async function deleteAllSelectionsForQuestionHandler(
     userId,
   });
   if (!surveyParticipationId) {
-    return res.status(400).send('failed to find survey participation');
+    return res
+      .status(400)
+      .json({ error: 'failed to find survey participation' });
   }
 
   const deletedMultipleChoiceOptionsCount = await deleteMCSOptionsForQuestion({
     questionId,
-    surveyParticipationId
+    surveyParticipationId,
   });
-  if (!deletedMultipleChoiceOptionsCount && deletedMultipleChoiceOptionsCount !== 0) {
-    return res.status(400).send('failed to delete options');
+  if (
+    !deletedMultipleChoiceOptionsCount &&
+    deletedMultipleChoiceOptionsCount !== 0
+  ) {
+    return res.status(400).json({ error: 'failed to delete options' });
   }
-  
+
   return res.status(200).json(deletedMultipleChoiceOptionsCount);
 }

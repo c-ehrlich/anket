@@ -80,6 +80,8 @@
 - [x] Remove debug text in /create
 ### Stats
 - [x] Hide stats if there are 0 responses
+### Chore
+- [x] Use APIErrorResponse in all controllers
 
 
 ## MVP 1

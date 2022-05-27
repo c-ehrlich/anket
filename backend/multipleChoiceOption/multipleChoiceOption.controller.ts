@@ -18,12 +18,12 @@ import {
 
 export async function createMultipleChoiceOptionHandler(
   req: NextApiRequest,
-  res: NextApiResponse<MultipleChoiceOptionFE | { message: string }>
+  res: NextApiResponse<MultipleChoiceOptionFE | APIErrorResponse>
 ) {
   const { questionId }: { questionId: string } = req.body;
   if (!questionId) {
     logger.error('no questionId');
-    return res.status(400).json({ message: 'No questionId' });
+    return res.status(400).json({ error: 'No questionId' });
   }
 
   // make sure the user is allowed to modify that question
@@ -32,7 +32,7 @@ export async function createMultipleChoiceOptionHandler(
   if (!session?.user || optionOwner?.survey.authorId !== session.user.id) {
     return res
       .status(400)
-      .send({ message: 'Invalid user. Permission denied.' });
+      .send({ error: 'Invalid user. Permission denied.' });
   }
 
   const multipleChoiceOption = await createDefaultMultipleChoiceOption({
@@ -42,19 +42,19 @@ export async function createMultipleChoiceOptionHandler(
   if (!multipleChoiceOption)
     return res
       .status(400)
-      .json({ message: 'failed to create multiple choice option' });
+      .json({ error: 'failed to create multiple choice option' });
 
   return res.status(201).json(multipleChoiceOption);
 }
 
 export async function deleteMultipleChoiceOptionHandler(
   req: NextApiRequest,
-  res: NextApiResponse<MultipleChoiceOptionFE | { message: string }>
+  res: NextApiResponse<MultipleChoiceOptionFE | APIErrorResponse>
 ) {
   // make sure we have an id
   const id = getId(req);
   if (!id) {
-    return res.status(400).json({ message: 'failed to get ID from query' });
+    return res.status(400).json({ error: 'failed to get ID from query' });
   }
 
   // make sure the user is allowed to modify that question
@@ -63,7 +63,7 @@ export async function deleteMultipleChoiceOptionHandler(
   if (!session?.user || optionOwner !== session.user.id) {
     return res
       .status(400)
-      .send({ message: 'Invalid user. Permission denied.' });
+      .send({ error: 'Invalid user. Permission denied.' });
   }
 
   // call a service that deletes the option
@@ -74,18 +74,18 @@ export async function deleteMultipleChoiceOptionHandler(
   if (!deletedOption)
     return res
       .status(400)
-      .json({ message: 'failed to delete multiple choice option' });
+      .json({ error: 'failed to delete multiple choice option' });
   return res.status(200).json(deletedOption);
 }
 
 export async function editMultipleChoiceOptionHandler(
   req: NextApiRequest,
-  res: NextApiResponse<MultipleChoiceOptionFE | { message: string }>
+  res: NextApiResponse<MultipleChoiceOptionFE | APIErrorResponse>
 ) {
   // make sure we have a questionid
   const id = getId(req);
   if (!id) {
-    return res.status(400).json({ message: 'failed to get ID from query' });
+    return res.status(400).json({ error: 'failed to get ID from query' });
   }
 
   // get the data from the request
@@ -97,7 +97,7 @@ export async function editMultipleChoiceOptionHandler(
   if (!session?.user || optionOwner !== session.user.id) {
     return res
       .status(400)
-      .send({ message: 'Invalid user. Permission denied.' });
+      .send({ error: 'Invalid user. Permission denied.' });
   }
 
   // call a service that edits the mcoption
@@ -111,7 +111,7 @@ export async function editMultipleChoiceOptionHandler(
   if (!editedMultipleChoiceOption) {
     return res
       .status(400)
-      .json({ message: 'failed to edit multiple choice option' });
+      .json({ error: 'failed to edit multiple choice option' });
   }
   return res.status(200).json(editedMultipleChoiceOption);
 }
