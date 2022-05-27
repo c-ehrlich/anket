@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   Center,
   Paper,
@@ -16,7 +17,9 @@ import {
   signIn,
   getSession,
 } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import {
+  AlertCircle,
   BrandDiscord,
   BrandGithub,
   BrandGoogle,
@@ -29,6 +32,8 @@ function SignInPage(props: {
     ClientSafeProvider
   > | null;
 }) {
+  let { error } = useRouter().query;
+
   if (!props.providers) return <div>no providers</div>;
 
   return (
@@ -41,6 +46,7 @@ function SignInPage(props: {
         style={{ maxWidth: '500px' }}
       >
         <Stack align='center'>
+          {error && <LoginError error={error} />}
           <Title order={2}>Login</Title>
           <Text>
             If you do not yet have an Anket account, you will be prompted to
@@ -69,6 +75,19 @@ function SignInPage(props: {
   );
 }
 
+function LoginError({ error }: { error: string | string[] }) {
+  const processedError = () => {
+    if (error === 'OAuthAccountNotLinked')
+      return 'This email is already being used with a different provider. Please use that provider to log in.';
+    return error;
+  };
+  return (
+    <Alert icon={<AlertCircle size={16} />} title='Login Error' color='red'>
+      {processedError()}
+    </Alert>
+  );
+}
+
 function GetProviderLogo({ id }: { id: string }) {
   switch (id) {
     case 'discord':
@@ -91,8 +110,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       redirect: {
         destination: '/',
         permanent: false,
-      }
-    }
+      },
+    };
   }
 
   return {
