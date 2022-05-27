@@ -15,7 +15,7 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
-import { motion, Reorder, useDragControls } from 'framer-motion';
+import { motion, Reorder } from 'framer-motion';
 import React, { memo, useState } from 'react';
 import { CaretDown, CaretUp, Trash } from 'tabler-icons-react';
 import { useDebouncedCallback } from 'use-debounce';
@@ -26,7 +26,6 @@ import {
 import useCreateMultipleChoiceOption from '../hooks/useCreateMultipleChoiceOption';
 import useDeleteQuestion from '../hooks/useDeleteQuestion';
 import useEditQuestion from '../hooks/useEditQuestion';
-import useReorderAllMultipleChoiceOptions from '../hooks/useReorderAllMultipleChoiceOptions';
 import useReorderMultipleChoiceOptions from '../hooks/useReorderMultipleChoiceOptions';
 import useReorderQuestion from '../hooks/useReorderQuestion';
 import { QuestionTypeString } from '../types/questionType';

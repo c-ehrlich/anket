@@ -76,20 +76,6 @@ export async function deleteMultipleChoiceOption({ id }: { id: string }) {
   }
 }
 
-export async function deleteMultipleChoiceOptionsForQuestion({
-  questionId,
-}: {
-  questionId: string;
-}) {
-  try {
-    return prisma.multipleChoiceOption.deleteMany({
-      where: { questionId },
-    });
-  } catch (e) {
-    logger.error(e);
-  }
-}
-
 export async function reorderMultipleChoiceOptions(options: {id: string, order: number}[]) {
   const transactionItems = ([] as Prisma.Prisma__MultipleChoiceOptionClient<MultipleChoiceOptionFE>[]);
   options.forEach(option => {

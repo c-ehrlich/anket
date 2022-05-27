@@ -16,7 +16,6 @@
 - [ ] Transition to styles api (there should be no `style={{}}` in the app)
 - [ ] Modal styling... they look a bit sad
 - [ ] Read all of Refactoring UI and make UI changes based on it
-- [ ] Make login page a modal instead (https://github.com/nextauthjs/next-auth/issues/178)
 - [ ] small screen: sidebar in/out should be animated
 - [ ] make all the disabled stuff in the anket creator not have special mouse cursors
 - [ ] Improve the Logo (choose a font that works well with the existing ones, don't make the spacing so weird)
@@ -62,9 +61,6 @@
 - [ ] Go through all major parts of the app in browser with console open and fix any errors
 - [ ] Go through all major parts of the app with network requests open and fix any that are red
 - [ ] See if there are any schema/types that are used nowhere
-### Refactor
-- [ ] All handlers should return strings on error, not json
-  - [*] OR { error: string } ???
 
 # Anket Done
 ## MVP 2
@@ -82,8 +78,9 @@
 - [x] Remove debug text in /create
 ### Stats
 - [x] Hide stats if there are 0 responses
-### Chore
+### Refactor
 - [x] Use APIErrorResponse in all controllers
+- [x] 
 ### UI
 - [x] Dashboard... Spinners for left AND right sections! right section currently doesn't have a spinner
 - [x] Spinner for /survey/all

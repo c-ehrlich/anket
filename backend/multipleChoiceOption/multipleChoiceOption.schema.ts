@@ -2,7 +2,6 @@ import { z } from 'zod';
 
 const name = z.string({});
 const id = z.string({}).cuid({});
-const questionId = z.string({}).cuid({});
 const order = z.number({});
 
 const multipleChoiceOptionFE = {
@@ -17,10 +16,6 @@ export const multipleChoiceOptionResponseSchema = z.object(
 export type MultipleChoiceOptionFE = z.infer<
   typeof multipleChoiceOptionResponseSchema
 >;
-
-export const createDefaultMultipleChoiceOptionSchema = z.object({
-  body: z.object({ name, questionId }),
-});
 
 export const editMultipleChoiceOptionSchema = z.object({
   body: z

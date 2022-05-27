@@ -10,7 +10,6 @@ import React, { useState, memo } from 'react';
 import { GridDots, Trash } from 'tabler-icons-react';
 import useEditMultipleChoiceOption from '../hooks/useEditMultipleChoiceOption';
 import useDeleteMultipleChoiceOption from '../hooks/useDeleteMultipleChoiceOption';
-import useReorderMultipleChoiceOption from '../hooks/useReorderMultipleChoiceOption';
 import {
   EditMultipleChoiceOptionData,
   MultipleChoiceOptionFE,
