@@ -9,10 +9,11 @@
 - [ ] Get it working on VPS with Docker + GitHub Actions
   - [ ] See vps branch
   - [ ] Research HTTPS on Hetzner...do I need to buy a domain?
-### Things to test
-- [ ] Question reordering - is it also bugged?
 ### Known Bugs
 ### UI
+- [ ] Spinner for /survey/all
+- [ ] Spinner for /survey/mine
+- [ ] Figure out how not to invalidate front page and list data as soon as we leave a page (give it 5 minutes or something)
 - [ ] Landing page: reduce spacing between sections on phones
 - [ ] AppShell: on phone screens, scrolling the menu should scroll the menu, not the content underneath it!
 - [ ] Transition to styles api (there should be no `style={{}}` in the app)
@@ -82,7 +83,8 @@
 - [x] Hide stats if there are 0 responses
 ### Chore
 - [x] Use APIErrorResponse in all controllers
-
+### UI
+- [x] Dashboard... Spinners for left AND right sections! right section currently doesn't have a spinner
 
 ## MVP 1
 ### Deployment

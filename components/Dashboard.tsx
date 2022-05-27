@@ -19,7 +19,6 @@ import { DashboardSurveyParticipation } from '../backend/surveyParticipation/sur
 import { ChartBar, Edit, Eye, Tool } from 'tabler-icons-react';
 import { SurveyPreviewWithAuthorAndInteraction } from '../backend/survey/survey.schema';
 import { useRouter } from 'next/router';
-import { createSurvey } from '../hooks/useCreateSurvey';
 
 // TODO switch between rows/columns based on useQuerySelector
 
@@ -126,33 +125,41 @@ function TakenSurveys() {
     // <Paper withBorder shadow='md' p='md'>
     <Stack>
       <Title order={2}>Taken Surveys</Title>
-      {myUnfinishedParticipations !== undefined && (
+      {myParticipations !== undefined ? (
         <>
-          <Text size='lg'>
-            You have {myUnfinishedParticipations.length} unfinished{' '}
-            {myUnfinishedParticipations.length === 1
-              ? 'participation'
-              : 'participations'}
-          </Text>
-          {myUnfinishedParticipations.map((p) => (
-            <TakenSurveyCard key={p.id} participation={p} />
-          ))}
+          {myUnfinishedParticipations !== undefined && (
+            <>
+              <Text size='lg'>
+                You have {myUnfinishedParticipations.length} unfinished{' '}
+                {myUnfinishedParticipations.length === 1
+                  ? 'participation'
+                  : 'participations'}
+              </Text>
+              {myUnfinishedParticipations.map((p) => (
+                <TakenSurveyCard key={p.id} participation={p} />
+              ))}
+            </>
+          )}
+          {myFinishedParticipations !== undefined && (
+            <>
+              <Text size='lg'>
+                Here {myFinishedParticipations.length === 1 ? 'is' : 'are'} your{' '}
+                {Math.min(3, myFinishedParticipations.length)} most recently
+                completed{' '}
+                {myFinishedParticipations.length === 1
+                  ? 'participation'
+                  : 'participations'}
+              </Text>
+              {myFinishedParticipations.slice(0, 3).map((p) => (
+                <TakenSurveyCard key={p.id} participation={p} />
+              ))}
+            </>
+          )}
         </>
-      )}
-      {myFinishedParticipations !== undefined && (
-        <>
-          <Text size='lg'>
-            Here {myFinishedParticipations.length === 1 ? 'is' : 'are'} your{' '}
-            {Math.min(3, myFinishedParticipations.length)} most recently
-            completed{' '}
-            {myFinishedParticipations.length === 1
-              ? 'participation'
-              : 'participations'}
-          </Text>
-          {myFinishedParticipations.slice(0, 3).map((p) => (
-            <TakenSurveyCard key={p.id} participation={p} />
-          ))}
-        </>
+      ) : (
+        <Center>
+          <MoonLoader color='green' />
+        </Center>
       )}
     </Stack>
     // </Paper>
