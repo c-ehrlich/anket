@@ -5,7 +5,6 @@
 ## MVP 2
 ### Known bugs
 - [!] Heading font doesn't work on Vercel
-- [!] Logging out should redirect to dashboard, not to /signin
 ### Deployment
 - [ ] Get it working on VPS with Docker + GitHub Actions
   - [ ] See vps branch
@@ -73,6 +72,7 @@
 - [x] Resume button on dashboard links to bugs
 - [x] 400 on requesting all surveys when there are none
 - [x] buggy MCO reordering
+- [x] Logging out should redirect to dashboard, not to /signin
 ### Accounts / Auth
 - [x] Add GoogleProvider
 - [x] Use custom signin page

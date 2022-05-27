@@ -26,11 +26,6 @@ const Content = () => {
   const theme = useMantineTheme();
   const [onLogoutPage, setOnLogoutPage] = useState<boolean>(false);
 
-  const logoutAndResetState = async () => {
-    await router.push('/');
-    signOut();
-  };
-
   if (session && session.user) {
     return (
       <>
@@ -47,7 +42,7 @@ const Content = () => {
               <LoginLink
                 icon={<Logout />}
                 label='Logout'
-                onClick={logoutAndResetState}
+                onClick={() => signOut({ callbackUrl: '/' })}
               />
               <LoginLink
                 icon={<Settings />}
