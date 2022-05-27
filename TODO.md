@@ -1,5 +1,9 @@
 # Anket Todo (current)
 
+## Next thing to do
+- [ ] Add Google login again
+- [ ] Use APIErrorResponse in all Controllers
+
 ## MVP 2
 ### Deployment
 - [ ] Get it working on VPS with Docker + GitHub Actions
@@ -7,12 +11,7 @@
   - [ ] Research HTTPS on Hetzner...do I need to buy a domain?
 ### Things to test
 - [ ] Question reordering - is it also bugged?
-### Bugs
-- [ ] 400 Errors on reordering stuff too fast
-  - [ ] Query ... send [{id: 'abc', order: 0}, {id: 'def', order: 1}, {id: 'ghi', order: 2}]
-  - [ ] Same route but use different controller
-  - [ ] New service + schema for this
-  - [ ] Check if there are any AnswerOption schema that are not being used
+### Known Bugs
 ### UI
 - [ ] Landing page: reduce spacing between sections on phones
 - [ ] AppShell: on phone screens, scrolling the menu should scroll the menu, not the content underneath it!
@@ -64,6 +63,7 @@
 - [ ] See where we can reduce the number of props (for example in EditSurveyMultipleChoiceAnswer by passing an object instead of multiple parts of that object)
 - [ ] Go through all major parts of the app in browser with console open and fix any errors
 - [ ] Go through all major parts of the app with network requests open and fix any that are red
+- [ ] See if there are any schema/types that are used nowhere
 ### Refactor
 - [ ] All handlers should return strings on error, not json
   - [*] OR { error: string } ???
@@ -73,6 +73,7 @@
 ### Bugs
 - [x] Resume button on dashboard links to bugs
 - [x] 400 on requesting all surveys when there are none
+- [x] buggy MCO reordering
 ### Survey Creation / Editing
 - [x] FIRST VALIDATION TEST: /create should be a form with title and optional description, clicking it creates a survey and takes us to the page to edit that survey
 - [x] Description should support line breaks

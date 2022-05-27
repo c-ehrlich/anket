@@ -1,17 +1,17 @@
 import NextConnectHandler from 'next-connect';
 import { NextApiRequest, NextApiResponse } from 'next';
 import requireSession from '../../../../backend/middleware/requireSession.middleware';
-import { reorderMultipleChoiceOptionHandler } from '../../../../backend/multipleChoiceOption/multipleChoiceOption.controller';
 import validateResource from '../../../../backend/middleware/validateResource.middleware';
-import { reorderMultipleChoiceOptionSchema } from '../../../../backend/multipleChoiceOption/multipleChoiceOption.schema';
+import { reorderMultipleChoiceOptionsSchema } from '../../../../backend/multipleChoiceOption/multipleChoiceOption.schema';
 import { nextConnectOptions } from '../../../../backend/utils/nextConnect';
+import { reorderMultipleChoiceOptionsHandler } from '../../../../backend/multipleChoiceOption/multipleChoiceOption.controller';
 
 const handler = NextConnectHandler<NextApiRequest, NextApiResponse>(
   nextConnectOptions
 ).patch(
-  validateResource(reorderMultipleChoiceOptionSchema),
+  validateResource(reorderMultipleChoiceOptionsSchema),
   requireSession,
-  reorderMultipleChoiceOptionHandler
+  reorderMultipleChoiceOptionsHandler
 );
 
 export default handler;

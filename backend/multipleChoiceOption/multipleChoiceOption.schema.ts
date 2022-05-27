@@ -5,11 +5,15 @@ const id = z.string({}).cuid({});
 const questionId = z.string({}).cuid({});
 const order = z.number({});
 
-export const multipleChoiceOptionResponseSchema = z.object({
+const multipleChoiceOptionFE = {
   id,
   name,
   order,
-});
+};
+
+export const multipleChoiceOptionResponseSchema = z.object(
+  multipleChoiceOptionFE
+);
 export type MultipleChoiceOptionFE = z.infer<
   typeof multipleChoiceOptionResponseSchema
 >;
@@ -31,16 +35,7 @@ export type EditMultipleChoiceOptionData = z.infer<
   typeof editMultipleChoiceOptionSchema
 >['body'];
 
-export const reorderMultipleChoiceOptionSchema = z.object({
-  body: z.object({ order }),
+export const reorderMultipleChoiceOptionsSchema = z.object({
+  body: z.array(z.object(multipleChoiceOptionFE)),
 });
-export type ReorderMultipleChoiceOptionType = z.infer<
-  typeof reorderMultipleChoiceOptionSchema
->['body'];
-
-export const reorderAllMultipleChoiceOptionsSchema = z.object({
-  body: multipleChoiceOptionResponseSchema.array(),
-});
-export type ReorderAllMultipleChoiceOptionsData = z.infer<
-  typeof reorderAllMultipleChoiceOptionsSchema
->['body'];
+// NOTE: no type here, just use MultipleChoiceOptionFE[]

@@ -19,11 +19,15 @@ import { motion, Reorder, useDragControls } from 'framer-motion';
 import React, { memo, useState } from 'react';
 import { CaretDown, CaretUp, Trash } from 'tabler-icons-react';
 import { useDebouncedCallback } from 'use-debounce';
-import { EditQuestionData, QuestionFE } from '../backend/question/question.schema';
+import {
+  EditQuestionData,
+  QuestionFE,
+} from '../backend/question/question.schema';
 import useCreateMultipleChoiceOption from '../hooks/useCreateMultipleChoiceOption';
 import useDeleteQuestion from '../hooks/useDeleteQuestion';
 import useEditQuestion from '../hooks/useEditQuestion';
 import useReorderAllMultipleChoiceOptions from '../hooks/useReorderAllMultipleChoiceOptions';
+import useReorderMultipleChoiceOptions from '../hooks/useReorderMultipleChoiceOptions';
 import useReorderQuestion from '../hooks/useReorderQuestion';
 import { QuestionTypeString } from '../types/questionType';
 import EditSurveyMultipleChoiceOption from './EditSurveyMultipleChoiceOption';
@@ -69,12 +73,11 @@ const EditSurveyQuestion = memo((props: Props) => {
     surveyId: props.surveyId,
     questionId: props.question.id,
   });
-  const reorderAllMultipleChoiceOptionsMutation =
-    useReorderAllMultipleChoiceOptions({
-      surveyId: props.surveyId,
-      questionId: props.question.id,
-      questionIndex: props.index,
-    });
+  const reorderMultipleChoiceOptionsMutation = useReorderMultipleChoiceOptions({
+    surveyId: props.surveyId,
+    questionIndex: props.index,
+    questionId: props.question.id,
+  })
 
   const debouncedEditQuestionText = useDebouncedCallback(
     (data: EditQuestionData) => editQuestion.mutate(data),
@@ -217,9 +220,12 @@ const EditSurveyQuestion = memo((props: Props) => {
                   }}
                   axis='y'
                   values={props.question.multipleChoiceOptions}
-                  onReorder={(data) =>
-                    reorderAllMultipleChoiceOptionsMutation.mutate(data)
-                  }
+                  onReorder={(data) => {
+                    // TODO: delete
+                    console.log(data);
+                    console.log(data[0])
+                    reorderMultipleChoiceOptionsMutation.mutate(data);
+                  }}
                 >
                   {props.question.multipleChoiceOptions.map(
                     (mcOption, index) => (

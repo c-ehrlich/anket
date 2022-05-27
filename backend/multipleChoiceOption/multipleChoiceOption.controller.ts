@@ -1,20 +1,19 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
+import APIErrorResponse from '../../types/APIErrorResponse';
 import { getQuestionOwner } from '../question/question.service';
 import getId from '../utils/getId';
 import logger from '../utils/logger';
 import {
   EditMultipleChoiceOptionData,
   MultipleChoiceOptionFE,
-  ReorderAllMultipleChoiceOptionsData,
 } from './multipleChoiceOption.schema';
 import {
   createDefaultMultipleChoiceOption,
   deleteMultipleChoiceOption,
   editMultipleChoiceOption,
   getMultipleChoiceOptionOwner,
-  reorderAllMultipleChoiceOptions,
-  reorderMultipleChoiceOption,
+  reorderMultipleChoiceOptions,
 } from './multipleChoiceOption.service';
 
 export async function createMultipleChoiceOptionHandler(
@@ -108,8 +107,6 @@ export async function editMultipleChoiceOptionHandler(
       data,
     });
 
-  logger.info('edited mco:', editedMultipleChoiceOption);
-
   // return the edited mcoption (invalidate survey in frontend)
   if (!editedMultipleChoiceOption) {
     return res
@@ -119,67 +116,33 @@ export async function editMultipleChoiceOptionHandler(
   return res.status(200).json(editedMultipleChoiceOption);
 }
 
-export async function reorderMultipleChoiceOptionHandler(
+export async function reorderMultipleChoiceOptionsHandler(
   req: NextApiRequest,
-  res: NextApiResponse<MultipleChoiceOptionFE[] | { message: string }>
+  res: NextApiResponse<MultipleChoiceOptionFE[] | APIErrorResponse>
 ) {
-  // make sure we have an id
-  const id = getId(req);
-  if (!id) {
-    return res.status(400).json({ message: 'failed to get ID from query' });
-  }
+  // TODO get questionID from request, then check permissions
+  // idea 1: make sure:
+  //   1. that question belongs to the user
+  //   2. all the MCOs belong to that question
+  // idea 2:
+  //   1. make sure the user owns that question
+  //   2. delete all answerOptions for that question
+  //   3. make new ones based on the 
 
-  // make sure the user is allowed to modify that question
-  const optionOwner = await getMultipleChoiceOptionOwner(id);
-  const session = await getSession({ req });
-  if (!session?.user || optionOwner !== session.user.id) {
+  let optionsToReorder: MultipleChoiceOptionFE[] = req.body;
+  if (optionsToReorder.length === 0) return res.status(200).json([]);
+
+  // create the objects that we want to end up with in db
+  optionsToReorder.forEach((option, index) => {
+    option.order = index;
+  })
+  
+  const reorderedMultipleChoiceOptions: MultipleChoiceOptionFE[] =
+    await reorderMultipleChoiceOptions(req.body);
+  if (!reorderedMultipleChoiceOptions)
     return res
       .status(400)
-      .send({ message: 'Invalid user. Permission denied.' });
-  }
-
-  // get the new order from req
-  const { order } = req.body;
-  if (!order && order !== 0) {
-    res.status(400).send({ message: 'failed to get order from request body' });
-  }
-
-  // call handler
-  const reorderedMultipleChoiceOptions: MultipleChoiceOptionFE[] | undefined =
-    await reorderMultipleChoiceOption({ id, order });
-
-  // check if we have the object and return it or an error
-  if (!reorderedMultipleChoiceOptions) {
-    return res
-      .status(400)
-      .json({ message: 'failed to reorder multiple choice option' });
-  }
-  return res.status(200).json(reorderedMultipleChoiceOptions);
-}
-
-export async function reorderAllMultipleChoiceOptionsHandler(
-  req: NextApiRequest,
-  res: NextApiResponse<MultipleChoiceOptionFE[] | { message: string }>
-) {
-  // make sure we have an id
-  const questionId = getId(req);
-  if (!questionId)
-    return res
-      .status(400)
-      .json({ message: 'failed to get Question ID from query' });
-
-  const data: ReorderAllMultipleChoiceOptionsData = req.body;
-
-  const reorderedMultipleChoiceOptions = await reorderAllMultipleChoiceOptions(
-    questionId,
-    data
-  );
-
-  if (!reorderedMultipleChoiceOptions) {
-    return res
-      .status(400)
-      .json({ message: 'failed to reorder Multiple Choice Options' });
-  }
+      .json({ error: 'Failed to reorder Multiple Choice Options' });
 
   return res.status(200).json(reorderedMultipleChoiceOptions);
 }
