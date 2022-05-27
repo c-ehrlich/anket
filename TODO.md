@@ -1,17 +1,18 @@
 # Anket Todo (current)
-## MVP v1
-### Bugs
-### Initial Deployment
-- [ ] Figure out how to deploy it
-- [ ] To a VPS? Hetzner?
-- [ ] Get the real DB running (RDS or Heroku Postgres?)
-  - [ ] Can test this even before deploying
 
 ## MVP 2
 ### Deployment
-- [ ] Figure out how to set up GitHub Actions
+- [ ] Get it working on VPS with Docker + GitHub Actions
+  - [ ] See vps branch
+  - [ ] Research HTTPS on Hetzner...do I need to buy a domain?
+### Things to test
+- [ ] Question reordering - is it also bugged?
 ### Bugs
 - [ ] 400 Errors on reordering stuff too fast
+  - [ ] Query ... send [{id: 'abc', order: 0}, {id: 'def', order: 1}, {id: 'ghi', order: 2}]
+  - [ ] Same route but use different controller
+  - [ ] New service + schema for this
+  - [ ] Check if there are any AnswerOption schema that are not being used
 ### UI
 - [ ] Landing page: reduce spacing between sections on phones
 - [ ] AppShell: on phone screens, scrolling the menu should scroll the menu, not the content underneath it!
@@ -23,6 +24,9 @@
 - [ ] make all the disabled stuff in the anket creator not have special mouse cursors
 - [ ] Improve the Logo (choose a font that works well with the existing ones, don't make the spacing so weird)
 - [ ] Improve body text typography
+- [ ] Good message on empty /survey/mine
+  - [ ] Prompt user to create one
+- Consider bringing in a second heading font that's sans serif?
 ### Survey Creation
 - [ ] Submitting / error checking... what do we want to make sure of before submitting a survey?
   - [ ] No empty questions (last question can be empty, just trim it)
@@ -60,6 +64,9 @@
 - [ ] See where we can reduce the number of props (for example in EditSurveyMultipleChoiceAnswer by passing an object instead of multiple parts of that object)
 - [ ] Go through all major parts of the app in browser with console open and fix any errors
 - [ ] Go through all major parts of the app with network requests open and fix any that are red
+### Refactor
+- [ ] All handlers should return strings on error, not json
+  - [*] OR { error: string } ???
 
 # Anket Done
 ## MVP 2
@@ -69,11 +76,14 @@
 ### Survey Creation / Editing
 - [x] FIRST VALIDATION TEST: /create should be a form with title and optional description, clicking it creates a survey and takes us to the page to edit that survey
 - [x] Description should support line breaks
+- [x] Remove debug text in /create
 ### Stats
 - [x] Hide stats if there are 0 responses
 
 
 ## MVP 1
+### Deployment
+- [x] Get it working on Vercel
 ### Bugs
 - [x] Figure out why login is broken
   - [x] Was just something about some package

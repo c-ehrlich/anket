@@ -54,7 +54,6 @@ const CreateSurveyPage = () => {
             Submit
           </Button>
         </Group>
-          <div>{JSON.stringify(form)}</div>
       </Stack>
     </form>
   );
