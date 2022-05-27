@@ -4,7 +4,6 @@
 
 ## MVP 2
 ### Known bugs
-- [!] Heading font doesn't work on Vercel
 ### Deployment
 - [ ] 404/500 handling
 - [ ] Get it working on VPS with Docker + GitHub Actions
@@ -71,6 +70,7 @@
 - [x] 400 on requesting all surveys when there are none
 - [x] buggy MCO reordering
 - [x] Logging out should redirect to dashboard, not to /signin
+- [x] Custom fonts don't work on Vercel
 ### Accounts / Auth
 - [x] Add GoogleProvider
 - [x] Use custom signin page
@@ -88,6 +88,8 @@
 - [x] Dashboard... Spinners for left AND right sections! right section currently doesn't have a spinner
 - [x] Spinner for /survey/all
 - [x] Spinner for /survey/mine
+### Misc
+- [x] Fix uneven font size in dashboard
 
 ## MVP 1
 ### Deployment

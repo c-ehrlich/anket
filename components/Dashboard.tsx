@@ -85,7 +85,7 @@ function MySurveys() {
             </>
           ) : (
             <Stack>
-              <Text>
+              <Text size='lg'>
                 You have not yet made any surveys. Why not get started now?
               </Text>
             </Stack>
