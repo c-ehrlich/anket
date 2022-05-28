@@ -95,8 +95,9 @@ function MySurveys() {
           </Button>
 
           <Text size='lg'>
-            There were {newParticipationsCount} new responses to your surveys in
-            the last 24 hours.
+            There {newParticipationsCount === 1 ? 'was' : 'were'} were{' '}
+            {newParticipationsCount === 0 ? 'no' : newParticipationsCount} new
+            responses to your surveys in the last 24 hours.
           </Text>
         </>
       ) : (
