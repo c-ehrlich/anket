@@ -183,6 +183,7 @@ export async function getMySurveysParticipationSinceCount({
         survey: {
           authorId: userId,
         },
+        isComplete: true,
         updatedAt: {
           gte: since,
         },
