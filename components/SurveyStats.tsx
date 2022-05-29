@@ -30,7 +30,7 @@ function generateDisplayData(survey: SurveyStatsResponse) {
             value: option.multipleChoiceOptionSelections.length,
           })
         );
-        if (!q.isRequired) {
+        if (q.questionType === 'multipleChoiceSingle' && !q.isRequired) {
           res.push({
             name: 'No Answer',
             value:

@@ -1,6 +1,8 @@
 # Anket Todo (current)
 
 ## Next thing to do
+- [ ] Fake stats page
+- [ ] Readme
 
 ## MVP 2
 ### Known bugs
@@ -71,6 +73,7 @@
 - [x] buggy MCO reordering
 - [x] Logging out should redirect to dashboard, not to /signin
 - [x] Custom fonts don't work on Vercel
+- [x] 'No Response' on MCM can be negative
 ### Accounts / Auth
 - [x] Add GoogleProvider
 - [x] Use custom signin page
