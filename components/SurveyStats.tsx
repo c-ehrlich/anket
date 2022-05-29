@@ -1,4 +1,4 @@
-import { Divider, Paper, Stack, Text, Title } from '@mantine/core';
+import { Box, Button, Divider, Paper, Stack, Text, Title } from '@mantine/core';
 import React from 'react';
 import { SurveyStatsResponse } from '../backend/surveyStats/surveyStats.schema';
 import {
@@ -13,6 +13,8 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 type PageProps = { survey: SurveyStatsResponse };
 
@@ -108,8 +110,8 @@ type ChartData = {
 }[];
 
 const SurveyStats = (props: PageProps) => {
-  console.log('generating display data');
   const displayData = generateDisplayData(props.survey);
+  const router = useRouter();
 
   return (
     <Stack>
@@ -225,7 +227,20 @@ const SurveyStats = (props: PageProps) => {
             </Paper>
           ))}
         </>
-      ) : (<Text>Please wait until there is at least 1 response to see survey stats</Text>)}
+      ) : (
+        <>
+          <Text>It looks like nobody has responded to your survey yet.</Text>
+          <Text>
+            If you want an example of what this page might look like once people
+            respond, we have a response demo page.
+          </Text>
+          <Box>
+            <Button onClick={() => router.push('/survey/stats/demo')}>
+              Demo
+            </Button>
+          </Box>
+        </>
+      )}
     </Stack>
   );
 };

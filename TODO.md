@@ -1,7 +1,6 @@
 # Anket Todo (current)
 
 ## Next thing to do
-- [ ] Fake stats page
 - [ ] Readme
 
 ## MVP 2
@@ -84,6 +83,7 @@
 - [x] Remove debug text in /create
 ### Stats
 - [x] Hide stats if there are 0 responses
+- [x] Fake stats page
 ### Refactor
 - [x] Use APIErrorResponse in all controllers
 - [x] clean up hooks/queries/mutations
