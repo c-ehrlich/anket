@@ -1,6 +1,38 @@
 import { QuestionType } from '@prisma/client';
 import z from 'zod';
 
+export const surveyStatsResponseQuestionSchema = z.object({
+  id: z.string().cuid(),
+  question: z.string(),
+  details: z.string(),
+  questionType: z.nativeEnum(QuestionType),
+  isRequired: z.boolean(),
+  order: z.number().min(0).int(),
+  questionResponses: z.array(
+    z.object({
+      id: z.string().cuid(),
+      answerBoolean: z.boolean().nullable(),
+      answerNumeric: z.number().nullable(),
+      answerText: z.string().nullable(),
+    })
+  ),
+  multipleChoiceOptions: z.array(
+    z.object({
+      id: z.string().cuid(),
+      name: z.string(),
+      multipleChoiceOptionSelections: z.array(
+        z.object({
+          id: z.string().cuid(),
+          selected: z.boolean().nullable(),
+        })
+      ),
+    })
+  ),
+});
+export type SurveyStatsResponseQuestion = z.infer<
+  typeof surveyStatsResponseQuestionSchema
+>;
+
 export const surveyStatsResponseSchema = z.object({
   id: z.string().cuid(),
   name: z.string(),
@@ -19,35 +51,6 @@ export const surveyStatsResponseSchema = z.object({
       id: z.string().cuid(),
     })
   ),
-  questions: z.array(
-    z.object({
-      id: z.string().cuid(),
-      question: z.string(),
-      details: z.string(),
-      questionType: z.nativeEnum(QuestionType),
-      isRequired: z.boolean(),
-      order: z.number().min(0).int(),
-      questionResponses: z.array(
-        z.object({
-          id: z.string().cuid(),
-          answerBoolean: z.boolean().nullable(),
-          answerNumeric: z.number().nullable(),
-          answerText: z.string().nullable(),
-        })
-      ),
-      multipleChoiceOptions: z.array(
-        z.object({
-          id: z.string().cuid(),
-          name: z.string(),
-          multipleChoiceOptionSelections: z.array(
-            z.object({
-              id: z.string().cuid(),
-              selected: z.boolean().nullable(),
-            })
-          ),
-        })
-      ),
-    })
-  ),
+  questions: z.array(surveyStatsResponseQuestionSchema),
 });
 export type SurveyStatsResponse = z.infer<typeof surveyStatsResponseSchema>;

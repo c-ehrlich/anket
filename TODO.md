@@ -84,6 +84,11 @@
 ### Stats
 - [x] Hide stats if there are 0 responses
 - [x] Fake stats page
+- [ ] Nice Charts made with xvis:
+  - [x] Yes/No
+  - [ ] MCS
+  - [ ] MCM
+  - [ ] 0-10
 ### Refactor
 - [x] Use APIErrorResponse in all controllers
 - [x] clean up hooks/queries/mutations

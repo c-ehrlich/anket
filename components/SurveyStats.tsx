@@ -15,6 +15,7 @@ import {
 } from 'recharts';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import SurveyStatsYesNo from './surveyStats/SurveyStatsYesNo';
 
 type PageProps = { survey: SurveyStatsResponse };
 
@@ -183,21 +184,22 @@ const SurveyStats = (props: PageProps) => {
                   </ResponsiveContainer>
                 )}
                 {q.questionType === 'yesNoBoolean' && (
-                  <ResponsiveContainer width='99%' aspect={1} maxHeight={400}>
-                    <PieChart data={displayData[index]}>
-                      <Pie
-                        data={displayData[index]}
-                        dataKey='value'
-                        nameKey='name'
-                        cx='50%'
-                        cy='50%'
-                        // outerRadius={100}
-                        fill='#69DB7C'
-                      />
-                      <Legend />
-                      <Tooltip />
-                    </PieChart>
-                  </ResponsiveContainer>
+                  // <ResponsiveContainer width='99%' aspect={1} maxHeight={400}>
+                  //   <PieChart data={displayData[index]}>
+                  //     <Pie
+                  //       data={displayData[index]}
+                  //       dataKey='value'
+                  //       nameKey='name'
+                  //       cx='50%'
+                  //       cy='50%'
+                  //       // outerRadius={100}
+                  //       fill='#69DB7C'
+                  //     />
+                  //     <Legend />
+                  //     <Tooltip />
+                  //   </PieChart>
+                  // </ResponsiveContainer>
+                  <SurveyStatsYesNo question={q} />
                 )}
 
                 {q.questionType === 'zeroToTen' && (
