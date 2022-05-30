@@ -13,9 +13,9 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import SurveyStatsYesNo from './surveyStats/SurveyStatsYesNo';
+import SurveyStatsMCS from './surveyStats/SurveyStatsMCS';
 
 type PageProps = { survey: SurveyStatsResponse };
 
@@ -76,8 +76,6 @@ function generateDisplayData(survey: SurveyStatsResponse) {
       case 'zeroToTen':
         res = [...zeroToTenDefault];
         q.questionResponses.forEach((qr) => {
-          console.log(res);
-          console.log(qr);
           res[Number(qr.answerNumeric)] = {
             ...res[Number(qr.answerNumeric)],
             value: res[Number(qr.answerNumeric)].value + 1,
@@ -150,20 +148,7 @@ const SurveyStats = (props: PageProps) => {
                 <Title order={2}>{q.question}</Title>
                 {q.details && <Text>{q.details}</Text>}
                 {q.questionType === 'multipleChoiceSingle' && (
-                  <ResponsiveContainer width='99%' aspect={1} maxHeight={400}>
-                    <PieChart data={displayData[index]}>
-                      <Pie
-                        data={displayData[index]}
-                        dataKey='value'
-                        nameKey='name'
-                        cx='50%'
-                        cy='50%'
-                        fill='#69DB7C'
-                      />
-                      <Legend />
-                      <Tooltip />
-                    </PieChart>
-                  </ResponsiveContainer>
+                  <SurveyStatsMCS question={q} />
                 )}
                 {q.questionType === 'multipleChoiceMultiple' && (
                   <ResponsiveContainer width='99%' aspect={3}>
@@ -172,33 +157,11 @@ const SurveyStats = (props: PageProps) => {
                       <Bar dataKey='value' fill='#69DB7C' />
                       <Tooltip />
                       <YAxis />
-                      <XAxis
-                        dataKey='name'
-                        // dataKey={(x) =>
-                        //   x.name.length > 12
-                        //     ? x.name.slice(0, 12) + '...'
-                        //     : x.name.slice(0, 12)
-                        // }
-                      />
+                      <XAxis dataKey='name' />
                     </BarChart>
                   </ResponsiveContainer>
                 )}
                 {q.questionType === 'yesNoBoolean' && (
-                  // <ResponsiveContainer width='99%' aspect={1} maxHeight={400}>
-                  //   <PieChart data={displayData[index]}>
-                  //     <Pie
-                  //       data={displayData[index]}
-                  //       dataKey='value'
-                  //       nameKey='name'
-                  //       cx='50%'
-                  //       cy='50%'
-                  //       // outerRadius={100}
-                  //       fill='#69DB7C'
-                  //     />
-                  //     <Legend />
-                  //     <Tooltip />
-                  //   </PieChart>
-                  // </ResponsiveContainer>
                   <SurveyStatsYesNo question={q} />
                 )}
 

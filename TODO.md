@@ -1,15 +1,7 @@
 # Anket Todo (current)
 
-## Next thing to do
-- [ ] Readme
-
 ## MVP 2
 ### Known bugs
-### Deployment
-- [ ] 404/500 handling
-- [ ] Get it working on VPS with Docker + GitHub Actions
-  - [ ] See vps branch
-  - [ ] Research HTTPS on Hetzner...do I need to buy a domain?
 ### UI
 - [ ] Figure out how not to invalidate front page and list data as soon as we leave a page (give it 5 minutes or something)
 - [ ] Landing page: reduce spacing between sections on phones
@@ -63,6 +55,11 @@
 - [ ] Go through all major parts of the app with network requests open and fix any that are red
 - [ ] See if there are any schema/types that are used nowhere
   - [x] MultipleChoiceOption
+### Deployment
+- [ ] 404/500 handling
+- [ ] Redeploy to VPS with Docker + GitHub Actions
+  - [ ] See vps branch
+  - [ ] Research HTTPS on Hetzner...do I need to buy a domain?
 
 # Anket Done
 ## MVP 2
@@ -87,9 +84,10 @@
 - [x] Color gradient for pie charts
 - [ ] Nice Charts made with xvis:
   - [x] Yes/No
-  - [ ] MCS
+  - [x] MCS
   - [ ] MCM
   - [ ] 0-10
+- [ ] Nice way to display Text Responses
 ### Refactor
 - [x] Use APIErrorResponse in all controllers
 - [x] clean up hooks/queries/mutations
