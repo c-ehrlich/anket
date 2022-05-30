@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { SurveyStatsResponseQuestion } from '../../backend/surveyStats/surveyStats.schema';
 import { GradientLightgreenGreen } from '@visx/gradient';
 import { Group } from '@visx/group';
