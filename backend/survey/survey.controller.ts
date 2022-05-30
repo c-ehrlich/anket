@@ -126,8 +126,6 @@ export async function getAllPublicSurveysHandler(
   if (surveys === undefined)
     return res.status(400).json({ error: 'error getting surveys' });
 
-  console.log(surveys);
-
   return res.status(200).json(surveys);
 }
 
@@ -145,8 +143,6 @@ export async function getUserSurveysHandler(
       return res.status(400).json({ error: 'No session' });
     }
   }
-
-  console.log('user id: ' + userId);
 
   const surveys = await getUserSurveyPreviews(userId);
   return res.status(200).json(surveys);

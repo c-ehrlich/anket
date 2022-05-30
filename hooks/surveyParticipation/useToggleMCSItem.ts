@@ -46,7 +46,6 @@ const useToggleMCSItem = ({ surveyId }: { surveyId: string }) => {
           draft.questions[values.questionIndex].multipleChoiceOptions[
             values.optionIndex
           ].multipleChoiceOptionSelections[0] = { id: 'temp', selected: true };
-          console.log(draft);
           queryClient.setQueryData(queryKey, draft);
         }
       },

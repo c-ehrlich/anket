@@ -220,9 +220,6 @@ const EditSurveyQuestion = memo((props: Props) => {
                   axis='y'
                   values={props.question.multipleChoiceOptions}
                   onReorder={(data) => {
-                    // TODO: delete
-                    console.log(data);
-                    console.log(data[0])
                     reorderMultipleChoiceOptionsMutation.mutate(data);
                   }}
                 >

@@ -32,8 +32,6 @@ const PreviewSurvey = (props: Props) => {
   const editSurveyMutation = useEditSurvey({ surveyId: props.surveyId });
   const xs = useMediaQuery('(max-width: 576px)');
 
-  console.log(survey.data?.description);
-
   return survey.isLoading ? (
     <div>Loading...</div>
   ) : survey.isError ? (

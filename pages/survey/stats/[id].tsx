@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import useGetSurveyStats from '../../../hooks/useGetSurveyStats';
 import { MoonLoader } from 'react-spinners';
 import SurveyStats from '../../../components/SurveyStats';
+import logger from '../../../backend/utils/logger';
 
 type PageProps = InferGetServerSidePropsType<typeof getServerSideProps>;
 
@@ -27,7 +28,7 @@ const SurveyStatsPage = (props: PageProps) => {
     surveyStats.data?.author.id &&
     session.data.user.id !== surveyStats.data.author.id
   ) {
-    console.log('auth failed');
+    logger.error('auth failed');
     router.push('/');
   }
 
