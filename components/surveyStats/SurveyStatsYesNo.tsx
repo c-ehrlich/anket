@@ -19,8 +19,6 @@ export default function SurveyStatsYesNo({
     width: containerWidth,
   } = useElementSize();
 
-  console.log(containerWidth);
-
   const data = () => {
     const results = [
       { name: 'Yes', quantity: 0 },
@@ -44,7 +42,7 @@ export default function SurveyStatsYesNo({
       <LegendContainer title='Responses'>
         <LegendOrdinal
           scale={ordinalColorScale}
-          labelFormat={(label) => label.toUpperCase()}
+          labelFormat={(label) => label}
         >
           {(labels) => (
             <div style={{ display: 'flex', flexDirection: 'row' }}>
