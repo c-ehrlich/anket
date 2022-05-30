@@ -84,6 +84,7 @@
 ### Stats
 - [x] Hide stats if there are 0 responses
 - [x] Fake stats page
+- [x] Color gradient for pie charts
 - [ ] Nice Charts made with xvis:
   - [x] Yes/No
   - [ ] MCS

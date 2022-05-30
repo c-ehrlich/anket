@@ -7,6 +7,7 @@ import { LegendItem, LegendLabel, LegendOrdinal } from '@visx/legend';
 import { scaleOrdinal } from '@visx/scale';
 import { Box, Paper } from '@mantine/core';
 import { useElementSize } from '@mantine/hooks';
+import { getColorRange } from '../../utils/getColorRange';
 
 export default function SurveyStatsYesNo({
   question,
@@ -14,10 +15,7 @@ export default function SurveyStatsYesNo({
   question: SurveyStatsResponseQuestion;
 }) {
   // const containerRef = useRef<SVGSVGElement>(null);
-  const {
-    ref: containerRef,
-    width: containerWidth,
-  } = useElementSize();
+  const { ref: containerRef, width: containerWidth } = useElementSize();
 
   const data = () => {
     const results = [
@@ -30,7 +28,7 @@ export default function SurveyStatsYesNo({
     return results;
   };
 
-  const colors = ['#388E3C', '#4CAF50'];
+  const colors = getColorRange({ start: '#388E3C', end: '#4CAF50', count: 2 });
 
   const ordinalColorScale = scaleOrdinal({
     domain: ['Yes', 'No'],
@@ -40,10 +38,7 @@ export default function SurveyStatsYesNo({
   return (
     <Box style={{ position: 'relative' }}>
       <LegendContainer title='Responses'>
-        <LegendOrdinal
-          scale={ordinalColorScale}
-          labelFormat={(label) => label}
-        >
+        <LegendOrdinal scale={ordinalColorScale} labelFormat={(label) => label}>
           {(labels) => (
             <div style={{ display: 'flex', flexDirection: 'row' }}>
               {labels.map((label, i) => (
