@@ -2,6 +2,22 @@
 
 ## MVP 2
 ### Known bugs
+### Creating a Survey
+- [ ] Submitting / error checking... what do we want to make sure of before submitting a survey?
+  - [ ] No empty questions (last question can be empty, just trim it)
+  - [ ] No empty answer options (last answer option can be empty, just trim it)
+  - [ ] After trimming empty stuff at the end, nothing should have a title that is equal to the empty string
+  - [ ] See how the mantine forms stuff works...
+### Taking a Survey
+- [ ] Schema Validation
+### Stats
+- [ ] Graph for MCM
+- [ ] Graph for 1-10
+- [ ] Decent way to view text responses
+### UI
+- [ ] Go through Refactoring UI and apply lessons learned to app
+
+## MVP 3 and later
 ### UI
 - [ ] Figure out how not to invalidate front page and list data as soon as we leave a page (give it 5 minutes or something)
 - [ ] Landing page: reduce spacing between sections on phones
@@ -13,21 +29,13 @@
 - [ ] make all the disabled stuff in the anket creator not have special mouse cursors
 - [ ] Improve the Logo (choose a font that works well with the existing ones, don't make the spacing so weird)
 - [ ] Improve body text typography
-- [ ] Good message on empty /survey/mine
-  - [ ] Prompt user to create one
-- Consider bringing in a second heading font that's sans serif?
+- [ ] Consider bringing in a second heading font that's sans serif?
 ### Survey Creation
-- [ ] Submitting / error checking... what do we want to make sure of before submitting a survey?
-  - [ ] No empty questions (last question can be empty, just trim it)
-  - [ ] No empty answer options (last answer option can be empty, just trim it)
-  - [ ] After trimming empty stuff at the end, nothing should have a title that is equal to the empty string
-  - [ ] See how the mantine forms stuff works...
 - [ ] Header images... use real uploading instead
   - [ ] Figure out how image upload works
   - [ ] Where can we store them? What about in deployment? S3?
   - [ ] Default image for surveys that don't have one assigned ... refresh until I find a good one and copy that
 ### Taking a survey
-- [ ] Use schema validation on the submission
 ### Surveys
 - [ ] Browser: More search options
   - [ ] My Surveys: Incomplete vs Complete
