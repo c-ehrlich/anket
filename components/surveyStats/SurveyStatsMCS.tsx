@@ -1,4 +1,4 @@
-import { useDeferredValue } from 'react';
+import { useMemo } from 'react';
 import { SurveyStatsResponseQuestion } from '../../backend/surveyStats/surveyStats.schema';
 import SurveyStatsPieChart from './SurveyStatsPieChart';
 
@@ -7,7 +7,7 @@ export default function SurveyStatsMCS({
 }: {
   question: SurveyStatsResponseQuestion;
 }) {
-  const data = useDeferredValue(() => {
+  const data = useMemo(() => {
     let results: { name: string; quantity: number }[] = [];
     question.multipleChoiceOptions.forEach((option) => {
       results.push({
@@ -18,7 +18,7 @@ export default function SurveyStatsMCS({
       });
     });
     return results.sort((a, b) => a.quantity - b.quantity);
-  });
+  }, [question]);
 
-  return <SurveyStatsPieChart data={data()} />;
+  return <SurveyStatsPieChart data={data} />;
 }

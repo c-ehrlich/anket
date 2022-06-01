@@ -1,4 +1,4 @@
-import React from 'react';
+import { useMemo } from 'react';
 import { SurveyStatsResponseQuestion } from '../../backend/surveyStats/surveyStats.schema';
 import SurveyStatsPieChart from './SurveyStatsPieChart';
 
@@ -7,7 +7,7 @@ export default function SurveyStatsYesNo({
 }: {
   question: SurveyStatsResponseQuestion;
 }) {
-  const data = () => {
+  const data = useMemo(() => {
     const results = [
       { name: 'No', quantity: 0 },
       { name: 'Yes', quantity: 0 },
@@ -16,7 +16,7 @@ export default function SurveyStatsYesNo({
       r.answerBoolean === true ? results[1].quantity++ : results[0].quantity++;
     });
     return results;
-  };
+  }, [question]);
 
-  return <SurveyStatsPieChart data={data()} />;
+  return <SurveyStatsPieChart data={data} />;
 }
