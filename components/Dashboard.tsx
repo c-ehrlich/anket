@@ -56,7 +56,6 @@ function MySurveys() {
   }, [mySurveysData]);
 
   return (
-    // <Paper withBorder shadow='md' p='md'>
     <Stack>
       <Title order={2}>Created Surveys</Title>
       {mySurveysData !== undefined && newParticipationsCount !== undefined ? (
@@ -104,7 +103,6 @@ function MySurveys() {
         <Spinner />
       )}
     </Stack>
-    // </Paper>
   );
 }
 
@@ -121,7 +119,6 @@ function TakenSurveys() {
   }, [myParticipations]);
 
   return (
-    // <Paper withBorder shadow='md' p='md'>
     <Stack>
       <Title order={2}>Taken Surveys</Title>
       {myParticipations !== undefined ? (
@@ -186,7 +183,7 @@ function CreatedSurveyCard({
 
   return (
     <Stack>
-      <Paper p='md' withBorder shadow='md'>
+      <Paper p='md' withBorder shadow='md' radius='md'>
         <Group align='start'>
           <Avatar size='lg' radius='xl' src={survey.author.image} />
           <Stack spacing={1}>
@@ -238,7 +235,7 @@ function TakenSurveyCard({
 
   return (
     <Stack>
-      <Paper p='md' withBorder shadow='md'>
+      <Paper p='md' withBorder shadow='md' radius='md'>
         <Group align='start'>
           <Avatar
             size='lg'
