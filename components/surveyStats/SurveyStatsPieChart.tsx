@@ -5,7 +5,9 @@ import { Group } from '@visx/group';
 import { LegendItem, LegendLabel, LegendOrdinal } from '@visx/legend';
 import { scaleOrdinal } from '@visx/scale';
 import { Pie } from '@visx/shape';
+import { useMemo } from 'react';
 import { getColorRange } from '../../utils/getColorRange';
+import LegendContainer from './LegendContainer';
 
 export default function SurveyStatsPieChart({
   data,
@@ -14,16 +16,20 @@ export default function SurveyStatsPieChart({
 }) {
   const { ref: containerRef, width: containerWidth } = useElementSize();
 
-  const colors = getColorRange({
-    start: '#388E3C',
-    end: '#4CAF50',
-    count: data.length,
-  });
+  const colors = useMemo(() => {
+    return getColorRange({
+      start: '#388E3C',
+      end: '#4CAF50',
+      count: data.length,
+    });
+  }, [data]);
 
-  const ordinalColorScale = scaleOrdinal({
-    domain: data.map((o) => o.name),
-    range: colors,
-  });
+  const ordinalColorScale = useMemo(() => {
+    return scaleOrdinal({
+      domain: data.map((o) => o.name),
+      range: colors,
+    });
+  }, [data, colors]);
 
   return (
     <Box style={{ position: 'relative' }}>
@@ -102,34 +108,4 @@ export default function SurveyStatsPieChart({
   );
 }
 
-function LegendContainer({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <Paper
-      radius='md'
-      style={{
-        position: 'absolute',
-        bottom: '12px',
-        right: '4px',
-        margin: '8px',
-        padding: '8px',
-        boxShadow: '1px 1px 10px -4px',
-      }}
-    >
-      <div className='title'>{title}</div>
-      {children}
-      <style jsx>{`
-        .title {
-          font-size: 16px;
-          margin-bottom: 10px;
-          font-weight: 300;
-        }
-      `}</style>
-    </Paper>
-  );
-}
+
