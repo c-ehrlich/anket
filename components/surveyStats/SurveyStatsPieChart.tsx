@@ -1,4 +1,4 @@
-import { Box, Paper } from '@mantine/core';
+import { Box, Paper, useMantineTheme } from '@mantine/core';
 import { useElementSize } from '@mantine/hooks';
 import { GradientLightgreenGreen } from '@visx/gradient';
 import { Group } from '@visx/group';
@@ -7,7 +7,7 @@ import { scaleOrdinal } from '@visx/scale';
 import { Pie } from '@visx/shape';
 import { useMemo } from 'react';
 import { getColorRange } from '../../utils/getColorRange';
-import LegendContainer from './LegendContainer';
+import LegendContainerPieChart from './LegendContainerPieChart';
 
 export default function SurveyStatsPieChart({
   data,
@@ -16,13 +16,15 @@ export default function SurveyStatsPieChart({
 }) {
   const { ref: containerRef, width: containerWidth } = useElementSize();
 
+  const theme = useMantineTheme();
+
   const colors = useMemo(() => {
     return getColorRange({
-      start: '#388E3C',
-      end: '#4CAF50',
+      start: theme.colors.green[4],
+      end: theme.colors.green[8],
       count: data.length,
     });
-  }, [data]);
+  }, [theme.colors, data.length]);
 
   const ordinalColorScale = useMemo(() => {
     return scaleOrdinal({
@@ -33,7 +35,7 @@ export default function SurveyStatsPieChart({
 
   return (
     <Box style={{ position: 'relative' }}>
-      <LegendContainer title='Responses'>
+      <LegendContainerPieChart title='Legend'>
         <LegendOrdinal scale={ordinalColorScale} labelFormat={(label) => label}>
           {(labels) => (
             <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -50,7 +52,7 @@ export default function SurveyStatsPieChart({
             </div>
           )}
         </LegendOrdinal>
-      </LegendContainer>
+      </LegendContainerPieChart>
       <div ref={containerRef}>
         <svg
           width='100%'

@@ -1,6 +1,6 @@
 import { Paper } from "@mantine/core";
 
-export default function LegendContainer({
+export default function LegendContainerPieChart({
   title,
   children,
 }: {
@@ -11,10 +11,7 @@ export default function LegendContainer({
     <Paper
       radius='md'
       style={{
-        position: 'absolute',
-        bottom: '12px',
-        right: '4px',
-        margin: '8px',
+        // margin: '8px',
         padding: '8px',
         boxShadow: '1px 1px 10px -4px',
       }}

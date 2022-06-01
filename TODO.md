@@ -11,8 +11,6 @@
 ### Taking a Survey
 - [ ] Schema Validation
 ### Stats
-- [ ] Graph for MCM
-- [ ] Graph for 1-10
 - [ ] Decent way to view text responses
 ### UI
 - [ ] Go through Refactoring UI and apply lessons learned to app
@@ -90,11 +88,11 @@
 - [x] Hide stats if there are 0 responses
 - [x] Fake stats page
 - [x] Color gradient for pie charts
-- [ ] Nice Charts made with xvis:
+- [x] Nice Charts made with xvis:
   - [x] Yes/No
   - [x] MCS
-  - [ ] MCM
-  - [ ] 0-10
+  - [x] MCM
+  - [x] 0-10
 - [ ] Nice way to display Text Responses
 ### Refactor
 - [x] Use APIErrorResponse in all controllers

@@ -5,10 +5,11 @@ import { Bar } from '@visx/shape';
 import React, { useMemo } from 'react';
 import { getColorRange } from '../../utils/getColorRange';
 import { AxisBottom, AxisLeft } from '@visx/axis';
-import { Box } from '@mantine/core';
+import { Box, useMantineTheme } from '@mantine/core';
 import { useElementSize } from '@mantine/hooks';
-import LegendContainer from './LegendContainer';
 import { LegendItem, LegendLabel, LegendOrdinal } from '@visx/legend';
+import LegendContainerBarChart from './LegendContainerBarChart';
+import { wrap } from 'module';
 
 function SurveyStatsBarChart({
   data,
@@ -47,13 +48,15 @@ function SurveyStatsBarChart({
     [yMax, defaultMargin.top, data]
   );
 
+  const theme = useMantineTheme();
+
   const colors = useMemo(() => {
     return getColorRange({
-      start: '#388E3C',
-      end: '#4CAF50',
+      start: theme.colors.green[8],
+      end: theme.colors.green[4],
       count: data.length,
     });
-  }, [data]);
+  }, [theme.colors, data.length]);
 
   const ordinalColorScale = useMemo(() => {
     return scaleOrdinal({
@@ -64,29 +67,11 @@ function SurveyStatsBarChart({
 
   return width < 10 ? null : (
     <Box style={{ position: 'relative' }}>
+      
       <Box ref={sizeRef}>
-        <LegendContainer title='Responses'>
-          <LegendOrdinal
-            scale={ordinalColorScale}
-            labelFormat={(label) => label}
-          >
-            {(labels) => (
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                {labels.map((label, i) => (
-                  <LegendItem key={`legend-${label}-${i}`} margin='5px 5px'>
-                    <svg width={15} height={15}>
-                      <rect fill={label.value} width={15} height={15} />
-                    </svg>
-                    <LegendLabel align='left' margin='0 0 0 4px'>
-                      {label.text}
-                    </LegendLabel>
-                  </LegendItem>
-                ))}
-              </div>
-            )}
-          </LegendOrdinal>
-        </LegendContainer>
-        <svg width={sizeW} height={600}>
+        
+        {/* TODO don't use this weird height hack */}
+        <svg width={sizeW} height={height + 15}>
           <GradientLightgreenGreen id='teal' />
           <rect width={sizeW} height={height} fill='url(#teal)' rx={14} />
           <Group left={defaultMargin.left}>
@@ -139,6 +124,27 @@ function SurveyStatsBarChart({
           </Group>
         </svg>
       </Box>
+      <LegendContainerBarChart title='Legend'>
+          <LegendOrdinal
+            scale={ordinalColorScale}
+            labelFormat={(label) => label}
+          >
+            {(labels) => (
+              <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
+                {labels.map((label, i) => (
+                  <LegendItem key={`legend-${label}-${i}`} margin='5px 5px'>
+                    <svg width={15} height={15}>
+                      <rect fill={label.value} width={15} height={15} />
+                    </svg>
+                    <LegendLabel align='left' margin='0 0 0 4px'>
+                      {label.text}
+                    </LegendLabel>
+                  </LegendItem>
+                ))}
+              </div>
+            )}
+          </LegendOrdinal>
+        </LegendContainerBarChart>
     </Box>
   );
 }
