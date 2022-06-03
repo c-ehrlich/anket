@@ -1,5 +1,6 @@
 import {
   AppShell,
+  Box,
   Burger,
   Center,
   Group,
@@ -7,6 +8,7 @@ import {
   MediaQuery,
   Navbar,
   useMantineColorScheme,
+  useMantineTheme,
 } from '@mantine/core';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
@@ -24,9 +26,10 @@ interface Props {
 
 const AppShellWrapper = (props: Props) => {
   const [navbarIsOpen, setNavbarIsOpen] = useState(false);
-  const { toggleColorScheme } = useMantineColorScheme();
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const router = useRouter();
   const { data: session } = useSession();
+  const theme = useMantineTheme();
 
   if (!session) toggleColorScheme('light');
 
@@ -35,6 +38,7 @@ const AppShellWrapper = (props: Props) => {
 
   return (
     <AppShell
+      style={{ backgroundColor: colorScheme === 'light' ? 'white' : theme.colors.dark[9] }}
       navbarOffsetBreakpoint='sm'
       asideOffsetBreakpoint='sm'
       fixed
