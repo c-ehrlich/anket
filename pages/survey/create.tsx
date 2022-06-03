@@ -1,4 +1,4 @@
-import { Button, Group, Stack, TextInput, Title } from '@mantine/core';
+import { Button, Group, Stack, Textarea, TextInput, Title } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { useRouter } from 'next/router';
 import { createSurveySchema } from '../../backend/survey/survey.schema';
@@ -25,10 +25,12 @@ const CreateSurveyPage = () => {
           placeholder='Survey Name'
           {...form.getInputProps('name')}
         />
-        <TextInput
+        <Textarea
           label='Description'
           placeholder='(optional)'
           {...form.getInputProps('description')}
+          autosize
+          minRows={4}
         />
         <TextInput
           label='Picture'
