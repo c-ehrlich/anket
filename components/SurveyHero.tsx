@@ -9,6 +9,7 @@ import {
   Stack,
   Text,
   Title,
+  useMantineColorScheme,
   useMantineTheme,
 } from '@mantine/core';
 import { useSession } from 'next-auth/react';
@@ -24,6 +25,7 @@ type Props = {
 const SurveyHero = (props: Props) => {
   const { data: session } = useSession();
   const theme = useMantineTheme();
+  const { colorScheme } = useMantineColorScheme();
 
   if (!session) return null;
 
@@ -115,7 +117,6 @@ const SurveyHero = (props: Props) => {
         <div>
           <Link passHref href={`/user/${props.survey.author.id}`}>
             <Badge
-              color='gray'
               size='lg'
               variant='outline'
               leftSection={
@@ -127,7 +128,19 @@ const SurveyHero = (props: Props) => {
                 />
               }
               sx={{ paddingLeft: 0, cursor: 'pointer' }}
-              styles={{ inner: { textTransform: 'none' } }}
+              styles={{
+                inner: { textTransform: 'none' },
+                root: {
+                  borderColor:
+                    colorScheme === 'light'
+                      ? theme.colors.gray[4]
+                      : theme.colors.dark[4],
+                  color:
+                    colorScheme === 'light'
+                      ? 'gray'
+                      : theme.colors.dark[2]
+                },
+              }}
             >
               {props.survey.author.name}
             </Badge>
