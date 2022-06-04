@@ -20,6 +20,7 @@ You can see a sample deployment at [https://anket-surveys.vercel.app](https://an
 
 
 ## Setup
+
 ### Development
 [Install Postgres](https://www.postgresql.org/download/) in your development environment and create a database. On MacOS you can also use [Postgres.app](https://postgresapp.com/).
 
@@ -88,7 +89,7 @@ Next-Auth only works over https in production, so you will need to purchase a do
 ### Backend
 Anket uses [Next.js](https://nextjs.org/)'s built-in backend, using [next-connect](https://github.com/hoangvvo/next-connect) for a better developer experience.
 
-This choice was made for two reasons:
+This choice was made for several reasons:
 1. Being able to use the same [Zod](https://github.com/colinhacks/zod) schema and types in both the backend and frontend without requiring any kind of intermediary, thus allowing great type safety.
 2. Being able to deploy with just a Postgres database and a single Vercel instance or Docker container.
 3. Being able to access the same environment variables in backend and frontend.
@@ -103,8 +104,10 @@ But using next-connect allows us to build an API with a maintainble file structu
 The backend file structure is organized by resource, with controllers, services, and schema each living inside separate files. This means that for example switching the database from Postgres to MongoDB should require changes in only the `<resourcename>.service.ts` files.
 
 All routes that include data in POST, PUT, or PATCH requests use the `validateResource` curried function to validate the request against Zod schema. Any request that fails this validation doesn't even make it to the controller. This means we can avoid a lot of boilerplate in the controller.
+
 ### Auth
 Anket uses [NextAuth.js](https://next-auth.js.org/) for authentication. This decision was made to allow production-quality authentication while requiring neither a mailserver nor having to store even hashes of user passwords. Anket currently supports Discord, Github, and Google accounts. To add other providers, all you need to do is register an OAuth app with that provider, add environment variables for that provider's ID and Secret, and add the provider in `/pages/api/auth/[...nextauth].ts` and `/pages/signin.tsx`. 
+
 ### Frontend
 Anket runs on [Next.js](https://nextjs.org/). Server state is maintained by [React Query](https://react-query.tanstack.com/), and requests are made using [Axios](https://axios-http.com/). 
 
