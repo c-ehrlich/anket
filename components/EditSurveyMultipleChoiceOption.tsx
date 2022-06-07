@@ -6,7 +6,7 @@ import {
   Radio,
   TextInput,
 } from '@mantine/core';
-import React, { useState, memo } from 'react';
+import React, { useState, memo, useEffect } from 'react';
 import { GridDots, Trash } from 'tabler-icons-react';
 import useEditMultipleChoiceOption from '../hooks/useEditMultipleChoiceOption';
 import useDeleteMultipleChoiceOption from '../hooks/useDeleteMultipleChoiceOption';
@@ -18,6 +18,7 @@ import { QuestionType } from '@prisma/client';
 import { useDebouncedCallback } from 'use-debounce';
 import DeleteModal from './modals/DeleteModal';
 import { Reorder, useDragControls } from 'framer-motion';
+import { propsAreDeepEqual } from '../utils/propsAreDeepEqual';
 
 // TODO see if we can do this with less props
 // For example we could pass a Pick<QuestionResponse> to get all the stuff from the question in one object
@@ -37,6 +38,10 @@ const EditSurveyMultipleChoiceOption = memo((props: Props) => {
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
   const [multipleChoiceOptionText, setMultipleChoiceOptionText] =
     useState<string>(props.option.name);
+
+  useEffect(() => {
+    setMultipleChoiceOptionText(props.option.name);
+  }, [props.option.name]);
 
   const editMultipleChoiceOption = useEditMultipleChoiceOption({
     surveyId: props.surveyId,
@@ -114,7 +119,7 @@ const EditSurveyMultipleChoiceOption = memo((props: Props) => {
       </Paper>
     </Reorder.Item>
   );
-});
+}, propsAreDeepEqual);
 
 EditSurveyMultipleChoiceOption.displayName = 'EditSurveyMultipleChoiceOption';
 

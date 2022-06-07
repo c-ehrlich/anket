@@ -26,6 +26,7 @@
     "@visx/tooltip": "^2.10.0",
     "axios": "^0.26.1",
     "framer-motion": "^6.2.8",
+    "lodash": "^4.17.21",
     "next": "^12.1.6",
     "next-auth": "^4.3.4",
     "next-connect": "^0.12.2",

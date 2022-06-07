@@ -2,6 +2,7 @@
 
 ## MVP 2
 ### Known bugs
+- [ ] Account tab shows 'login' while waiting for useSession to return data. Show a spinner instead
 ### Creating a Survey
 - [ ] Submitting / error checking... what do we want to make sure of before submitting a survey?
   - [ ] No empty questions (last question can be empty, just trim it)
@@ -9,7 +10,7 @@
   - [ ] After trimming empty stuff at the end, nothing should have a title that is equal to the empty string
   - [ ] See how the mantine forms stuff works...
 ### Taking a Survey
-- [ ] Schema Validation
+- [ ] Schema Validation on survey participation
 ### Stats
 - [ ] Decent way to view text responses
 ### UI
@@ -20,6 +21,7 @@
 - [ ] Figure out how not to invalidate front page and list data as soon as we leave a page (give it 5 minutes or something)
 - [ ] Landing page: reduce spacing between sections on phones
 - [ ] AppShell: on phone screens, scrolling the menu should scroll the menu, not the content underneath it!
+  - [ ] Mantine AppShell seems fundamentally flawed, even the examples in docs have this isssue, probably better to just build my own in CSS
 - [ ] Transition to styles api (there should be no `style={{}}` in the app)
 - [ ] Modal styling... they look a bit sad
 - [ ] Read all of Refactoring UI and make UI changes based on it
@@ -28,6 +30,7 @@
 - [ ] Improve the Logo (choose a font that works well with the existing ones, don't make the spacing so weird)
 - [ ] Improve body text typography
 - [ ] Consider bringing in a second heading font that's sans serif?
+- [ ] Contrast issues in dark mode - either fix them or temporarily remove light/dark switching.
 ### Survey Creation
 - [ ] Header images... use real uploading instead
   - [ ] Figure out how image upload works
@@ -76,6 +79,7 @@
 - [x] Logging out should redirect to dashboard, not to /signin
 - [x] Custom fonts don't work on Vercel
 - [x] 'No Response' on MCM can be negative
+- [x] Some emoized components don't update due to shallow comparison
 ### Accounts / Auth
 - [x] Add GoogleProvider
 - [x] Use custom signin page

@@ -9,7 +9,7 @@ import {
 } from '@mantine/core';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/router';
-import React, { memo, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import { EditSurveyData, SurveyFE } from '../backend/survey/survey.schema';
 import useCreateQuestion from '../hooks/useCreateQuestion';
@@ -19,6 +19,8 @@ import useGetSingleSurvey from '../hooks/useGetSingleSurvey';
 import animations from '../utils/framer-animations';
 import EditSurveyQuestion from './EditSurveyQuestion';
 import DeleteModal from './modals/DeleteModal';
+import _ from 'lodash';
+import { propsAreDeepEqual } from '../utils/propsAreDeepEqual';
 
 const EditSurvey = ({ surveyId }: { surveyId: string }) => {
   const survey = useGetSingleSurvey(surveyId);
@@ -44,12 +46,18 @@ const EditSurveyHaveData = memo(({ survey }: { survey: SurveyFE }) => {
   const router = useRouter();
 
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
-
   const [surveyName, setSurveyName] = useState<string>(survey.name);
+
   const [surveyDescription, setSurveyDescription] = useState<string>(
     survey.description
   );
   const [surveyPicture, setSurveyPicture] = useState<string>(survey.picture);
+
+  useEffect(() => {
+    setSurveyName(survey.name);
+    setSurveyDescription(survey.description);
+    setSurveyPicture(survey.picture);
+  }, [survey.name, survey.description, survey.picture]);
 
   // we need a separate debounce for each field, otherwise
   // hitting tab and continuing to type will cancel the requests
@@ -169,7 +177,7 @@ const EditSurveyHaveData = memo(({ survey }: { survey: SurveyFE }) => {
       </Stack>
     </>
   );
-});
+}, propsAreDeepEqual);
 
 EditSurveyHaveData.displayName = 'EditSurveyHaveData';
 

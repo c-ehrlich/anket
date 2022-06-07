@@ -16,7 +16,7 @@ import {
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import { motion, Reorder } from 'framer-motion';
-import React, { memo, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { CaretDown, CaretUp, Trash } from 'tabler-icons-react';
 import { useDebouncedCallback } from 'use-debounce';
 import {
@@ -29,6 +29,7 @@ import useEditQuestion from '../hooks/useEditQuestion';
 import useReorderMultipleChoiceOptions from '../hooks/useReorderMultipleChoiceOptions';
 import useReorderQuestion from '../hooks/useReorderQuestion';
 import { QuestionTypeString } from '../types/questionType';
+import { propsAreDeepEqual } from '../utils/propsAreDeepEqual';
 import EditSurveyMultipleChoiceOption from './EditSurveyMultipleChoiceOption';
 import DeleteModal from './modals/DeleteModal';
 
@@ -45,13 +46,17 @@ const EditSurveyQuestion = memo((props: Props) => {
   const xs = useMediaQuery('(max-width: 576px)');
 
   const [deleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
-
   const [questionText, setQuestionText] = useState<string>(
     props.question.question
   );
   const [questionDetails, setQuestionDetails] = useState<string>(
     props.question.details
   );
+
+  useEffect(() => {
+    setQuestionText(props.question.question);
+    setQuestionDetails(props.question.details);
+  }, [props.question.question, props.question.details]);
 
   const editQuestion = useEditQuestion({
     surveyId: props.surveyId,
@@ -76,7 +81,7 @@ const EditSurveyQuestion = memo((props: Props) => {
     surveyId: props.surveyId,
     questionIndex: props.index,
     questionId: props.question.id,
-  })
+  });
 
   const debouncedEditQuestionText = useDebouncedCallback(
     (data: EditQuestionData) => editQuestion.mutate(data),
@@ -274,7 +279,7 @@ const EditSurveyQuestion = memo((props: Props) => {
       </Card>
     </>
   );
-});
+}, propsAreDeepEqual);
 
 EditSurveyQuestion.displayName = 'EditSurveyName';
 
