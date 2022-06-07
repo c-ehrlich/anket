@@ -16,8 +16,5 @@ export default function useGetSingleSurvey(id: string) {
   return useQuery<SurveyFEWithAuthor>(
     queryKey,
     () => getSingleSurvey(id),
-    {
-      staleTime: 1000 * 60 * 5, // 5 minutes
-    }
   );
 }

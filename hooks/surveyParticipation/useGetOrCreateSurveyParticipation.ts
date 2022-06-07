@@ -19,8 +19,5 @@ export default function useGetOrCreateSurveyParticipation({
   return useQuery<SurveyWithParticipationAndUserResponses>(
     queryKey,
     () => getOrCreateSurveyParticipation(surveyId),
-    {
-      staleTime: 100 * 60 * 5,
-    }
   );
 }

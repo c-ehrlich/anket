@@ -16,8 +16,5 @@ export default function useGetUserProfileWithSurveys(id: string) {
   return useQuery<UserWithSurveysFE>(
     queryKey,
     () => getUserProfileWithSurveys(id),
-    {
-      staleTime: 1000 * 60 * 1, // 1 minute
-    }
   );
 }
