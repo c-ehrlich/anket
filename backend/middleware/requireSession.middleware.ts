@@ -13,6 +13,8 @@ const requireSession: RequestHandler<NextApiRequest, NextApiResponse> = async (
     return res.status(403).json({ error: 'not authenticated' });
   }
 
+  req.user = session.user;
+
   next();
 };
 

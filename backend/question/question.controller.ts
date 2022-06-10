@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from 'next-auth/react';
 import APIErrorResponse from '../../types/APIErrorResponse';
 import { getSurveyOwner } from '../survey/survey.service';
 import getId from '../utils/getId';
@@ -20,8 +19,7 @@ export async function addDefaultQuestionToSurvey(
 
   // make sure the user is allowed to modify that question/survey
   const surveyOwner = await getSurveyOwner(surveyId);
-  const session = await getSession({ req });
-  if (!session?.user || surveyOwner?.authorId !== session.user.id) {
+  if (surveyOwner?.authorId !== req.user.id) {
     return res.status(400).send({ error: 'Invalid user. Permission denied.' });
   }
 
@@ -37,19 +35,16 @@ export async function editQuestionHandler(
   req: NextApiRequest,
   res: NextApiResponse<QuestionFE | APIErrorResponse>
 ) {
-  // make sure we have a questionid
   const id = getId(req);
   if (!id) {
     return res.status(400).json({ error: 'failed to get ID from query' });
   }
 
-  // get the data from the request
   const data: EditQuestionData = req.body;
 
   // make sure the user is allowed to modify that question/survey
   const questionOwner = await getQuestionOwner(id);
-  const session = await getSession({ req });
-  if (!session?.user || questionOwner?.survey.authorId !== session.user.id) {
+  if (questionOwner?.survey.authorId !== req.user.id) {
     return res.status(400).send({ error: 'Invalid user. Permission denied.' });
   }
 
@@ -77,8 +72,7 @@ export async function deleteQuestionHandler(
 
   // make sure the user is allowed to modify that question/survey
   const questionOwner = await getQuestionOwner(id);
-  const session = await getSession({ req });
-  if (!session?.user || questionOwner?.survey.authorId !== session.user.id) {
+  if (questionOwner?.survey.authorId !== req.user.id) {
     return res.status(400).send({ error: 'Invalid user. Permission denied.' });
   }
 
@@ -105,8 +99,7 @@ export async function reorderQuestionHandler(
 
   // make sure the user is allowed to modify that question/survey
   const questionOwner = await getQuestionOwner(id);
-  const session = await getSession({ req });
-  if (!session?.user || questionOwner?.survey.authorId !== session.user.id) {
+  if (questionOwner?.survey.authorId !== req.user.id) {
     return res.status(400).send({ error: 'Invalid user. Permission denied.' });
   }
 

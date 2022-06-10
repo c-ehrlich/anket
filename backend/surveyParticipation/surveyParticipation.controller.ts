@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from 'next-auth/react';
 import APIErrorResponse from '../../types/APIErrorResponse';
 import getId from '../utils/getId';
 import logger from '../utils/logger';
@@ -21,14 +20,6 @@ export async function getOrCreateSurveyParticipationHandler(
     SurveyWithParticipationAndUserResponses | APIErrorResponse
   >
 ) {
-  const session = await getSession({ req });
-  const userId = session!.user!.id;
-
-  if (!userId) {
-    logger.error('no session');
-    return res.status(400).json({ error: 'No session' });
-  }
-
   const surveyId = getId(req);
   if (!surveyId) {
     return res.status(400).json({ error: 'failed to get ID from query' });
@@ -36,7 +27,7 @@ export async function getOrCreateSurveyParticipationHandler(
 
   const surveyParticipation = await getOrCreateSurveyParticipation({
     surveyId,
-    userId,
+    userId: req.user.id,
   });
 
   if (!surveyParticipation) {
@@ -52,15 +43,9 @@ export async function getMySurveyParticipationsHandler(
   req: NextApiRequest,
   res: NextApiResponse<DashboardSurveyParticipation[] | APIErrorResponse>
 ) {
-  const session = await getSession({ req });
-  const userId = session!.user!.id;
-  if (!userId) {
-    return res.status(400).json({ error: 'no session' });
-  }
-
   const mySurveyParticipations: DashboardSurveyParticipation[] | undefined =
     await getSurveyParticipationPreviews({
-      userId,
+      userId: req.user.id,
     });
   if (mySurveyParticipations === undefined) {
     return res
@@ -75,19 +60,13 @@ export async function getNewParticipationsHandler(
   req: NextApiRequest,
   res: NextApiResponse<number | APIErrorResponse>
 ) {
-  const session = await getSession({ req });
-  const userId = session!.user!.id;
-  if (!userId) {
-    return res.status(400).json({ error: 'no session' });
-  }
-
   const sinceArg = Array.isArray(req.query.since)
     ? Number(req.query.since[0])
     : Number(req.query.since);
   const since = new Date(Date.now() - (sinceArg ? sinceArg : 0));
 
   const participations = await getMySurveysParticipationSinceCount({
-    userId,
+    userId: req.user.id,
     since,
   });
   if (participations === undefined) {
@@ -101,12 +80,6 @@ export async function updateSurveyParticipationHandler(
   req: NextApiRequest,
   res: NextApiResponse<UpdateSurveyParticipationResponse | APIErrorResponse>
 ) {
-  const session = await getSession({ req });
-  const userId = session!.user!.id;
-  if (!userId) {
-    return res.status(400).json({ error: 'no session' });
-  }
-
   const id = getId(req);
 
   const data = req.body;

@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from 'next-auth/react';
 import APIErrorResponse from '../../types/APIErrorResponse';
 import { getQuestionOwner } from '../question/question.service';
 import getId from '../utils/getId';
@@ -28,8 +27,7 @@ export async function createMultipleChoiceOptionHandler(
 
   // make sure the user is allowed to modify that question
   const optionOwner = await getQuestionOwner(questionId);
-  const session = await getSession({ req });
-  if (!session?.user || optionOwner?.survey.authorId !== session.user.id) {
+  if (optionOwner?.survey.authorId !== req.user.id) {
     return res
       .status(400)
       .send({ error: 'Invalid user. Permission denied.' });
@@ -59,8 +57,7 @@ export async function deleteMultipleChoiceOptionHandler(
 
   // make sure the user is allowed to modify that question
   const optionOwner = await getMultipleChoiceOptionOwner(id);
-  const session = await getSession({ req });
-  if (!session?.user || optionOwner !== session.user.id) {
+  if (optionOwner !== req.user.id) {
     return res
       .status(400)
       .send({ error: 'Invalid user. Permission denied.' });
@@ -93,8 +90,7 @@ export async function editMultipleChoiceOptionHandler(
 
   // make sure the user is allowed to modify that question
   const optionOwner = await getMultipleChoiceOptionOwner(id);
-  const session = await getSession({ req });
-  if (!session?.user || optionOwner !== session.user.id) {
+  if (optionOwner !== req.user.id) {
     return res
       .status(400)
       .send({ error: 'Invalid user. Permission denied.' });

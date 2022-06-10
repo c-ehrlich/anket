@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from 'next-auth/react';
 import APIErrorResponse from '../../types/APIErrorResponse';
 import getId from '../utils/getId';
 import {
@@ -16,14 +15,6 @@ export async function handleUpsertQuestionResponse(
   req: NextApiRequest,
   res: NextApiResponse<QuestionResponseFE | APIErrorResponse>
 ) {
-  const session = await getSession({ req });
-  const userId = session!.user!.id;
-
-  if (!userId) {
-    return res.status(400).json({ error: 'no userId' });
-  }
-
-  // get stuff from the request
   const data: UpdateQuestionResponseRequest = req.body;
 
   // TODO make sure we have permission
@@ -44,9 +35,6 @@ export async function handleDeleteQuestionResponse(
   req: NextApiRequest,
   res: NextApiResponse<QuestionResponseFE | APIErrorResponse>
 ) {
-  const session = await getSession({ req });
-  const userId = session!.user!.id;
-
   const id = getId(req);
 
   // check if the questionResponse exists
@@ -56,7 +44,7 @@ export async function handleDeleteQuestionResponse(
   }
 
   // check if user has permission to delete it
-  if (userId !== questionResponse!.surveyParticipation.user.id) {
+  if (questionResponse!.surveyParticipation.user.id !== req.user.id) {
     return res.status(400).json({ error: 'unauthorized' });
   }
 

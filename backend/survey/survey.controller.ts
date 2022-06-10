@@ -1,8 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from 'next-auth/react';
 import APIErrorResponse from '../../types/APIErrorResponse';
 import getId from '../utils/getId';
-import logger from '../utils/logger';
 import {
   CreateDefaultSurveyInput,
   CreateSurvey,
@@ -26,14 +24,7 @@ export async function createSurveyHandler(
   req: NextApiRequest,
   res: NextApiResponse<SurveyFE | APIErrorResponse>
 ) {
-  logger.info('in createSurveyHandler');
-
-  const session = await getSession({ req });
-  const authorId = session!.user!.id;
-
-  if (!authorId) {
-    return res.status(400).json({ error: 'No session' });
-  }
+  const authorId = req.user.id;
 
   const data: CreateSurvey = req.body;
 
@@ -55,17 +46,11 @@ export async function upsertEmptySurveyHandler(
   req: NextApiRequest,
   res: NextApiResponse<SurveyFE | APIErrorResponse>
 ) {
-  const session = await getSession({ req });
-  const authorId = session!.user!.id;
-
-  if (!authorId) {
-    logger.error('no session');
-    return res.status(400).json({ error: 'No session' });
-  }
+  const authorId = req.user.id;
 
   const data: CreateDefaultSurveyInput = { authorId };
 
-  if (session && authorId === data.authorId) {
+  if (authorId === data.authorId) {
     const survey = await createDefaultSurvey(data);
 
     if (survey) {
@@ -87,18 +72,13 @@ export async function getSingleSurveyHandler(
   const survey = await getSingleSurvey(id);
   if (!survey) return res.status(400).json({ error: 'failed to find survey' });
 
-  const session = await getSession({ req });
+  const authorId = req.user.id;
 
   // allowed if: we own it OR it's public and complete
   if (
-    !(
-      (session?.user && session.user.id === survey.author.id) ||
-      (survey.isCompleted && survey.isPublic)
-    )
+    !(authorId === survey.author.id || (survey.isCompleted && survey.isPublic))
   ) {
-    return res
-      .status(400)
-      .json({ error: 'Not authorized to retrieve survey' });
+    return res.status(400).json({ error: 'Not authorized to retrieve survey' });
   }
 
   return res.status(200).json(survey);
@@ -110,16 +90,7 @@ export async function getAllPublicSurveysHandler(
     SurveyPreviewWithAuthorAndInteraction[] | APIErrorResponse
   >
 ) {
-  let userId = getId(req);
-  if (!userId) {
-    const session = await getSession({ req });
-    userId = session!.user!.id;
-
-    if (!userId) {
-      logger.error('no session');
-      return res.status(400).json({ error: 'No session' });
-    }
-  }
+  const userId = getId(req) || req.user.id;
 
   const surveys: SurveyPreviewWithAuthorAndInteraction[] | undefined =
     await getAllPublicSurveyPreviews(userId);
@@ -133,17 +104,7 @@ export async function getUserSurveysHandler(
   req: NextApiRequest,
   res: NextApiResponse<SurveyPreviewWithAuthor[] | APIErrorResponse>
 ) {
-  let userId = getId(req);
-  if (!userId) {
-    const session = await getSession({ req });
-    userId = session!.user!.id;
-
-    if (!userId) {
-      logger.error('no session');
-      return res.status(400).json({ error: 'No session' });
-    }
-  }
-
+  const userId = getId(req) || req.user.id;
   const surveys = await getUserSurveyPreviews(userId);
   return res.status(200).json(surveys);
 }
@@ -157,14 +118,13 @@ export async function updateSurveyBasicInfoHandler(
     return res.status(400).json({ error: 'failed to get ID from query' });
   }
 
-  const data = req.body;
-
   // make sure the user is allowed to modify that survey
   const surveyOwner = await getSurveyOwner(id);
-  const session = await getSession({ req });
-  if (!session?.user || surveyOwner?.authorId !== session.user.id) {
+  if (surveyOwner?.authorId !== req.user.id) {
     return res.status(400).send({ error: 'Invalid user. Permission denied.' });
   }
+
+  const data = req.body;
 
   const survey = await updateSurvey({ id, data });
   if (!survey)
@@ -184,8 +144,7 @@ export async function deleteSurveyHandler(
 
   // make sure the user is allowed to modify that survey
   const surveyOwner = await getSurveyOwner(id);
-  const session = await getSession({ req });
-  if (!session?.user || surveyOwner?.authorId !== session.user.id) {
+  if (surveyOwner?.authorId !== req.user.id) {
     return res.status(400).send({ error: 'Invalid user. Permission denied.' });
   }
 

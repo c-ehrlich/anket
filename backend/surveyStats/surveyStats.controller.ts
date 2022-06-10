@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from 'next-auth/react';
 import APIErrorResponse from '../../types/APIErrorResponse';
 import getId from '../utils/getId';
 import logger from '../utils/logger';
@@ -20,8 +19,7 @@ export async function getSurveyStatsHandler(
       .json({ error: 'error getting survey with interactions' });
   }
 
-  const session = await getSession({ req });
-  if (!session?.user || surveyStats.author.id !== session.user.id) {
+  if (surveyStats.author.id !== req.user.id) {
     return res.status(400).json({ error: 'Invalid user. Permission denied.' });
   }
 

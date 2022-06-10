@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from 'next-auth/react';
 import APIErrorResponse from '../../types/APIErrorResponse';
 import { getQuestionTypeByMultipleChoiceOptionId } from '../multipleChoiceOption/multipleChoiceOption.service';
 import { getSurveyIdFromQuestionId } from '../survey/survey.service';
@@ -16,16 +15,12 @@ export async function upsertMultipleChoiceOptionResponseHandler(
   req: NextApiRequest,
   res: NextApiResponse<MultipleChoiceOptionSelectionFE | APIErrorResponse>
 ) {
-  const session = await getSession({ req });
-  const userId = session!.user!.id;
-  if (!userId) {
-    return res.status(400).json({ error: 'no session' });
-  }
-
   const multipleChoiceOptionId = getId(req);
   if (!multipleChoiceOptionId) {
     return res.status(400).json({ error: 'no mco id' });
   }
+
+  const userId = req.user.id;
 
   const { selected, surveyId }: ToggleMCMItemRequest = req.body;
 
@@ -72,12 +67,7 @@ export async function deleteAllSelectionsForQuestionHandler(
   req: NextApiRequest,
   res: NextApiResponse<{ count: number } | APIErrorResponse>
 ) {
-  const session = await getSession({ req });
-  const userId = session!.user!.id;
-  if (!userId) {
-    return res.status(400).json({ error: 'no session' });
-  }
-
+  const userId = req.user.id;
   const questionId = getId(req);
 
   // surveyId can optionally be on the request - if not, get from db based on questionId
@@ -103,6 +93,7 @@ export async function deleteAllSelectionsForQuestionHandler(
     questionId,
     surveyParticipationId,
   });
+  
   if (
     !deletedMultipleChoiceOptionsCount &&
     deletedMultipleChoiceOptionsCount !== 0
