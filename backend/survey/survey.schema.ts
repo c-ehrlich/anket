@@ -1,21 +1,38 @@
 import { z } from 'zod';
 import { questionResponseSchema } from '../question/question.schema';
 
-const user = z.object({
-  id: z.string().cuid(),
-  name: z.string().nullable(),
-  email: z.string().nullable(),
-  // there are other things on the user object but we don't want to send them
+// schema for /survey/create (FE)
+export const createSurveySchemaFE = z.object({
+  name: z
+    .string({
+      required_error: 'Name is required',
+      invalid_type_error: 'Name must be a string',
+    })
+    .min(6, 'Name must be at least 6 characters')
+    .max(100, 'Name can not be more than 100 characters'),
+  description: z
+    .string({
+      invalid_type_error: 'Description must be a string',
+    })
+    .max(1000, 'Description can not be longer than 1000 characters'),
+  picture: z
+    .string({ invalid_type_error: 'Image must be a URL or empty' })
+    .url('Image must be a url or empty')
+    .or(z.literal('')),
 });
 
-const userWithoutEmail = z.object({
-  id: z.string().cuid(),
-  name: z.string().nullable(),
-  image: z.string().nullable(),
+// schema for /survey/create (BE)
+export const createSurveySchemaBE = z.object({
+  body: z.object({
+    createSurveySchemaFE,
+  }),
 });
 
-// createDefaultSurvey input
-export const createDefaultSurveySchema = z.object({
+// type for /survey/create
+export type CreateSurvey = z.infer<typeof createSurveySchemaFE>;
+
+// Type for creating a default (empty) survey
+const createDefaultSurveySchema = z.object({
   body: z.object({
     authorId: z
       .string({
@@ -25,7 +42,6 @@ export const createDefaultSurveySchema = z.object({
       .cuid('Author ID must be a valid CUID'),
   }),
 });
-
 export type CreateDefaultSurveyInput = z.infer<
   typeof createDefaultSurveySchema
 >['body'];
@@ -40,9 +56,15 @@ const createDefaultSurveyResponseSchema = z.object({
   isPublic: z.boolean({}),
   questions: z.array(questionResponseSchema),
 });
-
 export type SurveyFE = z.infer<typeof createDefaultSurveyResponseSchema>;
 
+// Frontend type for survey WITH author
+const user = z.object({
+  id: z.string().cuid(),
+  name: z.string().nullable(),
+  email: z.string().nullable(),
+  // there are other things on the user object but we don't want to send them
+});
 const surveyFEWithAuthorSchema = createDefaultSurveyResponseSchema.extend({
   author: user,
 });
@@ -68,6 +90,12 @@ export const editSurveySchema = z.object({
 });
 export type EditSurveyData = z.infer<typeof editSurveySchema>['body'];
 
+// Survey Preview with Author
+const userWithoutEmail = z.object({
+  id: z.string().cuid(),
+  name: z.string().nullable(),
+  image: z.string().nullable(),
+});
 const surveyWithAuthorSchema = z.object({
   id: z.string().cuid(),
   name: z.string(),
@@ -89,25 +117,3 @@ const surveyWithAuthorAndInteractionSchema = surveyWithAuthorSchema.extend({
 export type SurveyPreviewWithAuthorAndInteraction = z.infer<
   typeof surveyWithAuthorAndInteractionSchema
 >;
-
-export const createSurveySchema = z.object({
-  body: z.object({
-    name: z
-      .string({
-        required_error: 'Name is required',
-        invalid_type_error: 'Name must be a string',
-      })
-      .min(6, 'Name must be at least 6 characters')
-      .max(100, 'Name can not be more than 100 characters'),
-    description: z
-      .string({
-        invalid_type_error: 'Description must be a string',
-      })
-      .max(1000, 'Description can not be longer than 1000 characters'),
-    picture: z
-      .string({ invalid_type_error: 'Image must be a URL' })
-      .url('Image must be a url or empty')
-      .or(z.literal('')),
-  }),
-});
-export type CreateSurvey = z.infer<typeof createSurveySchema>['body'];

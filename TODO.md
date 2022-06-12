@@ -88,6 +88,7 @@
 - [x] FIRST VALIDATION TEST: /create should be a form with title and optional description, clicking it creates a survey and takes us to the page to edit that survey
 - [x] Description should support line breaks
 - [x] Remove debug text in /create
+- [x] Implement Zod schema FE validation in /create
 ### Stats
 - [x] Hide stats if there are 0 responses
 - [x] Fake stats page

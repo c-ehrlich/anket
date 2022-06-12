@@ -7,7 +7,7 @@ import {
   getAllPublicSurveysHandler,
   createSurveyHandler,
 } from '../../../backend/survey/survey.controller';
-import { createSurveySchema } from '../../../backend/survey/survey.schema';
+import { createSurveySchemaBE } from '../../../backend/survey/survey.schema';
 import { nextConnectOptions } from '../../../backend/utils/nextConnect';
 
 const handler = NextConnectHandler<NextApiRequest, NextApiResponse>(
@@ -17,7 +17,7 @@ const handler = NextConnectHandler<NextApiRequest, NextApiResponse>(
   .put(requireSession, upsertEmptySurveyHandler)
   .post(
     requireSession,
-    validateResource(createSurveySchema),
+    validateResource(createSurveySchemaBE),
     createSurveyHandler
   );
 

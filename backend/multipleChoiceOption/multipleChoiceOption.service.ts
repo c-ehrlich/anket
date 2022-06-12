@@ -76,22 +76,27 @@ export async function deleteMultipleChoiceOption({ id }: { id: string }) {
   }
 }
 
-export async function reorderMultipleChoiceOptions(options: {id: string, order: number}[]) {
-  const transactionItems = ([] as Prisma.Prisma__MultipleChoiceOptionClient<MultipleChoiceOptionFE>[]);
-  options.forEach(option => {
+export async function reorderMultipleChoiceOptions(
+  options: { id: string; order: number }[]
+) {
+  const transactionItems =
+    [] as Prisma.Prisma__MultipleChoiceOptionClient<MultipleChoiceOptionFE>[];
+  options.forEach((option) => {
     const transactionItem = prisma.multipleChoiceOption.update({
       where: {
-        id: option.id
+        id: option.id,
       },
       data: {
-        order: option.order
+        order: option.order,
       },
       select: {
-        id: true, name: true, order: true, 
-      }
-    })
+        id: true,
+        name: true,
+        order: true,
+      },
+    });
     transactionItems.push(transactionItem);
-  })
+  });
   return prisma.$transaction(transactionItems);
 }
 

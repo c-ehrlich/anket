@@ -1,7 +1,14 @@
-import { Button, Group, Stack, Textarea, TextInput, Title } from '@mantine/core';
+import {
+  Button,
+  Group,
+  Stack,
+  Textarea,
+  TextInput,
+  Title,
+} from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
 import { useRouter } from 'next/router';
-import { createSurveySchema } from '../../backend/survey/survey.schema';
+import { createSurveySchemaFE } from '../../backend/survey/survey.schema';
 import { createSurveyWithData } from '../../hooks/useCreateSurveyWithData';
 
 const CreateSurveyPage = () => {
@@ -12,11 +19,17 @@ const CreateSurveyPage = () => {
       description: '',
       picture: '',
     },
-    schema: zodResolver(createSurveySchema),
+    schema: zodResolver(createSurveySchemaFE),
   });
 
   return (
-    <form onSubmit={form.onSubmit((values) => console.log(values))}>
+    <form
+      onSubmit={form.onSubmit((values) =>
+        createSurveyWithData(values).then((survey) =>
+          router.push(`/survey/edit/${survey.id}`)
+        )
+      )}
+    >
       <Stack style={{ marginBottom: '64px' }}>
         <Title order={1}>Create Survey</Title>
         <TextInput
@@ -45,16 +58,7 @@ const CreateSurveyPage = () => {
           >
             Cancel
           </Button>
-          <Button
-            type='submit'
-            onClick={() =>
-              createSurveyWithData(form.values).then((survey) =>
-                router.push(`/survey/edit/${survey.id}`)
-              )
-            }
-          >
-            Submit
-          </Button>
+          <Button type='submit'>Submit</Button>
         </Group>
       </Stack>
     </form>
