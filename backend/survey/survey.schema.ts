@@ -1,8 +1,7 @@
 import { z } from 'zod';
 import { questionResponseSchema } from '../question/question.schema';
 
-// schema for /survey/create (FE)
-export const createSurveySchemaFE = z.object({
+const createSurveySchema = {
   name: z
     .string({
       required_error: 'Name is required',
@@ -18,14 +17,15 @@ export const createSurveySchemaFE = z.object({
   picture: z
     .string({ invalid_type_error: 'Image must be a URL or empty' })
     .url('Image must be a url or empty')
-    .or(z.literal('')),
-});
+    .or(z.literal(''))
+    .or(z.undefined()),
+};
+// schema for /survey/create (FE)
+export const createSurveySchemaFE = z.object(createSurveySchema);
 
 // schema for /survey/create (BE)
 export const createSurveySchemaBE = z.object({
-  body: z.object({
-    createSurveySchemaFE,
-  }),
+  body: z.object(createSurveySchema),
 });
 
 // type for /survey/create

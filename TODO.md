@@ -14,6 +14,9 @@
 ### Stats
 - [ ] Decent way to view text responses
 ### UI
+- [ ] Landing page
+  - [ ] Fonts too small
+  - [ ] Colors suck
 - [ ] Go through Refactoring UI and apply lessons learned to app
 
 ## MVP 3 and later
@@ -80,6 +83,7 @@
 - [x] Custom fonts don't work on Vercel
 - [x] 'No Response' on MCM can be negative
 - [x] Some emoized components don't update due to shallow comparison
+- [x] Schema issues on /create
 ### Accounts / Auth
 - [x] Add GoogleProvider
 - [x] Use custom signin page

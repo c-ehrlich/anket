@@ -6,6 +6,8 @@ const validateResource =
   (schema: AnyZodObject) =>
   (req: NextApiRequest, res: NextApiResponse, next: NextHandler) => {
     try {
+      console.log(req.body);
+      console.log(schema);
       schema.parse({
         body: req.body,
         query: req.query,
